@@ -1,0 +1,53 @@
+@startuml
+'https://plantuml.com/component-diagram
+
+node "Client (via HTTP)"{
+    () request
+    () response
+}
+
+node "Node-js" {
+
+    node "Express-js" {
+        node "Handlers"{
+            [Request Router]
+            [Response Creation]
+        }
+
+        node "Server Logic"{
+            [CORS Middleware]
+
+            node "Security"{
+              [JWT Authentication Middleware]
+              [Authorization Middleware]
+            }
+
+            [Controllers]
+        }
+    }
+
+    [Mongoose]
+
+}
+
+
+database "MongoDB" {
+
+}
+
+request --> [Request Router]
+[Response Creation] --> response
+[Request Router] -left-> [CORS Middleware] : matched route
+[Server Logic] -up-> [Response Creation] : any component can reply
+
+[CORS Middleware] --> [JWT Authentication Middleware]
+[JWT Authentication Middleware] --> [Authorization Middleware]
+[Authorization Middleware] --> [Controllers]
+[Authorization Middleware] <-right-> [Mongoose]
+[Controllers] <-right-> [Mongoose]
+[Mongoose] <-right-> [MongoDB]
+
+
+
+
+@enduml
