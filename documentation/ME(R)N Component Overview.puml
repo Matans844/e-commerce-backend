@@ -37,14 +37,17 @@ database "MongoDB" {
 
 request --> [Request Router]
 [Response Creation] --> response
-[Request Router] -left-> [CORS Middleware] : matched route
-[Server Logic] -up-> [Response Creation] : any component can reply
+[Request Router] --> [CORS Middleware] : matched route
+[Controllers] -up-> [Response Creation]
 
-[CORS Middleware] --> [JWT Authentication Middleware]
+
 [JWT Authentication Middleware] --> [Authorization Middleware]
-[Authorization Middleware] --> [Controllers]
+[CORS Middleware] -right-> [Controllers]
+
+[Controllers] <--> [Security]
+
 [Authorization Middleware] <-right-> [Mongoose]
-[Controllers] <-right-> [Mongoose]
+[Controllers] <--> [Mongoose]
 [Mongoose] <-right-> [MongoDB]
 
 
