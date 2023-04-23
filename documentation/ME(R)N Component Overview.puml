@@ -1,5 +1,6 @@
 @startuml
 'https://plantuml.com/component-diagram
+left to right direction
 
 node "Client (via HTTP)"{
     () request
@@ -37,15 +38,15 @@ database "MongoDB" {
 
 request --> [Request Router]
 [Response Creation] --> response
-[Request Router] -left-> [CORS Middleware] : matched route
+[Request Router] --> [CORS Middleware] : matched route
 [Server Logic] -up-> [Response Creation] : any component can reply
 
 [CORS Middleware] --> [JWT Authentication Middleware]
 [JWT Authentication Middleware] --> [Authorization Middleware]
 [Authorization Middleware] --> [Controllers]
-[Authorization Middleware] <-right-> [Mongoose]
-[Controllers] <-right-> [Mongoose]
-[Mongoose] <-right-> [MongoDB]
+[Authorization Middleware] <-left-> [Mongoose]
+[Controllers] <-left-> [Mongoose]
+[Mongoose] <-left-> [MongoDB]
 
 
 
