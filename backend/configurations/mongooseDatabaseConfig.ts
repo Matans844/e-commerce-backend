@@ -1,11 +1,12 @@
 // Links:
 // https://mongoosejs.com/docs/connections.html
 // https://stackoverflow.com/questions/68915722/option-usefindandmodify-is-not-supported
+// https://www.npmjs.com/package/dotenv
 
 import mongoose from "mongoose";
-import { config } from 'dotenv';
+import * as dotenv from 'dotenv'
 
-config();
+dotenv.config();
 
 const connectDB = async () => {
     try {
