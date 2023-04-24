@@ -19,13 +19,6 @@ config();
 const server = express();
 const port = process.env['PORT'] || 5000;
 
-// Connect to database
-await connectDB();
-
-server.get("/", (_, res) => {
-    res.send("API IS RUNNING...");
-});
-
 // Middleware
 server.use(express.json());
 server.use(morgan('dev'));
@@ -50,3 +43,19 @@ server.use(errorHandler);
 server.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
+
+async function startServer() {
+    // Connect to database
+    await connectDB();
+
+    server.get("/", (_, res) => {
+        res.send("API IS RUNNING...");
+    });
+
+    // Start server
+    server.listen(port, () => {
+        console.log(`Server listening on port ${port}`);
+    });
+}
+
+void startServer();
