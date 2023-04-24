@@ -10,7 +10,7 @@
   "scripts": {
     "prestart": "npm install --only=production && avn setup && nvm install",
     "start": "npm run prestart && node build/server",
-    "server": "nodemon build/server",
+    "server": "nodemon build/backend/src/server",
     "build": "tsc",
     "test": "jest"
   },
