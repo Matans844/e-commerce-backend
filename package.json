@@ -1,7 +1,6 @@
 {
   "name": "e-commerce-backend",
   "version": "1.0.0",
-  "type": "module",
   "description": "A Node.js application that exposes a RESTful API for a hypothetical e-commerce website.",
   "keywords": [
     "typescript",
