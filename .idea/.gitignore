@@ -1,3 +1,5 @@
+# For more details, visit: https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
 # Default ignored files
 /shelf/
 /workspace.xml
@@ -9,5 +11,13 @@
 /dataSources/
 /dataSources.local.xml
 
-# Environment variables
+# misc
 .env
+
+# dependencies
+/node_modules
+node_modules/
+
+# production
+/build
+build/
