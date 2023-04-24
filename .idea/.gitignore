@@ -10,3 +10,16 @@
 # Datasource local storage ignored files
 /dataSources/
 /dataSources.local.xml
+
+# misc
+.env
+
+# dependencies
+/node_modules
+node_modules/
+/node_modules/
+
+# production
+/build
+build/
+/build/
