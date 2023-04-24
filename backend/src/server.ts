@@ -4,7 +4,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import { config } from 'dotenv';
-import connectDB from '../configurations/database';
+import connectDB from '../configurations/database.js';
 /**
 import { accountRoutes } from './backend/src/routes/accountRoutes';
 import { authRoutes } from './backend/src/routes/authRoutes';
