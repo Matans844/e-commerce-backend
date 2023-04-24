@@ -17,7 +17,7 @@ import { errorHandler } from './backend/src/utils/errorHandler';
 config();
 
 const server = express();
-const port = process.env['PORT'] || 5000;
+const port = process.env['PORT'] || 3000;
 
 // Middleware
 server.use(express.json());
@@ -40,10 +40,6 @@ server.use('/api/v1/checkout', checkoutRoutes);
 server.use(errorHandler);
  */
 
-server.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
-});
-
 async function startServer() {
     // Connect to database
     await connectDB();
@@ -53,7 +49,7 @@ async function startServer() {
     });
 
     // Start server
-    server.listen(port, () => {
+    server.listen(port,() => {
         console.log(`Server listening on port ${port}`);
     });
 }

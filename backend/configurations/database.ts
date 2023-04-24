@@ -4,12 +4,16 @@
 // https://www.npmjs.com/package/dotenv
 
 import mongoose from "mongoose";
+import { config } from 'dotenv';
 
-const MONGO_URI = process.env['MONGO_URI'] || '';
+config();
+
+const MONGO_URL = process.env['MONGO_URL'] || '';
 
 const connectDB = async () => {
     try {
-        await mongoose.connect(MONGO_URI);
+        mongoose.set("strictQuery", false);
+        await mongoose.connect(MONGO_URL);
         console.log(`MongoDB Connected: ${mongoose.connection.host}`);
     } catch (error : any) {
         console.error(`Error connecting to MongoDB: ${error.message}`);

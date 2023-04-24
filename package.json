@@ -12,6 +12,7 @@
     "prestart": "npm install --only=production && avn setup && nvm install",
     "start": "npm run prestart && node build/server",
     "server": "nodemon build/backend/src/server",
+    "debug": "nodemon --inspect build/backend/src/server",
     "build": "tsc",
     "test": "jest"
   },
