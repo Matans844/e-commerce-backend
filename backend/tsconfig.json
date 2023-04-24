@@ -1,11 +1,12 @@
 {
   "extends": "../tsconfig.base",
   "compilerOptions": {
-    "rootDir": "src, test",
-    "outDir": "build"
+    "rootDir": "../",
+    "outDir": "build",
   },
   "include": [
     "src/**/*",
-    "test/**/*"
+    "test/**/*",
+    "configurations/**/*"
   ]
 }
