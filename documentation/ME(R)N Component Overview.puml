@@ -91,10 +91,10 @@ request -left-> [LoggerMiddleware]
 [OrderRoute] -down-> [CheckoutController]
 [ProductRoute] -down-> [ProductController]
 
-[AccountController] --> [AccountService]
-[CartController] --> [CartService]
-[ProductController] --> [ProductService]
-[CheckoutController] --> [CheckoutService]
+[AccountController] <--> [AccountService]
+[CartController] <--> [CartService]
+[ProductController] <--> [ProductService]
+[CheckoutController] <--> [CheckoutService]
 "controllers" --> [LoggerMiddleware] : Every response first visits the logger
 
 
