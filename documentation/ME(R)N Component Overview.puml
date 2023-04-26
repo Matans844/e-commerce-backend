@@ -6,49 +6,113 @@ node "Client (via HTTP)"{
     () response
 }
 
-node "Node-js" {
 
-    node "Express-js" {
-        node "Handlers"{
-            [Request Router]
-            [Response Creation]
-        }
+node "Backend Infrastructure 1"{
+    package "Node-js" {
 
-        node "Server Logic"{
-            [CORS Middleware]
-
-            node "Security"{
-              [JWT Authentication Middleware]
-              [Authorization Middleware]
+        package "Express-js" {
+            frame "middleware"{
+                [AuthMiddleware]
+                [CorsMiddleware]
+                [LoggerMiddleware]
+                [ValidationMiddleware]
             }
 
-            [Controllers]
+            frame "routes"{
+                [AccountRoute]
+                [AuthRoute]
+                [CartRoute]
+                [OrderRoute]
+                [ProductRoute]
+            }
         }
     }
-
-    [Mongoose]
-
 }
 
+node "Business Logic"{
 
-database "MongoDB" {
+    frame "controllers"{
+        [ErrorController]
+        [AccountController]
+        [AuthController]
+        [CartController]
+        [ProductController]
+        [CheckoutController]
+    }
 
+    frame "services"{
+        [AccountService]
+        [AuthService]
+        [CartService]
+        [ProductService]
+        [CheckoutService]
+    }
+
+    frame "models"{
+        [AccountModel]
+        [CartModel]
+        [ProductModel]
+        [OrderModel]
+    }
 }
 
-request --> [Request Router]
-[Response Creation] --> response
-[Request Router] --> [CORS Middleware] : matched route
-[Controllers] -up-> [Response Creation]
+node "Backend Infrastructure 2"{
+    node "Database"{
+        [Mongoose]
+        database "MongoDB" {
+
+        }
+    }
+}
+
+request -down-> [LoggerMiddleware]
+[LoggerMiddleware] -up-> response
+[LoggerMiddleware] -down-> [ValidationMiddleware]
+[ValidationMiddleware] --> [ErrorController]
+
+[ValidationMiddleware] --> [CorsMiddleware]
+[ValidationMiddleware] <--> "models" : Schema based validation (type, format, constraints)
+[CorsMiddleware] <-right-> [AuthMiddleware]
+[CorsMiddleware] -down-> "routes"
+
+[AuthMiddleware] <--> [AuthRoute]
+[AuthRoute] <--> [AuthController]
+[AuthController] <--> [AuthService]
+
+[AccountRoute] -down-> [AccountController]
+[CartRoute] -down-> [CartController]
+[OrderRoute] -down-> [CheckoutController]
+[ProductRoute] -down-> [ProductController]
+
+[AccountController] --> [AccountService]
+[CartController] --> [CartService]
+[ProductController] --> [ProductService]
+[CheckoutController] --> [CheckoutService]
+
+"services" <--> "models" : First getting data schemes
+"services" <--> [ErrorController] : Every service can throw an error
+"services" <--> [Mongoose] : Then heading to DB
+[Mongoose] <--> "MongoDB"
+"controllers" --> [LoggerMiddleware] : Every response first visits the logger
 
 
-[JWT Authentication Middleware] --> [Authorization Middleware]
-[CORS Middleware] -right-> [Controllers]
 
-[Controllers] <--> [Security]
 
-[Authorization Middleware] <-right-> [Mongoose]
-[Controllers] <--> [Mongoose]
-[Mongoose] <-right-> [MongoDB]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

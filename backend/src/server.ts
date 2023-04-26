@@ -6,6 +6,7 @@ import compression from 'compression';
 import { config } from 'dotenv';
 import connectDB from '../configurations/database.js';
 /**
+import { corsMiddleware } from './backend/src/middleware/corsMiddleware';
 import { accountRoutes } from './backend/src/routes/accountRoutes';
 import { authRoutes } from './backend/src/routes/authRoutes';
 import { productRoutes } from './backend/src/routes/productRoutes';
@@ -20,11 +21,14 @@ const server = express();
 const port = process.env['PORT'] || 3000;
 
 // Middleware
+/**
+server.use(corsMiddleware);
 server.use(express.json());
 server.use(morgan('dev'));
 server.use(cors());
 server.use(helmet());
 server.use(compression());
+*/
 
 // API routes
 /**
