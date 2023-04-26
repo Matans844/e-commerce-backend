@@ -8,14 +8,21 @@ node "Client (via HTTP)"{
 
 
 node "Backend Infrastructure 1"{
+
     package "Node-js" {
 
         package "Express-js" {
+            frame "control flow orchestrator"{
+                [Server]
+            }
+
             frame "middleware"{
                 [AuthMiddleware]
                 [CorsMiddleware]
                 [LoggerMiddleware]
                 [ValidationMiddleware]
+            }
+            node "ErrorMiddleware"{
             }
 
             frame "routes"{
@@ -32,12 +39,13 @@ node "Backend Infrastructure 1"{
 node "Business Logic"{
 
     frame "controllers"{
-        [ErrorController]
         [AccountController]
         [AuthController]
         [CartController]
         [ProductController]
         [CheckoutController]
+    }
+    node "ErrorController"{
     }
 
     frame "services"{
@@ -67,18 +75,22 @@ node "Backend Infrastructure 2"{
     }
 
     database "MongoDB" {
-
     }
 
 }
 
-request -left-> [LoggerMiddleware]
-[LoggerMiddleware] -up-> response
-[LoggerMiddleware] -down-> [ValidationMiddleware]
-[ValidationMiddleware] --> [ErrorController]
+request -down-> [Server]
+[Server] -right-> response
+
+[Server] -down-> [LoggerMiddleware]
+[Server] -down-> [ValidationMiddleware]
+
+"middleware" -right-> [ErrorMiddleware]
+"routes" -up-> [ErrorMiddleware]
+[ErrorMiddleware] <-up-> [Server]
 
 [ValidationMiddleware] --> [CorsMiddleware]
-[ValidationMiddleware] <--> "models" : Schema based validation (type, format, constraints)
+[ValidationMiddleware] <..> "models" : Schema based validation (type, format, constraints)
 [CorsMiddleware] <-right-> [AuthMiddleware]
 [CorsMiddleware] -down-> "routes"
 
@@ -95,11 +107,14 @@ request -left-> [LoggerMiddleware]
 [CartController] <--> [CartService]
 [ProductController] <--> [ProductService]
 [CheckoutController] <--> [CheckoutService]
-"controllers" --> [LoggerMiddleware] : Every response first visits the logger
+"controllers" -right-> [Server]
 
 
-"services" <--> "models" : First getting data schemes
-"services" <--> [ErrorController] : Every service can throw an error
+"services" <..> "models" : First getting data schemes
+"services" -right-> [ErrorController]
+"controllers" --> [ErrorController]
+[ErrorController] --> [Server]
+
 "services" <-down-> [Mongoose] : Then heading to DB
 [Mongoose] <-down-> "repositories" : Conversing with backend persistence layer
 "repositories" <-down-> "MongoDB"
