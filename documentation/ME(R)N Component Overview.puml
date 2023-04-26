@@ -57,12 +57,19 @@ node "Business Logic"{
 }
 
 node "Backend Infrastructure 2"{
-    node "Database"{
-        [Mongoose]
-        database "MongoDB" {
+    [Mongoose]
 
-        }
+    frame "repositories"{
+        [AccountRepository]
+        [CartRepository]
+        [ProductRepository]
+        [UserRepository]
     }
+
+    database "MongoDB" {
+
+    }
+
 }
 
 request -down-> [LoggerMiddleware]
@@ -88,12 +95,14 @@ request -down-> [LoggerMiddleware]
 [CartController] --> [CartService]
 [ProductController] --> [ProductService]
 [CheckoutController] --> [CheckoutService]
+"controllers" --> [LoggerMiddleware] : Every response first visits the logger
+
 
 "services" <--> "models" : First getting data schemes
 "services" <--> [ErrorController] : Every service can throw an error
 "services" <--> [Mongoose] : Then heading to DB
-[Mongoose] <--> "MongoDB"
-"controllers" --> [LoggerMiddleware] : Every response first visits the logger
+[Mongoose] <-down-> "repositories"
+"repositories" <-down-> "MongoDB"
 
 
 
