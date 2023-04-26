@@ -72,7 +72,7 @@ node "Backend Infrastructure 2"{
 
 }
 
-request -down-> [LoggerMiddleware]
+request -left-> [LoggerMiddleware]
 [LoggerMiddleware] -up-> response
 [LoggerMiddleware] -down-> [ValidationMiddleware]
 [ValidationMiddleware] --> [ErrorController]
@@ -100,8 +100,8 @@ request -down-> [LoggerMiddleware]
 
 "services" <--> "models" : First getting data schemes
 "services" <--> [ErrorController] : Every service can throw an error
-"services" <--> [Mongoose] : Then heading to DB
-[Mongoose] <-down-> "repositories"
+"services" <-down-> [Mongoose] : Then heading to DB
+[Mongoose] <-down-> "repositories" : Conversing with backend persistence layer
 "repositories" <-down-> "MongoDB"
 
 
