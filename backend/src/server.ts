@@ -1,5 +1,6 @@
 import express from 'express';
-import dotenv from 'dotenv';
+import * as dotenv from 'dotenv'
+dotenv.config() // See: https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 import connectDB from '../configurations/database.js';
 
 // Middlewares
@@ -12,9 +13,6 @@ import { authRoutes } from './backend/src/routes/authRoutes';
 import { productRoutes } from './backend/src/routes/productRoutes';
 import { cartRoutes } from './backend/src/routes/cartRoutes';
 import { checkoutRoutes } from './backend/src/routes/checkoutRoutes';*/
-
-
-dotenv.config();
 
 const server = express();
 const port = process.env['PORT'] || 3000;
@@ -36,18 +34,14 @@ server.use('/api/v1/checkout', checkoutRoutes);*/
 // Error handling middleware
 /*server.use(errorHandler);*/
 
-async function startServer() {
-    // Connect to database
-    await connectDB();
+void connectDB();
 
-    server.get("/", (_, res) => {
-        res.send("API IS RUNNING...");
-    });
+server.get("/", (_, res) => {
+    res.send("API IS RUNNING...");
+});
 
     // Start server
-    server.listen(port,() => {
-        console.log(`Server listening on port ${port}`);
-    });
-}
+server.listen(port,() => {
+    console.log(`Server listening on port ${port}`);
+});
 
-void startServer();
