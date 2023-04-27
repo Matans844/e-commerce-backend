@@ -49,14 +49,6 @@ node "Business Logic"{
         [CheckoutController]
     }
 
-    frame "services"{
-        [AccountService]
-        [AuthService]
-        [CartService]
-        [ProductService]
-        [CheckoutService]
-    }
-
     frame "models"{
         [AccountModel]
         [CartModel]
@@ -93,23 +85,17 @@ request -down-> [Server]
 
 [AuthMiddleware] <-down-> [AuthRoute]
 [AuthRoute] <--> [AuthController]
-[AuthController] <--> [AuthService]
 
 [AccountRoute] -down-> [AccountController]
 [CartRoute] -down-> [CartController]
 [OrderRoute] -down-> [CheckoutController]
 [ProductRoute] -down-> [ProductController]
 
-[AccountController] <--> [AccountService]
-[CartController] <--> [CartService]
-[ProductController] <--> [ProductService]
-[CheckoutController] <--> [CheckoutService]
 "controllers" -right-> [Server]
 
+"controllers" <..> "models" : First getting data schemes
 
-"services" <..> "models" : First getting data schemes
-
-"services" <-down-> [Mongoose] : Then heading to DB
+"controllers" <--> [Mongoose] : Then heading to DB
 [Mongoose] <-down-> "repositories" : Conversing with backend persistence layer
 "repositories" <-down-> "MongoDB"
 
