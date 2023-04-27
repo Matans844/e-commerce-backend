@@ -21,7 +21,6 @@ node "Backend Infrastructure 1"{
                 [LoggerMiddleware]
             }
 
-
             frame "routes"{
                 [AccountRoute]
                 [AuthRoute]
