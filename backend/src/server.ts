@@ -33,6 +33,7 @@ server.use('/api/v1/checkout', checkoutRoutes);*/
 // Error handling middleware
 /*server.use(errorHandler);*/
 
+
 async function startServer() {
     // Connect to database
     await connectDB();
