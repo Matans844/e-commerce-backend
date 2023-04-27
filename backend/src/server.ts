@@ -1,5 +1,5 @@
 import * as dotenv from "dotenv";
-dotenv.config();
+dotenv.config(); // See: https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 import express from 'express';
 import morgan from 'morgan';
 import connectDB from "../configurations/database.js";
@@ -13,11 +13,10 @@ import { cartRoutes } from './backend/src/routes/cartRoutes';
 import { checkoutRoutes } from './backend/src/routes/checkoutRoutes';
 */
 
-
 const server = express();
 const port = process.env.PORT || 3000;
 
-void connectDB;
+void connectDB();
 
 if (process.env['NODE_ENV'] === 'development') {
     server.use(morgan('dev'))

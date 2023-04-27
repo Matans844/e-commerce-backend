@@ -5,17 +5,15 @@
 
 import mongoose from "mongoose";
 
-const MONGO_URL = process.env.MONGO_URI || '';
-
-const connectDB = async () => {
+async function connectDB() {
     try {
         mongoose.set("strictQuery", false);
-        await mongoose.connect(MONGO_URL);
+        await mongoose.connect(process.env.MONGO_URI );
         console.log(`MongoDB Connected: ${mongoose.connection.host}`);
-    } catch (error : any) {
+    } catch (error: any) {
         console.error(`Error connecting to MongoDB: ${error.message}`);
         process.exit(1);
     }
-};
+}
 
 export default connectDB;
