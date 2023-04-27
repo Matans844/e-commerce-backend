@@ -16,14 +16,14 @@ node "Backend Infrastructure 1"{
                 [Server]
             }
 
-            frame "middleware"{
-                [AuthMiddleware]
-                [CorsMiddleware]
+            frame "middleware 1"{
+                [JSON parser]
                 [LoggerMiddleware]
+
+
                 [ValidationMiddleware]
             }
-            node "ErrorMiddleware"{
-            }
+
 
             frame "routes"{
                 [AccountRoute]
@@ -31,6 +31,13 @@ node "Backend Infrastructure 1"{
                 [CartRoute]
                 [OrderRoute]
                 [ProductRoute]
+            }
+
+            [AuthMiddleware]
+
+            frame "middleware 2"{
+                node "ErrorMiddleware"{
+                }
             }
         }
     }
@@ -44,8 +51,6 @@ node "Business Logic"{
         [CartController]
         [ProductController]
         [CheckoutController]
-    }
-    node "ErrorController"{
     }
 
     frame "services"{
@@ -82,17 +87,16 @@ node "Backend Infrastructure 2"{
 request -down-> [Server]
 [Server] -right-> response
 
-[Server] -down-> [LoggerMiddleware]
-[Server] -down-> [ValidationMiddleware]
+[Server] -down-> [JSON parser]
+[JSON parser] -down-> [LoggerMiddleware]
+[LoggerMiddleware] -down-> [ValidationMiddleware]
 
-"middleware" -right-> [ErrorMiddleware]
-"routes" -up-> [ErrorMiddleware]
+"middleware 1" --> [ErrorMiddleware]
+"routes" -down-> [ErrorMiddleware]
 [ErrorMiddleware] <-up-> [Server]
 
-[ValidationMiddleware] --> [CorsMiddleware]
 [ValidationMiddleware] <..> "models" : Schema based validation (type, format, constraints)
-[CorsMiddleware] <-right-> [AuthMiddleware]
-[CorsMiddleware] -down-> "routes"
+[ValidationMiddleware] -down-> "routes"
 
 [AuthMiddleware] <--> [AuthRoute]
 [AuthRoute] <--> [AuthController]
@@ -111,9 +115,6 @@ request -down-> [Server]
 
 
 "services" <..> "models" : First getting data schemes
-"services" -right-> [ErrorController]
-"controllers" --> [ErrorController]
-[ErrorController] --> [Server]
 
 "services" <-down-> [Mongoose] : Then heading to DB
 [Mongoose] <-down-> "repositories" : Conversing with backend persistence layer
