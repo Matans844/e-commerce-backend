@@ -5,7 +5,7 @@
 
 import mongoose from "mongoose";
 
-async function connectDB() {
+export async function connectDB() {
     try {
         mongoose.set("strictQuery", false);
         await mongoose.connect(process.env.MONGO_URI );
@@ -15,5 +15,3 @@ async function connectDB() {
         process.exit(1);
     }
 }
-
-export default connectDB;
