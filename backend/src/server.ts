@@ -1,22 +1,29 @@
 import express from 'express';
-import { config } from 'dotenv';
+import dotenv from 'dotenv';
 import connectDB from '../configurations/database.js';
+
+// Middlewares
 import morgan from 'morgan';
+import { errorHandler } from './backend/src/utils/errorHandler';
+
+// Routes
 import { accountRoutes } from './backend/src/routes/accountRoutes';
 import { authRoutes } from './backend/src/routes/authRoutes';
 import { productRoutes } from './backend/src/routes/productRoutes';
 import { cartRoutes } from './backend/src/routes/cartRoutes';
 import { checkoutRoutes } from './backend/src/routes/checkoutRoutes';
-import { errorHandler } from './backend/src/utils/errorHandler';
 
-config();
+dotenv.config();
 
 const server = express();
 const port = process.env['PORT'] || 3000;
 
+if (process.env['NODE_ENV'] === 'development') {
+    app.use(morgan('dev'))
+}
+
 // Middleware
 server.use(express.json());
-server.use(morgan('dev'));
 
 // API routes
 server.use('/api/v1/accounts', accountRoutes);

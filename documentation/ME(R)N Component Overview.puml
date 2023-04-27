@@ -16,12 +16,9 @@ node "Backend Infrastructure 1"{
                 [Server]
             }
 
-            frame "middleware 1"{
+            frame "middleware"{
                 [JSON parser]
                 [LoggerMiddleware]
-
-
-                [ValidationMiddleware]
             }
 
 
@@ -35,10 +32,9 @@ node "Backend Infrastructure 1"{
 
             [AuthMiddleware]
 
-            frame "middleware 2"{
-                node "ErrorMiddleware"{
-                }
+            node "ErrorMiddleware"{
             }
+
         }
     }
 }
@@ -85,20 +81,17 @@ node "Backend Infrastructure 2"{
 }
 
 request -down-> [Server]
-[Server] -right-> response
+[Server] -up-> response
 
-[Server] -down-> [JSON parser]
-[JSON parser] -down-> [LoggerMiddleware]
-[LoggerMiddleware] -down-> [ValidationMiddleware]
+[Server] -down-> "middleware"
 
-"middleware 1" --> [ErrorMiddleware]
-"routes" -down-> [ErrorMiddleware]
-[ErrorMiddleware] <-up-> [Server]
+"middleware" -right-> [ErrorMiddleware]
+"routes" -up-> [ErrorMiddleware]
+[ErrorMiddleware] <-right-> [Server]
 
-[ValidationMiddleware] <..> "models" : Schema based validation (type, format, constraints)
-[ValidationMiddleware] -down-> "routes"
+"middleware" -down-> "routes"
 
-[AuthMiddleware] <--> [AuthRoute]
+[AuthMiddleware] <-down-> [AuthRoute]
 [AuthRoute] <--> [AuthController]
 [AuthController] <--> [AuthService]
 

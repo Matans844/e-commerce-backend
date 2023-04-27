@@ -4,9 +4,6 @@
 // https://www.npmjs.com/package/dotenv
 
 import mongoose from "mongoose";
-import { config } from 'dotenv';
-
-config();
 
 const MONGO_URL = process.env['MONGO_URL'] || '';
 
