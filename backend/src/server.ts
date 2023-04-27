@@ -2,7 +2,7 @@ import * as dotenv from "dotenv";
 dotenv.config(); // See: https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 import express from 'express';
 import morgan from 'morgan';
-import connectDB from "../configurations/database.js";
+import connectDB from "../configurations/DatabaseConnectionHandler.js";
 
 /*
 import { errorHandler } from './backend/src/utils/errorHandler';
