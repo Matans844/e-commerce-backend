@@ -16,8 +16,6 @@ import { checkoutRoutes } from './backend/src/routes/checkoutRoutes';
 const server = express();
 const port = process.env.PORT || 3000;
 
-void connectDB();
-
 if (process.env['NODE_ENV'] === 'development') {
     server.use(morgan('dev'))
 }
@@ -35,12 +33,19 @@ server.use('/api/v1/checkout', checkoutRoutes);*/
 // Error handling middleware
 /*server.use(errorHandler);*/
 
-server.get("/", (_, res) => {
-    res.send("API IS RUNNING...");
-});
+async function startServer() {
+    // Connect to database
+    await connectDB();
+
+    server.get("/", (_, res) => {
+        res.send("API IS RUNNING...");
+    });
 
     // Start server
-server.listen(port,() => {
-    console.log(`Server listening on port ${port}`);
-});
+    server.listen(port,() => {
+        console.log(`Server listening on port ${port}`);
+    });
+}
+
+void startServer();
 
