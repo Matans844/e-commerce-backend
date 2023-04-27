@@ -1,7 +1,7 @@
 /**
  * Represents order price components
  */
-export interface OrderPrice {
+export interface OrderCompositePrice {
     priceItems: number;
     priceTax: number;
     priceShipping: number;

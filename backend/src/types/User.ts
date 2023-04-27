@@ -8,7 +8,7 @@ export interface User {
     email: string;
     password: string;
     address: string;
-    matchPassword: (password: string) => Promise<Boolean>;
+    isCorrectPassword: (password: string) => Promise<Boolean>;
 }
 
 export interface UserDocument extends User, Document {}

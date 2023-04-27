@@ -2,7 +2,7 @@ import {Document, Model} from "mongoose";
 import {OrderItems} from "./OrderItems.js";
 import {ShippingAddress} from "./ShippingAddress.js";
 import {PaymentResult} from "./PaymentResult.js";
-import {OrderPrice} from "./OrderPrice.js";
+import {OrderCompositePrice} from "./OrderCompositePrice.js";
 
 /**
  * Represents an order
@@ -13,9 +13,9 @@ export interface Order {
     shippingAddress: ShippingAddress;
     paymentMethod: string;
     paymentResult: PaymentResult;
-    orderPrice: OrderPrice;
+    orderCompositePrice: OrderCompositePrice;
     isPaid: boolean;
-    paidAt: number;
+    paymentDate: Date;
 }
 
 export interface OrderDocument extends Order, Document {}
