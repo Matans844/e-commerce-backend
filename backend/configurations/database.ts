@@ -5,7 +5,7 @@
 
 import mongoose from "mongoose";
 
-const MONGO_URL = process.env['MONGO_URL'] || '';
+const MONGO_URL = process.env.MONGO_URI || '';
 
 const connectDB = async () => {
     try {

@@ -1,21 +1,23 @@
+import * as dotenv from "dotenv";
+dotenv.config();
 import express from 'express';
-import * as dotenv from 'dotenv'
-dotenv.config() // See: https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
-import connectDB from '../configurations/database.js';
-
-// Middlewares
 import morgan from 'morgan';
-/*import { errorHandler } from './backend/src/utils/errorHandler';*/
+import connectDB from "../configurations/database.js";
 
-// Routes
-/*import { accountRoutes } from './backend/src/routes/accountRoutes';
+/*
+import { errorHandler } from './backend/src/utils/errorHandler';
+import { accountRoutes } from './backend/src/routes/accountRoutes';
 import { authRoutes } from './backend/src/routes/authRoutes';
 import { productRoutes } from './backend/src/routes/productRoutes';
 import { cartRoutes } from './backend/src/routes/cartRoutes';
-import { checkoutRoutes } from './backend/src/routes/checkoutRoutes';*/
+import { checkoutRoutes } from './backend/src/routes/checkoutRoutes';
+*/
+
 
 const server = express();
-const port = process.env['PORT'] || 3000;
+const port = process.env.PORT || 3000;
+
+void connectDB;
 
 if (process.env['NODE_ENV'] === 'development') {
     server.use(morgan('dev'))
@@ -33,8 +35,6 @@ server.use('/api/v1/checkout', checkoutRoutes);*/
 
 // Error handling middleware
 /*server.use(errorHandler);*/
-
-void connectDB();
 
 server.get("/", (_, res) => {
     res.send("API IS RUNNING...");
