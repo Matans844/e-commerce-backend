@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv'
 import express from 'express'
 import morgan from 'morgan'
-import { connectDB } from './providers/DatabaseConnector.js'
+import { connectDB } from './database/DatabaseConnector.js'
 
 /*
 import { errorHandler } from './backend/src/utils/errorHandler';

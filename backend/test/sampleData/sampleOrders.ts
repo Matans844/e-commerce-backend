@@ -1,65 +1,80 @@
-import {Order} from "../../src/models/OrderModel.js";
+import { type OrderPaid } from '../../src/types/index.js'
 
-const <Order>order1 =
-
-const orders :  = [
-  {
-    user: 'abc123',
-    orderItems: [],
-    shippingAddress: {
-      address: 'test',
-      city: 'test',
-      country: 'test',
-      postalCode: '123456'
-    },
-    paymentMethod: 'paypal',
-    orderCompositePrice: {
-      priceItems: 1000,
-      priceTax: 10,
-      priceShipping: 0,
-      priceTotal: 1010
-    },
-    isPaid: true,
-    paymentDate: new Date(2020, 4, 7),
+const order1: OrderPaid = {
+  user: 'abc123',
+  orderItems: [],
+  shippingAddress: {
+    address: 'test',
+    city: 'test',
+    country: 'test',
+    postalCode: '123456'
   },
-  {
-    user: 'abc1234',
-    orderItems: [],
-    shippingAddress: {
-      address: 'test',
-      city: 'test',
-      country: 'test',
-      postalCode: '123456'
-    },
-    paymentMethod: 'square',
-    itemsPrice: 100,
-    taxPrice: 5,
-    shippingPrice: 0,
-    totalPrice: 105,
-    isPaid: true,
-    paidAt: 1,
-    isDelivered: true,
-    deliveredAt: 2
+  orderCompositePrice: {
+    priceItems: 1000,
+    priceTax: 10,
+    priceShipping: 0,
+    priceTotal: 1010
   },
-  {
-    user: 'abc123456',
-    orderItems: [],
-    shippingAddress: {
-      address: 'test',
-      city: 'test',
-      country: 'test',
-      postalCode: '123456'
-    },
-    paymentMethod: 'paypal',
-    itemsPrice: 5000,
-    taxPrice: 100,
-    shippingPrice: 0,
-    totalPrice: 5100,
-    isPaid: true,
-    paidAt: 1,
-    isDelivered: true,
-    deliveredAt: 2
+  paymentMethod: 'paypal',
+  paymentDate: new Date(2020, 4, 7),
+  paymentResult: {
+    id: 'test',
+    status: 'test',
+    updateDate: new Date(2020, 4, 7),
+    email: 'test'
   }
-]
+}
+
+const order2: OrderPaid = {
+  user: 'abc1234',
+  orderItems: [],
+  shippingAddress: {
+    address: 'test',
+    city: 'test',
+    country: 'test',
+    postalCode: '123456'
+  },
+  orderCompositePrice: {
+    priceItems: 100,
+    priceTax: 5,
+    priceShipping: 0,
+    priceTotal: 105
+  },
+  paymentMethod: 'square',
+  paymentDate: new Date(2020, 4, 8),
+  paymentResult: {
+    id: 'test',
+    status: 'test',
+    updateDate: new Date(2020, 4, 8),
+    email: 'test'
+  }
+}
+
+const order3: OrderPaid = {
+  user: 'abc123456',
+  orderItems: [],
+  shippingAddress: {
+    address: 'test',
+    city: 'test',
+    country: 'test',
+    postalCode: '123456'
+  },
+  orderCompositePrice: {
+    priceItems: 5000,
+    priceTax: 100,
+    priceShipping: 0,
+    priceTotal: 5100
+  },
+  paymentMethod: 'paypal',
+  paymentDate: new Date(2020, 4, 9),
+  paymentResult: {
+    id: 'test',
+    status: 'test',
+    updateDate: new Date(2020, 4, 9),
+    email: 'test'
+  }
+}
+
+const orders = [order1, order2, order3]
 
 export default orders
