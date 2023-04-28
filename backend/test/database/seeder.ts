@@ -24,8 +24,13 @@ async function destroyData (): Promise<void> {
     await User.deleteMany()
 
     console.log('Data Destroyed!')
-  } catch (error) {
-    console.error(`${error}`)
+    process.exit()
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error(`Error deleting from database: ${error.message}`)
+    } else {
+      console.error('Unknown error')
+    }
     process.exit(1)
   }
 }
@@ -40,8 +45,13 @@ async function importData (): Promise<void> {
     await Product.insertMany(products)
 
     console.log('Data Imported!')
-  } catch (error) {
-    console.error(`${error}`)
+    process.exit()
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error(`Error importing to database: ${error.message}`)
+    } else {
+      console.error('Unknown error')
+    }
     process.exit(1)
   }
 }

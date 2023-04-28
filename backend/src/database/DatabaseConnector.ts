@@ -12,7 +12,7 @@ export async function connectDB (): Promise<void> {
     console.log(`MongoDB Connected: ${mongoose.connection.host}`)
   } catch (error: unknown) {
     if (error instanceof Error) {
-      console.error(`Error connecting to MongoDB: ${error.message}`)
+      console.error(`Error connecting to database: ${error.message}`)
     } else {
       console.error('Unknown error')
     }
