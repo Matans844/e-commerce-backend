@@ -7,15 +7,15 @@
     "typescript",
     "nodejs"
   ],
-  "main": "./build/server.js",
+  "main": "./build/backend/src/server.js",
   "scripts": {
-    "prestart": "npm install --only=production && avn setup && nvm install",
-    "server": "node build/backend/src/server",
+    "prestart": "nvm install && npm install --only=production",
     "start": "npm run prestart && npm run server",
     "build": "tsc",
+    "server": "node build/backend/src/server",
     "dev": "npm run build && nodemon build/backend/src/server",
-    "test:data:import": "npx ts-node ./build/backend/test/seeder",
-    "test:data:destroy": "npx ts-node ./build/backend/test/seeder -d",
+    "test:data:import": "npx ts-node build/backend/test/seeder",
+    "test:data:destroy": "npx ts-node build/backend/test/seeder -d",
     "test": "jest"
   },
   "repository": {
