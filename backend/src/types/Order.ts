@@ -20,5 +20,8 @@ export interface Order {
 
 export interface OrderDocument extends Order, Document {}
 
-// TODO: Is the following necessary? I have models defined elsewhere
+/**
+ * Will be used by the schema
+ * TODO: Check if this is true
+ */
 export interface OrderModel extends Model<OrderDocument> {}

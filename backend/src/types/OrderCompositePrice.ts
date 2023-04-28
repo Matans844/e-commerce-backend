@@ -7,3 +7,5 @@ export interface OrderCompositePrice {
     priceShipping: number;
     priceTotal: number;
 }
+
+// TODO: Is this interface an overkill? Maybe I'm over-granulating.

@@ -11,5 +11,8 @@ export interface Product {
 
 export interface ProductDocument extends Product, Document {}
 
-// TODO: Is the following necessary? I have models defined elsewhere
+/**
+ * Will be used by the schema
+ * TODO: Check if this is true
+ */
 export interface ProductModel extends Model<ProductDocument> {}
