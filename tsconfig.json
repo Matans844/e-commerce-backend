@@ -105,6 +105,6 @@
     "./backend/src/**/*",
     "./backend/test/**/*",
     "./backend/configurations/**/*",
-    "./declarations/**/*"
+    "./config/**/*"
   ]
 }
