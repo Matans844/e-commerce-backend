@@ -1,6 +1,6 @@
-import { type OrderPaid } from '../../src/types/index.js'
+import { type Order } from '../../src/types/index.js'
 
-const order1: OrderPaid = {
+const order1: Order = {
   user: 'abc123',
   orderItems: [],
   shippingAddress: {
@@ -16,16 +16,17 @@ const order1: OrderPaid = {
     priceTotal: 1010
   },
   paymentMethod: 'paypal',
-  paymentDate: new Date(2020, 4, 7),
   paymentResult: {
     id: 'test',
     status: 'test',
     updateDate: new Date(2020, 4, 7),
     email: 'test'
-  }
+  },
+  isPaid: true,
+  paymentDate: new Date(2020, 4, 7)
 }
 
-const order2: OrderPaid = {
+const order2: Order = {
   user: 'abc1234',
   orderItems: [],
   shippingAddress: {
@@ -41,16 +42,17 @@ const order2: OrderPaid = {
     priceTotal: 105
   },
   paymentMethod: 'square',
-  paymentDate: new Date(2020, 4, 8),
   paymentResult: {
     id: 'test',
     status: 'test',
     updateDate: new Date(2020, 4, 8),
     email: 'test'
-  }
+  },
+  isPaid: true,
+  paymentDate: new Date(2020, 4, 8)
 }
 
-const order3: OrderPaid = {
+const order3: Order = {
   user: 'abc123456',
   orderItems: [],
   shippingAddress: {
@@ -66,13 +68,14 @@ const order3: OrderPaid = {
     priceTotal: 5100
   },
   paymentMethod: 'paypal',
-  paymentDate: new Date(2020, 4, 9),
   paymentResult: {
     id: 'test',
     status: 'test',
     updateDate: new Date(2020, 4, 9),
     email: 'test'
-  }
+  },
+  isPaid: true,
+  paymentDate: new Date(2020, 4, 9)
 }
 
 const orders = [order1, order2, order3]

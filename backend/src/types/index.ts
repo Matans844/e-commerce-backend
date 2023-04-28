@@ -3,4 +3,4 @@
  */
 export * from './Product.js'
 export * from './User.js'
-export * from './OrderPaid.js'
+export * from './Order.js'
