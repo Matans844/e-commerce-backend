@@ -38,8 +38,11 @@ async function startServer() {
     // Connect to database
     await connectDB();
 
+    /**
+     *  Load http://localhost:3000/ in a browser to see the output of the following
+     */
     server.get("/", (_, res) => {
-        res.send("API IS RUNNING. hello...");
+        res.send("API IS RUNNING...");
     });
 
     // Start server
