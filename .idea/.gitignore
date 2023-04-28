@@ -11,10 +11,6 @@
 /dataSources/
 /dataSources.local.xml
 
-# misc
-.env
-/compiler.xml
-
 # dependencies
 /node_modules
 node_modules/
@@ -25,4 +21,12 @@ node_modules/
 build/
 /build/
 
+
+
+# misc
+.env
 /jsLibraryMappings.xml
+/jsLinters/eslint.xml
+/compiler.xml
+/prettier.xml
+/inspectionProfiles/Project_Default.xml

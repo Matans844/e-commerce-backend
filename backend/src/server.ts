@@ -1,8 +1,7 @@
-import * as dotenv from 'dotenv';
-dotenv.config(); // See: https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
-import express from 'express';
-import morgan from 'morgan';
-import { connectDB } from "../configurations/DatabaseConnectionHandler.js";
+import * as dotenv from 'dotenv'
+import express from 'express'
+import morgan from 'morgan'
+import { connectDB } from '../configurations/DatabaseConnectionHandler.js' // See: https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 
 /*
 import { errorHandler } from './backend/src/utils/errorHandler';
@@ -13,43 +12,43 @@ import { cartRoutes } from './backend/src/routes/cartRoutes';
 import { checkoutRoutes } from './backend/src/routes/checkoutRoutes';
 */
 
-const server = express();
-const port = process.env.PORT || 3000;
+dotenv.config()
 
-if (process.env['NODE_ENV'] === 'development') {
-    server.use(morgan('dev'))
+const server = express()
+const port = process.env.PORT !== undefined ? process.env.PORT : 3000
+
+if (process.env.NODE_ENV === 'development') {
+  server.use(morgan('dev'))
 }
 
 // Middleware
-server.use(express.json());
+server.use(express.json())
 
 // API routes
-/*server.use('/api/v1/accounts', accountRoutes);
+/* server.use('/api/v1/accounts', accountRoutes);
 server.use('/api/v1/auth', authRoutes);
 server.use('/api/v1/products', productRoutes);
 server.use('/api/v1/carts', cartRoutes);
-server.use('/api/v1/checkout', checkoutRoutes);*/
+server.use('/api/v1/checkout', checkoutRoutes); */
 
 // Error handling middleware
-/*server.use(errorHandler);*/
+/* server.use(errorHandler); */
 
+async function startServer (): Promise<void> {
+  // Connect to database
+  await connectDB()
 
-async function startServer() {
-    // Connect to database
-    await connectDB();
+  /**
+   *  Load http://localhost:3000/ in a browser to see the output of the following
+   */
+  server.get('/', (_, res) => {
+    res.send('API IS RUNNING...')
+  })
 
-    /**
-     *  Load http://localhost:3000/ in a browser to see the output of the following
-     */
-    server.get("/", (_, res) => {
-        res.send("API IS RUNNING...");
-    });
-
-    // Start server
-    server.listen(port,() => {
-        console.log(`Server listening on port ${port}`);
-    });
+  // Start server
+  server.listen(port, () => {
+    console.log(`Server listening on port ${port}`)
+  })
 }
 
-void startServer();
-
+void startServer()
