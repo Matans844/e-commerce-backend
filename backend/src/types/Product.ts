@@ -1,12 +1,12 @@
-import { Model, Document } from "mongoose";
+import { type Model, type Document } from 'mongoose'
 
 /**
  * Represents a product
  */
 export interface Product {
-    name: string;
-    description: string;
-    price: number;
+  name: string
+  description: string
+  price: number
 }
 
 export interface ProductDocument extends Product, Document {}

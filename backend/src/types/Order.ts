@@ -1,21 +1,21 @@
-import {Document, Model} from "mongoose";
-import {OrderItems} from "./OrderItems.js";
-import {ShippingAddress} from "./ShippingAddress.js";
-import {PaymentResult} from "./PaymentResult.js";
-import {OrderCompositePrice} from "./OrderCompositePrice.js";
+import { type Document, type Model } from 'mongoose'
+import { type OrderItems } from './OrderItems.js'
+import { type ShippingAddress } from './ShippingAddress.js'
+import { type PaymentResult } from './PaymentResult.js'
+import { type OrderCompositePrice } from './OrderCompositePrice.js'
 
 /**
  * Represents an order
  */
 export interface Order {
-    user: string;
-    orderItems: OrderItems[];
-    shippingAddress: ShippingAddress;
-    paymentMethod: string;
-    paymentResult: PaymentResult;
-    orderCompositePrice: OrderCompositePrice;
-    isPaid: boolean;
-    paymentDate: Date;
+  user: string
+  orderItems: OrderItems[]
+  shippingAddress: ShippingAddress
+  paymentMethod: string
+  paymentResult: PaymentResult
+  orderCompositePrice: OrderCompositePrice
+  isPaid: boolean
+  paymentDate: Date
 }
 
 export interface OrderDocument extends Order, Document {}
