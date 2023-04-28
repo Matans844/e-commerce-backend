@@ -24,6 +24,7 @@ async function destroyData (): Promise<void> {
     await User.deleteMany()
 
     console.log('Data Destroyed!')
+    process.exit()
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error(`Error deleting from database: ${error.message}`)
@@ -44,6 +45,7 @@ async function importData (): Promise<void> {
     await Product.insertMany(products)
 
     console.log('Data Imported!')
+    process.exit()
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error(`Error importing to database: ${error.message}`)

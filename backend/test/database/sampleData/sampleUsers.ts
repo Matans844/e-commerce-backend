@@ -22,6 +22,6 @@ const user3: User = {
   address: 'North Pole'
 }
 
-const users: any[] = [user1, user2, user3]
+const users = [user1, user2, user3]
 
 export default users
