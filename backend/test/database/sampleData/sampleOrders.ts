@@ -1,4 +1,4 @@
-import { type Order } from '../../src/types/index.js'
+import { type Order } from '../../../src/types/index.js'
 
 const order1: Order = {
   user: 'abc123',
