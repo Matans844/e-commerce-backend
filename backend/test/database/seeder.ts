@@ -24,7 +24,6 @@ async function destroyData (): Promise<void> {
     await User.deleteMany()
 
     console.log('Data Destroyed!')
-    process.exit()
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error(`Error deleting from database: ${error.message}`)
@@ -45,7 +44,6 @@ async function importData (): Promise<void> {
     await Product.insertMany(products)
 
     console.log('Data Imported!')
-    process.exit()
   } catch (error: unknown) {
     if (error instanceof Error) {
       console.error(`Error importing to database: ${error.message}`)
@@ -56,10 +54,11 @@ async function importData (): Promise<void> {
   }
 }
 
-async function destroyAndImportData (): Promise<void> {
+/* async function destroyAndSeedData (): Promise<void> {
   await destroyData()
   await importData()
-}
+  process.exit()
+} */
 
 // Check command line args to just destroy data or destroy and import
-void (process.argv[2] === '-d' ? destroyData() : destroyAndImportData())
+void (process.argv[2] === '-d' ? destroyData() : importData())

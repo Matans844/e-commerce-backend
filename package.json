@@ -14,8 +14,8 @@
     "build": "tsc",
     "server": "node build/backend/src/server",
     "dev": "npm run build && nodemon build/backend/src/server",
-    "test:data:import": "npx ts-node build/backend/test/seeder",
-    "test:data:destroy": "npx ts-node build/backend/test/seeder -d",
+    "test:seeder:destroy": "npx ts-node build/backend/test/database/seeder -d",
+    "test:seeder:import": "npx ts-node build/backend/test/database/seeder",
     "test": "jest"
   },
   "repository": {
