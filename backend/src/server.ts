@@ -39,7 +39,7 @@ async function startServer() {
     await connectDB();
 
     server.get("/", (_, res) => {
-        res.send("API IS RUNNING...");
+        res.send("API IS RUNNING. hello...");
     });
 
     // Start server
