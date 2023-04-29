@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs'
 import { model, Schema } from 'mongoose'
-import { type UserDocument } from '../../types/User.js'
+import { type UserDocument } from '../../types/user/User.js'
 
 const userSchema = new Schema(
   {
@@ -52,4 +52,4 @@ userSchema.pre('save', async function (this: UserDocument, next) {
   this.password = await bcrypt.hash(this.password, salt)
 })
 
-export const User = model<UserDocument>('User', userSchema)
+export const UserModelMongooseDocument = model<UserDocument>('User', userSchema)

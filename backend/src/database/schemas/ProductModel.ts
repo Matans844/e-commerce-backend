@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { type ProductDocument } from '../../types/Product.js'
+import { type ProductDocument } from '../../types/product/Product.js'
 
 const productSchema = new Schema(
   {
@@ -27,4 +27,4 @@ const productSchema = new Schema(
   }
 )
 
-export const Product = model<ProductDocument>('Product', productSchema)
+export const ProductModelMongooseDocument = model<ProductDocument>('Product', productSchema)

@@ -1,4 +1,4 @@
-import { type ProductDocument } from './Product.js'
+import { type ProductDocument } from '../product/Product.js'
 
 /**
  * Represents an order item (which can be several products)

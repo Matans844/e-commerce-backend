@@ -1,6 +1,7 @@
 /**
  * Barrel exporting. This is used by the models.
  */
-export * from './Product.js'
-export * from './User.js'
-export * from './Order.js'
+export * from './product/Product.js'
+export * from './user/User.js'
+export * from './order/Order.js'
+export * from './product/ProductForImport.js'

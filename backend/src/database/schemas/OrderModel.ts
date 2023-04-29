@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { type OrderDocument } from '../../types/Order.js'
+import { type OrderDocument } from '../../types/order/Order.js'
 
 const orderSchema = new Schema(
   {
@@ -101,4 +101,4 @@ const orderSchema = new Schema(
   }
 )
 
-export const Order = model<OrderDocument>('Order', orderSchema)
+export const OrderModelMongooseDocument = model<OrderDocument>('Order', orderSchema)
