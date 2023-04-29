@@ -1,34 +1,18 @@
 import { model, Schema } from 'mongoose'
-import { type OrderDocument } from '../../models/index.js'
+import { type OrderDocument } from '../documents/index.js'
 
 const orderSchema = new Schema(
   {
-    user: {
+    userID: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: 'User'
     },
-    orderItems: [
-      {
-        name: {
-          type: String,
-          required: true
-        },
-        quantity: {
-          type: Number,
-          required: true
-        },
-        price: {
-          type: Number,
-          required: true
-        },
-        product: {
-          type: Schema.Types.ObjectId,
-          required: true,
-          ref: 'Product'
-        }
-      }
-    ],
+    cartID: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: 'Cart'
+    },
     shippingAddress: {
       address: {
         type: String,
@@ -51,6 +35,31 @@ const orderSchema = new Schema(
       type: String,
       required: true
     },
+    priceItems: {
+      type: Number,
+      required: true,
+      default: 0.0
+    },
+    priceTax: {
+      type: Number,
+      required: true,
+      default: 0.0
+    },
+    priceShipping: {
+      type: Number,
+      required: true,
+      default: 0.0
+    },
+    priceTotal: {
+      type: Number,
+      required: true,
+      default: 0.0
+    },
+    isPaid: {
+      type: Boolean,
+      required: true,
+      default: false
+    },
     paymentResult: {
       id: {
         type: String
@@ -58,39 +67,12 @@ const orderSchema = new Schema(
       status: {
         type: String
       },
-      updateDate: {
+      update_time: {
         type: Date
       },
-      email: {
+      email_address: {
         type: String
       }
-    },
-    orderCompositePrice: {
-      priceItems: {
-        type: Number,
-        required: true,
-        default: 0.0
-      },
-      priceTax: {
-        type: Number,
-        required: true,
-        default: 0.0
-      },
-      priceShipping: {
-        type: Number,
-        required: true,
-        default: 0.0
-      },
-      priceTotal: {
-        type: Number,
-        required: true,
-        default: 0.0
-      }
-    },
-    isPaid: {
-      type: Boolean,
-      required: true,
-      default: false
     },
     paymentDate: {
       type: Date
