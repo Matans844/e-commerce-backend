@@ -1,4 +1,4 @@
-import { type IOrder } from '../../../src/types/index.js'
+import { type IOrder } from '../../src/types/index.js'
 
 const order1: IOrder = {
   user: 'abc123',
@@ -9,20 +9,18 @@ const order1: IOrder = {
     country: 'test',
     postalCode: '123456'
   },
-  orderCompositePrice: {
-    priceItems: 1000,
-    priceTax: 10,
-    priceShipping: 0,
-    priceTotal: 1010
-  },
-  paymentMethod: 'paypal',
+  priceItems: 1000,
+  priceTax: 10,
+  priceShipping: 0,
+  priceTotal: 1010,
+  isPaid: true,
   paymentResult: {
     id: 'test',
     status: 'test',
-    updateDate: new Date(2020, 4, 7),
-    email: 'test'
+    update_time: new Date(2020, 4, 7),
+    email_address: 'test'
   },
-  isPaid: true,
+  paymentMethod: 'paypal',
   paymentDate: new Date(2020, 4, 7)
 }
 
@@ -35,20 +33,18 @@ const order2: IOrder = {
     country: 'test',
     postalCode: '123456'
   },
-  orderCompositePrice: {
-    priceItems: 100,
-    priceTax: 5,
-    priceShipping: 0,
-    priceTotal: 105
-  },
-  paymentMethod: 'square',
+  priceItems: 100,
+  priceTax: 5,
+  priceShipping: 0,
+  priceTotal: 105,
+  isPaid: true,
   paymentResult: {
     id: 'test',
     status: 'test',
-    updateDate: new Date(2020, 4, 8),
-    email: 'test'
+    update_time: new Date(2020, 4, 8),
+    email_address: 'test'
   },
-  isPaid: true,
+  paymentMethod: 'square',
   paymentDate: new Date(2020, 4, 8)
 }
 
@@ -61,20 +57,18 @@ const order3: IOrder = {
     country: 'test',
     postalCode: '123456'
   },
-  orderCompositePrice: {
-    priceItems: 5000,
-    priceTax: 100,
-    priceShipping: 0,
-    priceTotal: 5100
-  },
-  paymentMethod: 'paypal',
+  priceItems: 5000,
+  priceTax: 100,
+  priceShipping: 0,
+  priceTotal: 5100,
+  isPaid: true,
   paymentResult: {
     id: 'test',
     status: 'test',
-    updateDate: new Date(2020, 4, 9),
-    email: 'test'
+    update_time: new Date(2020, 4, 9),
+    email_address: 'test'
   },
-  isPaid: true,
+  paymentMethod: 'paypal',
   paymentDate: new Date(2020, 4, 9)
 }
 

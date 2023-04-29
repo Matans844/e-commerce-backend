@@ -104,6 +104,7 @@
   "include": [
     "./backend/src/**/*",
     "./backend/test/**/*",
+    "./backend/seeder/**/*",
     "./config/**/*"
   ]
 }

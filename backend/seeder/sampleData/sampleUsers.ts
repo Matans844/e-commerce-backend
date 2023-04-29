@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs'
-import { type IUser } from '../../../src/types/index.js'
+import { type IUser } from '../../src/types/index.js'
 
 const user1: IUser = {
   name: 'John Snow',

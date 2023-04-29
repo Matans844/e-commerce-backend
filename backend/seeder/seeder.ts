@@ -1,8 +1,8 @@
 import * as dotenv from 'dotenv'
 import users from './sampleData/sampleUsers.js'
 import products from './sampleData/sampleProducts.js'
-import { User, Product, Order } from '../../src/database/models/index.js'
-import { connectDB } from '../../src/database/DatabaseConnector.js'
+import { User, Product, Order } from '../src/database/models/index.js'
+import { connectDB } from '../src/database/DatabaseConnector.js'
 
 /**
  * Helper file that is used for adding and removing test data to the database.

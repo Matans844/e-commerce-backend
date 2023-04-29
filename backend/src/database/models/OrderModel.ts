@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { type OrderDocumentl } from '../Documents/index.js'
+import { type OrderDocumentl } from '../documents/index.js'
 
 const orderModel = new Schema(
   {
@@ -8,11 +8,23 @@ const orderModel = new Schema(
       required: true,
       ref: 'User'
     },
-    cartID: {
-      type: Schema.Types.ObjectId,
-      required: true,
-      ref: 'Cart'
-    },
+    productItems: [
+      {
+        productID: {
+          type: Schema.Types.ObjectId,
+          required: true,
+          ref: 'Product'
+        },
+        quantity: {
+          type: Number,
+          required: true
+        },
+        price: {
+          type: Number,
+          required: true
+        }
+      }
+    ],
     shippingAddress: {
       address: {
         type: String,
@@ -30,10 +42,6 @@ const orderModel = new Schema(
         type: String,
         required: true
       }
-    },
-    paymentMethod: {
-      type: String,
-      required: true
     },
     priceItems: {
       type: Number,
@@ -60,6 +68,7 @@ const orderModel = new Schema(
       required: true,
       default: false
     },
+
     paymentResult: {
       id: {
         type: String
@@ -73,6 +82,10 @@ const orderModel = new Schema(
       email_address: {
         type: String
       }
+    },
+    paymentMethod: {
+      type: String,
+      required: true
     },
     paymentDate: {
       type: Date
