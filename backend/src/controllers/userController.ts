@@ -1,4 +1,4 @@
-import asyncHandler from 'express-async-handler'
+import * as asyncHandler from 'express-async-handler'
 import { type Request, type Response } from '../types/express/express.js'
 import { UserModel } from '../database/models/index.js'
 import generateToken from '../utilities/generateAuthToken.js'
@@ -32,10 +32,11 @@ const authUser = asyncHandler(async (req: Request, res: Response) => {
  * @access Public
  */
 const registerUser = asyncHandler(async (req: Request, res: Response) => {
-  const { name, email, password } = req.body as {
+  const { name, email, password, address } = req.body as {
     name: string
     email: string
     password: string
+    address: string
   }
 
   const userExists = await UserModel.findOne({ email })
@@ -48,17 +49,25 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
   const user = await UserModel.create({
     name,
     email,
-    password
+    password,
+    address
   })
 
-  if (user) {
+  try {
+    const user = await UserModel.create({
+      name,
+      email,
+      password,
+      address
+    })
+
     res.status(201).json({
       _id: user._id,
       name: user.name,
       email: user.email,
       token: generateToken(user._id)
     })
-  } else {
+  } catch (error) {
     res.status(400)
     throw new Error('Invalid user data')
   }
