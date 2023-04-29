@@ -1,7 +1,7 @@
 import { type Document, type Model } from 'mongoose'
 import { type IOrder } from '../../types/index.js'
 
-export interface OrderDocumentl extends IOrder, Document {
+export interface OrderDocument extends IOrder, Document {
 }
 
 /**
