@@ -15,7 +15,7 @@ import { checkoutRoutes } from './backend/src/routes/checkoutRoutes';
 dotenv.config()
 
 const server = express()
-const port = process.env.PORT !== undefined ? process.env.PORT : 3000
+const port = process.env.PORT
 
 if (process.env.NODE_ENV === 'development') {
   server.use(morgan('dev'))
@@ -39,7 +39,7 @@ async function startServer (): Promise<void> {
   await connectDB()
 
   /**
-   *  Load http://localhost:3000/ in a browser to see the output of the following
+   *  Load http://localhost:5000/ in a browser to see the output of the following
    */
   server.get('/', (_, res) => {
     res.send('API IS RUNNING...')
