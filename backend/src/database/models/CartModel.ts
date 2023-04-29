@@ -1,11 +1,11 @@
 import { model, Schema } from 'mongoose'
-import { type CartDocument } from '../documents/index.js'
+import { type CartDocument } from '../Documents/index.js'
 
 /**
  * Reference:
  * https://stackoverflow.com/questions/59174763/how-to-add-product-to-shopping-cart-with-nodejs-express-and-mongoose
  */
-const cartSchema = new Schema(
+const cartModel = new Schema(
   {
     userID: {
       type: Schema.Types.ObjectId,
@@ -48,4 +48,4 @@ const cartSchema = new Schema(
   }
 )
 
-export const CartMongooseSchemas = model<CartDocument>('Cart', cartSchema)
+export const Cart = model<CartDocument>('Cart', cartModel)

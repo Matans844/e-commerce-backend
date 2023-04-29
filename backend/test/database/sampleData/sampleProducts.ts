@@ -1,4 +1,4 @@
-import { type IProduct } from '../../../src/models/index.js'
+import { type IProduct } from '../../../src/types/index.js'
 
 const product1: IProduct = {
   name: 'Airpods Wireless Bluetooth Headphones',

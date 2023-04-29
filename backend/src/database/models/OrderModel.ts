@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose'
-import { type OrderDocument } from '../documents/index.js'
+import { type OrderDocumentl } from '../Documents/index.js'
 
-const orderSchema = new Schema(
+const orderModel = new Schema(
   {
     userID: {
       type: Schema.Types.ObjectId,
@@ -83,4 +83,4 @@ const orderSchema = new Schema(
   }
 )
 
-export const OrderMongooseSchemas = model<OrderDocument>('Order', orderSchema)
+export const Order = model<OrderDocumentl>('Order', orderModel)

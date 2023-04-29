@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs'
 import { model, Schema } from 'mongoose'
-import { type UserDocument } from '../documents/index.js'
+import { type UserDocument } from '../Documents/index.js'
 
-const userSchema = new Schema(
+const userModel = new Schema(
   {
     name: {
       type: String,
@@ -31,7 +31,7 @@ const userSchema = new Schema(
  * Uses Bcrypt to check that a user's entered password matches the stored user's password
  * @param enteredPassword The password that a user enters
  */
-userSchema.methods.doesPasswordMatch = async function (
+userModel.methods.doesPasswordMatch = async function (
   this: any,
   enteredPassword: string
 ) {
@@ -43,7 +43,7 @@ userSchema.methods.doesPasswordMatch = async function (
  * Checks to see if the password has been modified.
  * Hashes the password before saving to the database.
  */
-userSchema.pre('save', async function (this: UserDocument, next) {
+userModel.pre('save', async function (this: UserDocument, next) {
   if (!this.isModified('password')) {
     next()
   }
@@ -52,4 +52,4 @@ userSchema.pre('save', async function (this: UserDocument, next) {
   this.password = await bcrypt.hash(this.password, salt)
 })
 
-export const UserMongooseSchemas = model<UserDocument>('User', userSchema)
+export const User = model<UserDocument>('User', userModel)

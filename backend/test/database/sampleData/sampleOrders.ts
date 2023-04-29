@@ -1,4 +1,4 @@
-import { type IOrder } from '../../../src/models/index.js'
+import { type IOrder } from '../../../src/types/index.js'
 
 const order1: IOrder = {
   user: 'abc123',

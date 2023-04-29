@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose'
-import { type ProductDocument } from '../documents/index.js'
+import { type ProductDocument } from '../Documents/index.js'
 
-const productSchema = new Schema(
+const productModel = new Schema(
   {
     name: {
       type: String,
@@ -27,4 +27,4 @@ const productSchema = new Schema(
   }
 )
 
-export const ProductMongooseSchemas = model<ProductDocument>('Product', productSchema)
+export const Product = model<ProductDocument>('Product', productModel)
