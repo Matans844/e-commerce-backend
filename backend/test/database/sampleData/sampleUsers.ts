@@ -1,21 +1,21 @@
 import bcrypt from 'bcryptjs'
-import { type User } from '../../../src/types/index.js'
+import { type IUser } from '../../../src/models/index.js'
 
-const user1: User = {
+const user1: IUser = {
   name: 'John Snow',
   email: 'john@example.com',
   password: bcrypt.hashSync('123456', 10),
   address: 'Herzliya'
 }
 
-const user2: User = {
+const user2: IUser = {
   name: 'Jane Doe',
   email: 'Jane@Doe.com',
   password: bcrypt.hashSync('123456', 10),
   address: 'Kfar Saba'
 }
 
-const user3: User = {
+const user3: IUser = {
   name: 'Test User',
   email: 'test@test.com',
   password: bcrypt.hashSync('123456', 10),

@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { type OrderDocument } from '../../types/order/Order.js'
+import { type OrderDocument } from '../../models/index.js'
 
 const orderSchema = new Schema(
   {

@@ -3,7 +3,8 @@ import { type Model, type Document } from 'mongoose'
 /**
  * Represents a user
  */
-export interface User {
+export interface IUser {
+  userID: string
   name: string
   email: string
   password: string
@@ -13,7 +14,7 @@ export interface User {
 /**
  * Will be populated by the schema
  */
-export interface UserDocument extends User, Document {
+export interface UserDocument extends IUser, Document {
   doesPasswordMatch: (password: string) => Promise<boolean>
 }
 

@@ -1,6 +1,6 @@
-import { type Order } from '../../../src/types/index.js'
+import { type IOrder } from '../../../src/models/index.js'
 
-const order1: Order = {
+const order1: IOrder = {
   user: 'abc123',
   orderItems: [],
   shippingAddress: {
@@ -26,7 +26,7 @@ const order1: Order = {
   paymentDate: new Date(2020, 4, 7)
 }
 
-const order2: Order = {
+const order2: IOrder = {
   user: 'abc1234',
   orderItems: [],
   shippingAddress: {
@@ -52,7 +52,7 @@ const order2: Order = {
   paymentDate: new Date(2020, 4, 8)
 }
 
-const order3: Order = {
+const order3: IOrder = {
   user: 'abc123456',
   orderItems: [],
   shippingAddress: {

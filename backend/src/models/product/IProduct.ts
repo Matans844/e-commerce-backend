@@ -1,15 +1,13 @@
 import { type Model, type Document } from 'mongoose'
 
-/**
- * Represents a product
- */
-export interface Product {
+export interface IProduct {
   name: string
   description: string
   price: number
+  getProductID: () => string
 }
 
-export interface ProductDocument extends Product, Document {}
+export interface ProductDocument extends IProduct, Document {}
 
 /**
  * Will be used by the schema
