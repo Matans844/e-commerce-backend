@@ -7,5 +7,5 @@ import { type IProduct } from '../product/IProduct.js'
 export interface IProductItem {
   product: IProduct
   quantity: number
-  getCartItemID: () => string
+  price: number
 }

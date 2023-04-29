@@ -12,12 +12,8 @@ const cartSchema = new Schema(
       required: true,
       ref: 'User'
     },
-    cartItems: [
+    productItems: [
       {
-        name: {
-          type: String,
-          required: true
-        },
         quantity: {
           type: Number,
           required: true

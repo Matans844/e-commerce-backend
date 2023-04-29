@@ -6,4 +6,4 @@ import { ProductMongooseSchemas } from './ProductModel.js'
 import { UserMongooseSchemas } from './UserModel.js'
 import { CartMongooseSchemas } from './CartModel.js'
 
-export { UserMongooseSchemas, ProductMongooseSchemas, OrderMongooseSchemas }
+export { UserMongooseSchemas, ProductMongooseSchemas, OrderMongooseSchemas, CartMongooseSchemas }

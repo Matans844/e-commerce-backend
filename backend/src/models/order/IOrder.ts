@@ -1,9 +1,9 @@
 import { type IPaymentResult } from './IPaymentResult.js'
 import { type IShippingAddress } from './IShippingAddress.js'
-import { type IProductItem } from '../cart/IProductItem.js'
+import { type ICart } from '../cart/ICart.js'
 
 export interface IOrder {
-  orderItems: IProductItem[]
+  cart: ICart
   priceItems: number
   priceTax: number
   priceShipping: number
@@ -13,6 +13,4 @@ export interface IOrder {
   paymentResult: IPaymentResult
   isPaid: boolean
   paymentDate: Date
-  getOrderID: () => string
-  getUserID: () => string
 }
