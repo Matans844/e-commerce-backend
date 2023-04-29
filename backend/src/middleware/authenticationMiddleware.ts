@@ -1,10 +1,10 @@
 /*
-import { type NextFunction, type Request, type Response } from '../types/index.js'
-import { User } from '../database/models/index.js'
-import { type Decoded } from '../types/authentication/IjwtDecoded.js'
 import * as jwt from 'jsonwebtoken'
 import { type Secret } from 'jsonwebtoken'
 import asyncHandler from 'express-async-handler'
+import { type NextFunction, type Request, type Response } from '../types/index.js'
+import { User } from '../database/models/index.js'
+import { type Decoded } from '../types/authentication/IjwtDecoded.js'
 
 const protect = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {

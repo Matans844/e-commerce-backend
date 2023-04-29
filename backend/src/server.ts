@@ -2,9 +2,9 @@ import * as dotenv from 'dotenv'
 import express from 'express'
 import morgan from 'morgan'
 import { connectDB } from './database/DatabaseConnector.js'
+import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 
 /*
-import { errorHandler } from './backend/src/utils/errorHandler';
 import { accountRoutes } from './backend/src/routes/accountRoutes';
 import { authRoutes } from './backend/src/routes/authRoutes';
 import { productRoutes } from './backend/src/routes/productRoutes';
