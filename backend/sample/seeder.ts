@@ -15,7 +15,6 @@ void connectDB()
 /**
  * Destroy all data on the database
  */
-
 async function destroyData (): Promise<void> {
   try {
     // Clear any existing items from DB
@@ -35,12 +34,40 @@ async function destroyData (): Promise<void> {
   }
 }
 
+/*
+async function importData (): Promise<void> {
+  try {
+    // Add data to DB
+    await User.insertMany(users)
+    await Product.insertMany(products)
+
+    console.log('Data Imported!')
+    process.exit()
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error(`Error importing to database: ${error.message}`)
+    } else {
+      console.error('Unknown error')
+    }
+    process.exit(1)
+  }
+}
+ */
+
 /**
  * Seed new data into the database.
  * This will populate a list of products and users.
  */
-async function importData (): Promise<void> {
+async function destroyAndImportData (): Promise<void> {
   try {
+    // Clear any existing items from DB
+    await Order.deleteMany()
+    await Product.deleteMany()
+    await User.deleteMany()
+
+    console.log('Data Destroyed!')
+
+    // Add data to DB
     await User.insertMany(users)
     await Product.insertMany(products)
 
@@ -63,4 +90,4 @@ async function importData (): Promise<void> {
 } */
 
 // Check command line args to just destroy data or destroy and import
-void (process.argv[2] === '-d' ? destroyData() : importData())
+void (process.argv[2] === '-d' ? destroyData() : destroyAndImportData())
