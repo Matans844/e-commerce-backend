@@ -52,4 +52,4 @@ userModel.pre('save', async function (this: UserDocument, next) {
   this.password = await bcrypt.hash(this.password, salt)
 })
 
-export const User = model<UserDocument>('User', userModel)
+export const UserModel = model<UserDocument>('User', userModel)

@@ -3,13 +3,14 @@ import express from 'express'
 import morgan from 'morgan'
 import { connectDB } from './database/DatabaseConnector.js'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
+import productRoutes from './routes/productRoutes'
+import userRoutes from './routes/userRoutes'
 
 /*
 import { accountRoutes } from './backend/src/routes/accountRoutes';
-import { authRoutes } from './backend/src/routes/authRoutes';
-import { productRoutes } from './backend/src/routes/productRoutes';
+import orderRoutes from "./routes/orderRoutes";
+import paypalRoutes from "./routes/paypalRoutes";
 import { cartRoutes } from './backend/src/routes/cartRoutes';
-import { checkoutRoutes } from './backend/src/routes/checkoutRoutes';
 */
 
 dotenv.config()
