@@ -1,5 +1,5 @@
 import * as asyncHandler from 'express-async-handler'
-import { type Request, type Response } from '../types/express/express.js'
+import { type Request, type Response } from '../types/index.js'
 import { UserModel } from '../database/models/index.js'
 import generateToken from '../utilities/generateAuthToken.js'
 
@@ -45,13 +45,6 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
     res.status(400)
     throw new Error('User already exists')
   }
-
-  const user = await UserModel.create({
-    name,
-    email,
-    password,
-    address
-  })
 
   try {
     const user = await UserModel.create({

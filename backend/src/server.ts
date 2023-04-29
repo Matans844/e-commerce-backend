@@ -3,10 +3,10 @@ import express from 'express'
 import morgan from 'morgan'
 import { connectDB } from './database/DatabaseConnector.js'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
-import productRoutes from './routes/productRoutes'
-import userRoutes from './routes/userRoutes'
+import productRoutes from './routes/productRoutes.js'
 
 /*
+import userRoutes from './routes/userRoutes'
 import { accountRoutes } from './backend/src/routes/accountRoutes';
 import orderRoutes from "./routes/orderRoutes";
 import paypalRoutes from "./routes/paypalRoutes";

@@ -5,7 +5,7 @@ import {
   deleteUser,
   getUserById,
   getUsers,
-  registerUser,
+  registerUser
 } from '../controllers/userController.js'
 import { admin, protect } from '../middleware/authMiddleware.js'
 

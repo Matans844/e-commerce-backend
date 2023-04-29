@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv'
 import users from './sampleData/sampleUsers.js'
 import products from './sampleData/sampleProducts.js'
-import { UserModel, Product, Order } from '../src/database/models/index.js'
+import { UserModel, ProductModel, Order } from '../src/database/models/index.js'
 import { connectDB } from '../src/database/DatabaseConnector.js'
 
 /**
@@ -19,7 +19,7 @@ async function destroyData (): Promise<void> {
   try {
     // Clear any existing items from DB
     await Order.deleteMany()
-    await Product.deleteMany()
+    await ProductModel.deleteMany()
     await UserModel.deleteMany()
 
     console.log('Data Destroyed!')
@@ -62,14 +62,14 @@ async function destroyAndImportData (): Promise<void> {
   try {
     // Clear any existing items from DB
     await Order.deleteMany()
-    await Product.deleteMany()
+    await ProductModel.deleteMany()
     await UserModel.deleteMany()
 
     console.log('Data Destroyed!')
 
     // Add data to DB
     await UserModel.insertMany(users)
-    await Product.insertMany(products)
+    await ProductModel.insertMany(products)
 
     console.log('Data Imported!')
     process.exit()
