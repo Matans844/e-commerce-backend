@@ -52,4 +52,4 @@ userSchema.pre('save', async function (this: UserDocument, next) {
   this.password = await bcrypt.hash(this.password, salt)
 })
 
-export const UserModelMongooseDocument = model<UserDocument>('User', userSchema)
+export const UserMongooseSchemas = model<UserDocument>('User', userSchema)

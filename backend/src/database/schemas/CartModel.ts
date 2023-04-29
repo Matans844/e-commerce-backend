@@ -52,4 +52,4 @@ const cartSchema = new Schema(
   }
 )
 
-export const CartModelMongooseDocument = model<CartDocument>('Cart', cartSchema)
+export const CartMongooseSchemas = model<CartDocument>('Cart', cartSchema)

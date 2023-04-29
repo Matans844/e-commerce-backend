@@ -27,4 +27,4 @@ const productSchema = new Schema(
   }
 )
 
-export const ProductModelMongooseDocument = model<ProductDocument>('Product', productSchema)
+export const ProductMongooseSchemas = model<ProductDocument>('Product', productSchema)

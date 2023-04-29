@@ -83,4 +83,4 @@ const orderSchema = new Schema(
   }
 )
 
-export const OrderModelMongooseDocument = model<OrderDocument>('Order', orderSchema)
+export const OrderMongooseSchemas = model<OrderDocument>('Order', orderSchema)

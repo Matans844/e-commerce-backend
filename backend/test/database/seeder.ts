@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv'
 import users from './sampleData/sampleUsers.js'
 import products from './sampleData/sampleProducts.js'
-import { UserModelMongooseDocument, ProductModelMongooseDocument, OrderModelMongooseDocument } from '../../src/database/schemas/index.js'
+import { UserMongooseSchemas, ProductMongooseSchemas, OrderMongooseSchemas } from '../../src/database/schemas/index.js'
 import { connectDB } from '../../src/database/DatabaseConnector.js'
 
 /**
@@ -19,9 +19,9 @@ void connectDB()
 async function destroyData (): Promise<void> {
   try {
     // Clear any existing items from DB
-    await OrderModelMongooseDocument.deleteMany()
-    await ProductModelMongooseDocument.deleteMany()
-    await UserModelMongooseDocument.deleteMany()
+    await OrderMongooseSchemas.deleteMany()
+    await ProductMongooseSchemas.deleteMany()
+    await UserMongooseSchemas.deleteMany()
 
     console.log('Data Destroyed!')
     process.exit()
@@ -41,8 +41,8 @@ async function destroyData (): Promise<void> {
  */
 async function importData (): Promise<void> {
   try {
-    await UserModelMongooseDocument.insertMany(users)
-    await ProductModelMongooseDocument.insertMany(products)
+    await UserMongooseSchemas.insertMany(users)
+    await ProductMongooseSchemas.insertMany(products)
 
     console.log('Data Imported!')
     process.exit()

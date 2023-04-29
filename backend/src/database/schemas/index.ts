@@ -1,8 +1,9 @@
 /**
- * This is based on the barrel export from our types.
+ * This is based on the barrel export from the project models.
  */
-import { OrderModelMongooseDocument } from './OrderModel.js'
-import { ProductModelMongooseDocument } from './ProductModel.js'
-import { UserModelMongooseDocument } from './UserModel.js'
+import { OrderMongooseSchemas } from './OrderModel.js'
+import { ProductMongooseSchemas } from './ProductModel.js'
+import { UserMongooseSchemas } from './UserModel.js'
+import { CartMongooseSchemas } from './CartModel.js'
 
-export { UserModelMongooseDocument, ProductModelMongooseDocument, OrderModelMongooseDocument }
+export { UserMongooseSchemas, ProductMongooseSchemas, OrderMongooseSchemas }
