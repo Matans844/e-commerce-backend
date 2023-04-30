@@ -3,7 +3,7 @@ import { type Secret } from 'jsonwebtoken'
 import asyncHandler from 'express-async-handler'
 import { type NextFunction, type Request, type Response } from '../types/index.js'
 import { UserModel } from '../database/models/index.js'
-import { type Decoded } from '../types/authentication/IjwtDecoded.js'
+import { type Decoded } from '../types/authorization/IjwtDecoded.js'
 
 const protect = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {

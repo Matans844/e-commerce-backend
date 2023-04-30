@@ -6,7 +6,7 @@ import * as jwt from 'jsonwebtoken'
  */
 function generateAuthToken (id: string): string {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+  return jwt.sign({ id }, process.env.JWT_SECRET!, {
     expiresIn: '30d'
   })
 }
