@@ -50,10 +50,10 @@ const getProductById = asyncHandler(async (req: Request, res: Response) => {
 })
 
 /**
- * Delete single product
+ * Delete single product by id
  * @route DELETE /api/products/:id
  * @param id ID of product to delete
- * @access Private/Admin
+ * @access Private
  */
 const deleteProductById = asyncHandler(async (req: Request, res: Response) => {
   const product = await ProductModel.findById(req.params.id)
@@ -70,7 +70,7 @@ const deleteProductById = asyncHandler(async (req: Request, res: Response) => {
 /**
  * Create a new product
  * @route POST /api/products
- * @access Private/Admin
+ * @access Private
  */
 const createProduct = asyncHandler(async (req: Request, res: Response) => {
   const { name, description, price, countInStock } = req.body as {
@@ -102,9 +102,9 @@ const createProduct = asyncHandler(async (req: Request, res: Response) => {
 })
 
 /**
- * @description Update a product
+ * @description Update a product by id
  * @route PUT /api/products/:id
- * @access Private/Admin
+ * @access Private
  */
 const updateProduct = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params as { id: string }

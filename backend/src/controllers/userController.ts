@@ -69,7 +69,7 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
 /**
  * Get all users
  * @route GET /api/users
- * @access Private/Admin
+ * @access Private
  */
 const getUsers = asyncHandler(async (req: Request, res: Response) => {
   const users = await UserModel.find({}).sort({ name: 1 })
@@ -83,9 +83,9 @@ const getUsers = asyncHandler(async (req: Request, res: Response) => {
 })
 
 /**
- * Delete a user
+ * Delete a user by id
  * @route DELETE /api/users/:id
- * @access Private/Admin
+ * @access Private
  */
 const deleteUserById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params as { id: string }
@@ -101,9 +101,9 @@ const deleteUserById = asyncHandler(async (req: Request, res: Response) => {
 })
 
 /**
- * Get a user by ID
+ * Get a user by id
  * @route GET /api/users/:id
- * @access Private/Admin
+ * @access Private
  */
 const getUserById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params as { id: string }

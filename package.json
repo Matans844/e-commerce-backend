@@ -13,7 +13,7 @@
     "start": "npm run prestart && npm run server",
     "build": "tsc",
     "server": "npm run build && node build/backend/src/server",
-    "dev": "npm run build && nodemon build/backend/src/server",
+    "dev": "npm run build && npx nodemon",
     "test:seeder:destroy": "npm run build && npx ts-node build/backend/sample/seeder -d",
     "test:seeder:import": "npm run build && npx ts-node build/backend/sample/seeder",
     "test": "npm run build && jest"
