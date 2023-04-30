@@ -7,7 +7,6 @@ import { type Request, type Response } from '../types/index.js'
  * @route GET /api/products
  * @access Public
  */
-
 const getProducts = asyncHandler(async (req: Request, res: Response) => {
   const { pageInput = 1 } = req.query
   const PAGE_SIZE = 10 // Number of products per page
