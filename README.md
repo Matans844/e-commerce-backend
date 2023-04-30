@@ -21,7 +21,7 @@ A mongo-db database is used, and persistence between sessions is maintained.
 
 ## Usage
 Use an `.env` file with the following entries:
-* `NODE_ENV`: When set to `development`, the `morgan` logger middleware is used.
+* `NODE_ENV`: When set to `development`, the [morgan](https://www.npmjs.com/package/morgan) logger middleware is used.
 * `PORT`
 * `MONGO_URI`: Used to connect to mango-db database.
 * `JWT_SECRET`: Used for JWT token creation.
