@@ -7,10 +7,10 @@ import { type Request, type Response } from '../types/index.js'
  * @route GET /api/products
  * @access Public
  */
-const PAGE_SIZE = 10 // Number of products per page
 
 const getProducts = asyncHandler(async (req: Request, res: Response) => {
   const { pageInput = 1 } = req.query
+  const PAGE_SIZE = 10 // Number of products per page
 
   // Convert page to integer
   const page = parseInt(pageInput as string)
@@ -56,7 +56,7 @@ const getProductById = asyncHandler(async (req: Request, res: Response) => {
  * @param id ID of product to delete
  * @access Private/Admin
  */
-const deleteProduct = asyncHandler(async (req: Request, res: Response) => {
+const deleteProductById = asyncHandler(async (req: Request, res: Response) => {
   const product = await ProductModel.findById(req.params.id)
 
   if (product != null) {
@@ -140,7 +140,7 @@ const updateProduct = asyncHandler(async (req: Request, res: Response) => {
 export {
   getProducts,
   getProductById,
-  deleteProduct,
+  deleteProductById,
   createProduct,
   updateProduct
 }

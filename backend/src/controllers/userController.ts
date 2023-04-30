@@ -72,11 +72,8 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
  * @access Private/Admin
  */
 const getUsers = asyncHandler(async (req: Request, res: Response) => {
-  const { sortOrder } = req.query
 
-  const users = sortOrder === 'desc'
-    ? await UserModel.find({}).sort({ name: -1 })
-    : await UserModel.find({}).sort({ name: 1 })
+  const users = await UserModel.find({}).sort({ name: 1 })
 
   if (users.length > 0) {
     res.json(users)
@@ -91,7 +88,7 @@ const getUsers = asyncHandler(async (req: Request, res: Response) => {
  * @route DELETE /api/users/:id
  * @access Private/Admin
  */
-const deleteUser = asyncHandler(async (req: Request, res: Response) => {
+const deleteUserById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params as { id: string }
 
   const user = await UserModel.findById(id)
@@ -125,6 +122,6 @@ export {
   authUser,
   registerUser,
   getUsers,
-  deleteUser,
+  deleteUserById,
   getUserById
 }

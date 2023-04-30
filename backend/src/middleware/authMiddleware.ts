@@ -34,13 +34,4 @@ const protect = asyncHandler(
   }
 )
 
-const admin = (req: Request, res: Response, next: NextFunction): void => {
-  if (req.user != null) {
-    next()
-  } else {
-    res.status(401)
-    throw new Error('Not authorized as an admin')
-  }
-}
-
-export { protect, admin }
+export { protect }
