@@ -32,13 +32,14 @@ const authUser = asyncHandler(async (req: Request, res: Response) => {
  * @access Public
  */
 const registerUser = asyncHandler(async (req: Request, res: Response) => {
-  const { name, email, password, address } = req.body as {
+  const { name, email, password, address, isAdmin } = req.body as {
     name: string
     email: string
     password: string
     address: string
+    isAdmin?: string
   }
-
+  const adminStatus = Boolean(isAdmin)
   const userExists = await UserModel.findOne({ email })
 
   if (userExists != null) {
@@ -51,7 +52,8 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
       name,
       email,
       password,
-      address
+      address,
+      adminStatus
     })
 
     res.status(201).json({
