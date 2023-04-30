@@ -6,7 +6,7 @@ import {
   getUsers,
   registerUser
 } from '../controllers/userController.js'
-import { protect } from '../middleware/authMiddleware.js'
+import { protect } from '../middleware/authorizationMiddleware.js'
 
 const router = express.Router()
 

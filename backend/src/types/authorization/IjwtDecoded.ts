@@ -1,5 +1,7 @@
-export interface Decoded {
+import { type JwtPayload } from 'jsonwebtoken'
+
+export interface Decoded extends JwtPayload {
   id: string
-  iat: Date
-  exp: Date
+  iat: number
+  exp: number
 }

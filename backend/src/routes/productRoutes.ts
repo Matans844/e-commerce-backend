@@ -7,7 +7,7 @@ import {
   updateProduct
 } from '../controllers/productController.js'
 import { validatePage } from '../middleware/validationMiddleware.js'
-import { protect } from '../middleware/authMiddleware.js'
+import { protect } from '../middleware/authorizationMiddleware.js'
 
 const router = express.Router()
 
