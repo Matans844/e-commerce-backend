@@ -6,7 +6,7 @@ import {
   getProducts,
   updateProduct
 } from '../controllers/productController.js'
-import { validateId, validatePage } from "../middleware/validationMiddleware.js";
+import { validatePage } from '../middleware/validationMiddleware.js'
 import { protect } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
@@ -14,8 +14,8 @@ const router = express.Router()
 router.route('/').get(getProducts).post(protect, validatePage, createProduct)
 router
   .route('/:id')
-  .get(validateId, getProductById)
-  .delete(protect, validateId, deleteProductById)
-  .put(protect, validateId, updateProduct)
+  .get(getProductById)
+  .delete(protect, deleteProductById)
+  .put(protect, updateProduct)
 
 export default router

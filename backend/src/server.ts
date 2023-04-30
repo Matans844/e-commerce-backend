@@ -4,16 +4,15 @@ import morgan from 'morgan'
 import { connectDB } from './database/DatabaseConnector.js'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 import productRoutes from './routes/productRoutes.js'
+import userRoutes from './routes/userRoutes.js'
 
 /*
-import userRoutes from './routes/userRoutes'
-import { accountRoutes } from './backend/src/routes/accountRoutes';
 import orderRoutes from "./routes/orderRoutes";
-import paypalRoutes from "./routes/paypalRoutes";
-import { cartRoutes } from './backend/src/routes/cartRoutes';
+import cartRoutes from './backend/src/routes/cartRoutes';
 */
 
 dotenv.config()
+void connectDB()
 
 const server = express()
 const port = process.env.PORT
@@ -25,31 +24,25 @@ if (process.env.NODE_ENV === 'development') {
 // Middleware
 server.use(express.json())
 
+server.use('/api/products', productRoutes)
+server.use('/api/users', userRoutes)
+
 // API routes
-/* server.use('/api/v1/accounts', accountRoutes);
-server.use('/api/v1/auth', authRoutes);
-server.use('/api/v1/products', productRoutes);
-server.use('/api/v1/carts', cartRoutes);
-server.use('/api/v1/checkout', checkoutRoutes); */
+/*
+server.use('/api/carts', cartRoutes);
+server.use('/api/checkout', orderRoutes);
+*/
 
-// Error handling middleware
-/* server.use(errorHandler); */
-
-async function startServer (): Promise<void> {
-  // Connect to database
-  await connectDB()
-
-  /**
-   *  Load http://localhost:5000/ in a browser to see the output of the following
-   */
-  server.get('/', (_, res) => {
+if (process.env.NODE_ENV !== 'production') {
+  server.get('/', (req, res) => {
     res.send('API IS RUNNING...')
-  })
-
-  // Start server
-  server.listen(port, () => {
-    console.log(`Server listening on port ${port}`)
   })
 }
 
-void startServer()
+// Error handling middleware
+server.use(notFound)
+server.use(errorHandler)
+
+server.listen(port, () => {
+  console.log(`Server listening on port ${port}`)
+})

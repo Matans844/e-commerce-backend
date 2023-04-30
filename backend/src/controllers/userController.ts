@@ -1,4 +1,4 @@
-import * as asyncHandler from 'express-async-handler'
+import asyncHandler from 'express-async-handler'
 import { type Request, type Response } from '../types/index.js'
 import { UserModel } from '../database/models/index.js'
 import generateToken from '../utilities/generateAuthToken.js'
@@ -72,7 +72,6 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
  * @access Private/Admin
  */
 const getUsers = asyncHandler(async (req: Request, res: Response) => {
-
   const users = await UserModel.find({}).sort({ name: 1 })
 
   if (users.length > 0) {
