@@ -18,8 +18,7 @@ The following actions are soon to be supported:
 
 ## Design docs
 
-!(./documentation/images/ComponentOverview.jpg?raw=true "Component overview")
-
+<img src="./documentation/images/ComponentOverview.png" alt="Component overview" width="1000"/>
 
 
 
