@@ -41,4 +41,18 @@ const protect = asyncHandler(async (req: Request, res: Response, next: NextFunct
   }
 })
 
-export { protect }
+/**
+ * Middleware used to protect routes from users who are not flagged as admin
+ *
+ */
+const admin = (req: Request, res: Response, next: NextFunction): void => {
+  // The nullish coalescing operator ('??') helps explicitly protect against objects that can be `null` or `undefined`.
+  if (req.user?.isAdmin ?? false) {
+    next()
+  } else {
+    res.status(401)
+    throw new Error('Not authorized as an admin')
+  }
+}
+
+export { protect, admin }

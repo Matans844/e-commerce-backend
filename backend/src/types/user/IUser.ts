@@ -6,4 +6,5 @@ export interface IUser {
   email: string
   password: string
   address: string
+  isAdmin?: boolean
 }

@@ -4,17 +4,19 @@ import {
   deleteUserById,
   getUserById,
   getUsers,
-  registerUser
+  registerUser,
+  updateUser
 } from '../controllers/userController.js'
-import { protect } from '../middleware/authorizationMiddleware.js'
+import { protect, admin } from '../middleware/authorizationMiddleware.js'
 
 const router = express.Router()
 
-router.route('/').post(registerUser).get(protect, getUsers)
+router.route('/').post(registerUser).get(protect, admin, getUsers)
 router.route('/login').post(authUser)
 router
   .route('/:id')
-  .delete(protect, deleteUserById)
-  .get(protect, getUserById)
+  .delete(protect, admin, deleteUserById)
+  .get(protect, admin, getUserById)
+  .put(protect, admin, updateUser)
 
 export default router

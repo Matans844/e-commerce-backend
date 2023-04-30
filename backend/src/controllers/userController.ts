@@ -69,7 +69,7 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
 /**
  * Get all users
  * @route GET /api/users
- * @access Private
+ * @access Private/Admin
  */
 const getUsers = asyncHandler(async (req: Request, res: Response) => {
   const users = await UserModel.find({}).sort({ name: 1 })
@@ -85,7 +85,7 @@ const getUsers = asyncHandler(async (req: Request, res: Response) => {
 /**
  * Delete a user by id
  * @route DELETE /api/users/:id
- * @access Private
+ * @access Private/Admin
  */
 const deleteUserById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params as { id: string }
@@ -103,7 +103,7 @@ const deleteUserById = asyncHandler(async (req: Request, res: Response) => {
 /**
  * Get a user by id
  * @route GET /api/users/:id
- * @access Private
+ * @access Private/Admin
  */
 const getUserById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params as { id: string }
@@ -117,10 +117,40 @@ const getUserById = asyncHandler(async (req: Request, res: Response) => {
   }
 })
 
+/**
+ * Update user
+ * @route PUT /api/users/:id
+ * @access Private/Admin
+ */
+const updateUser = asyncHandler(async (req: Request, res: Response) => {
+  const { id } = req.params as { id: string }
+  const user = await UserModel.findById(id)
+
+  if (user != null) {
+    user.name = req.body?.name ?? user.name
+    user.email = req.body?.email ?? user.email
+    user.isAdmin = req.body.isAdmin
+
+    const updatedUser = await user.save()
+
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      address: updatedUser.address,
+      isAdmin: updatedUser.isAdmin
+    })
+  } else {
+    res.status(404)
+    throw new Error('User not found')
+  }
+})
+
 export {
   authUser,
   registerUser,
   getUsers,
   deleteUserById,
-  getUserById
+  getUserById,
+  updateUser
 }

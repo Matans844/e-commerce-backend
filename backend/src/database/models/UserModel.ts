@@ -20,6 +20,11 @@ const userModel = new Schema(
     address: {
       type: String,
       required: true
+    },
+    isAdmin: {
+      type: Boolean,
+      required: true,
+      default: false
     }
   },
   {
