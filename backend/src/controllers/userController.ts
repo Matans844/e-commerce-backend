@@ -72,8 +72,18 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
  * @access Private/Admin
  */
 const getUsers = asyncHandler(async (req: Request, res: Response) => {
-  const users = await UserModel.find({})
-  res.json(users)
+  const { sortOrder } = req.query
+
+  const users = sortOrder === 'desc'
+    ? await UserModel.find({}).sort({ name: -1 })
+    : await UserModel.find({}).sort({ name: 1 })
+
+  if (users.length > 0) {
+    res.json(users)
+  } else {
+    res.status(404)
+    throw new Error('No users found')
+  }
 })
 
 /**
