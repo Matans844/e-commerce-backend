@@ -21,10 +21,7 @@ node_modules/
 build/
 /build/
 
-
-
 # misc
-.env
 /jsLibraryMappings.xml
 /jsLinters/eslint.xml
 /compiler.xml
