@@ -20,6 +20,12 @@ A mongo-db database is used, and persistence between sessions is maintained.
 7.	Checkout: An authenticated user provides payment information and confirm their purchase. The user's cart is then emptied and a confirmation email is sent to the user.
 
 ## Usage
+### nvm
+Use [nvm](https://github.com/nvm-sh/nvm#profile_snippet) to load the project node version defined in `.env`. 
+
+With nvm installed, execute `nvm use` or `nvm install`. This should switch or install the project nod version.
+
+### Environment variables
 Use an `.env` file with the following entries:
 * `NODE_ENV`: When set to `development`, the [morgan](https://www.npmjs.com/package/morgan) logger middleware is used.
 * `PORT`

@@ -104,7 +104,7 @@ const createProduct = asyncHandler(async (req: Request, res: Response) => {
 /**
  * @description Update a product by id
  * @route PUT /api/products/:id
- * @access Private
+ * @access Private/Admin
  */
 const updateProduct = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params as { id: string }

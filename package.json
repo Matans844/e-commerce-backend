@@ -9,13 +9,13 @@
   ],
   "main": "./build/backend/src/server.js",
   "scripts": {
-    "prestart": "nvm install && npm install --only=production",
-    "start": "npm run prestart && npm run server",
+    "prestart": "npm install --only=production",
     "build": "tsc",
     "server": "npm run build && node build/backend/src/server",
+    "start": "npm run prestart && npm run server",
     "dev": "npm run build && npx nodemon",
-    "test:seeder:destroy": "npm run build && npx ts-node build/backend/sample/seeder -d",
-    "test:seeder:import": "npm run build && npx ts-node build/backend/sample/seeder",
+    "sample:seeder:destroy": "npm run build && npx ts-node build/backend/sample/seeder -d",
+    "sample:seeder:import": "npm run build && npx ts-node build/backend/sample/seeder",
     "test": "npm run build && jest"
   },
   "repository": {
