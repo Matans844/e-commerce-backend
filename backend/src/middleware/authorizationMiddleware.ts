@@ -10,7 +10,7 @@ const protect = asyncHandler(async (req: Request, res: Response, next: NextFunct
 
   const secret: Secret = process.env.JWT_SECRET
 
-  if ((req.headers?.authorization?.startsWith('Bearer')) === true) {
+  if (req.header !== undefined && req.headers.authorization !== undefined && req.headers.authorization.startsWith('Bearer')) {
     token = req.headers.authorization.split(' ')[1]
   }
 
