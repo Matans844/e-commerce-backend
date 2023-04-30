@@ -27,6 +27,10 @@ Use an `.env` file with the following entries:
 * `JWT_SECRET`: Used for JWT token creation.
 
 ## Design docs
+### Component Overview
+<div style="width:100%; max-width:800px;">
+    <img src="./documentation/images/ComponentOverview.png" alt="Component overview" style="width:100%; height:auto;">
+</div>
 
 
 
