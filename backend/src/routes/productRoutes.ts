@@ -11,7 +11,7 @@ import { protect } from '../middleware/authMiddleware.js'
 
 const router = express.Router()
 
-router.route('/').get(getProducts).post(validatePage, createProduct)
+router.route('/').get(validatePage, getProducts).post(protect, createProduct)
 router
   .route('/:id')
   .get(getProductById)
