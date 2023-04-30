@@ -24,13 +24,13 @@ if (process.env.NODE_ENV === 'development') {
 // Middleware
 server.use(express.json())
 
-server.use('/api/products', productRoutes)
-server.use('/api/users', userRoutes)
+server.use('/api/products/', productRoutes)
+server.use('/api/users/', userRoutes)
 
 // API routes
 /*
-server.use('/api/carts', cartRoutes);
-server.use('/api/checkout', orderRoutes);
+server.use('/api/carts/', cartRoutes);
+server.use('/api/checkout/', orderRoutes);
 */
 
 if (process.env.NODE_ENV !== 'production') {
@@ -44,5 +44,5 @@ server.use(notFound)
 server.use(errorHandler)
 
 server.listen(port, () => {
-  console.log(`Server listening on port ${port}`)
+  console.log(`Server running in ${process.env.NODE_ENV} mode on port ${port}`)
 })

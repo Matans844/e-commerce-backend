@@ -7,7 +7,7 @@ node "Client (via HTTP)"{
 }
 
 
-node "Backend Infrastructure 1"{
+node "Backend Infrastructure"{
 
     package "Node-js" {
 
@@ -22,17 +22,17 @@ node "Backend Infrastructure 1"{
             }
 
             frame "routes"{
-                [AccountRoute]
-                [AuthRoute]
+                [UserRoute]
+                [ProductRoute]
                 [CartRoute]
                 [OrderRoute]
-                [ProductRoute]
+                [PayPalRoute]
             }
-
-            [AuthMiddleware]
 
             node "ErrorMiddleware"{
             }
+
+            [AuthorizationMiddleware]
 
         }
     }
@@ -40,36 +40,47 @@ node "Backend Infrastructure 1"{
 
 node "Business Logic"{
 
-    frame "controllers"{
-        [AccountController]
-        [AuthController]
-        [CartController]
+    frame "Application layer"{
+        [UserController]
         [ProductController]
-        [CheckoutController]
+        [CartController]
+        [OrderController]
+        [PayPalController]
     }
 
-    frame "models"{
-        [AccountModel]
-        [CartModel]
-        [ProductModel]
-        [OrderModel]
+    frame "Data Layer"{
+        frame "types"{
+                [IUser]
+                [IProduct]
+                [ICart]
+                [IOrder]
+                [express req, res, next ext.]
+            }
+
+        package "mongoose"{
+
+            frame "documents"{
+                [UserDocument]
+                [ProductDocument]
+                [CartDocument]
+                [OrderDocument]
+            }
+        }
+
+
+        frame "models"{
+              [UserModel]
+              [ProductModel]
+              [CartModel]
+              [OrderModel]
+        }
+
+        database "MongoDB" {
+        }
     }
 }
 
-node "Backend Infrastructure 2"{
-    [Mongoose]
 
-    frame "repositories"{
-        [AccountRepository]
-        [CartRepository]
-        [ProductRepository]
-        [UserRepository]
-    }
-
-    database "MongoDB" {
-    }
-
-}
 
 request -down-> [Server]
 [Server] -up-> response
@@ -82,21 +93,26 @@ request -down-> [Server]
 
 "middleware" -down-> "routes"
 
-[AuthMiddleware] <-down-> [AuthRoute]
-[AuthRoute] <--> [AuthController]
+"routes" -up-> [AuthorizationMiddleware]
 
-[AccountRoute] -down-> [AccountController]
-[CartRoute] -down-> [CartController]
-[OrderRoute] -down-> [CheckoutController]
+[UserRoute] -down-> [UserController]
 [ProductRoute] -down-> [ProductController]
+[CartRoute] -down-> [CartController]
+[OrderRoute] -down-> [OrderController]
+[PayPalRoute] -down-> [PayPalController]
 
-"controllers" -right-> [Server]
 
-"controllers" <..> "models" : First getting data schemes
+"Application layer" -right-> [Server]
+"models" -down-> "MongoDB"
 
-"controllers" <--> [Mongoose] : Then heading to DB
-[Mongoose] <-down-> "repositories" : Conversing with backend persistence layer
-"repositories" <-down-> "MongoDB"
+"types" -down-> "documents"
+"documents" -down-> "models"
+"Application layer" <.down. "models"
+
+"Application layer" <.. "Data Layer"
+
+[ErrorMiddleware] <.. [express req, res, next ext.]
+
 
 
 
