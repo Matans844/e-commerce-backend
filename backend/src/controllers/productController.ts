@@ -7,15 +7,26 @@ import { type Request, type Response } from '../types/index.js'
  * @route GET /api/products
  * @access Public
  */
-const getProducts = asyncHandler(async (req: Request, res: Response) => {
-  const { sortOrder } = req.query
+const PAGE_SIZE = 10 // Number of products per page
 
-  const products = sortOrder === 'desc'
-    ? await ProductModel.find({}).sort({ price: -1 })
-    : await ProductModel.find({}).sort({ price: 1 })
+const getProducts = asyncHandler(async (req: Request, res: Response) => {
+  const { pageInput = 1 } = req.query
+
+  // Convert page to integer
+  const page = parseInt(pageInput as string)
+
+  const count = await ProductModel.countDocuments({})
+  const products = await ProductModel.find({})
+    .sort({ price: -1 })
+    .skip(PAGE_SIZE * (page - 1))
+    .limit(PAGE_SIZE)
 
   if (products.length > 0) {
-    res.json(products)
+    res.json({
+      products,
+      page,
+      pages: Math.ceil(count / PAGE_SIZE)
+    })
   } else {
     res.status(404)
     throw new Error('No products found')

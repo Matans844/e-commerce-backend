@@ -1,9 +1,8 @@
-/*
 import * as jwt from 'jsonwebtoken'
 import { type Secret } from 'jsonwebtoken'
 import asyncHandler from 'express-async-handler'
 import { type NextFunction, type Request, type Response } from '../types/index.js'
-import { User } from '../database/models/index.js'
+import { UserModel } from '../database/models/index.js'
 import { type Decoded } from '../types/authentication/IjwtDecoded.js'
 
 const protect = asyncHandler(
@@ -19,7 +18,7 @@ const protect = asyncHandler(
 
         const decoded = jwt.verify(token, secret) as Decoded
 
-        req.user = await User.findById(decoded.id).select('-password')
+        req.user = await UserModel.findById(decoded.id).select('-password')
         next()
       } catch (error) {
         console.error(error)
@@ -35,7 +34,7 @@ const protect = asyncHandler(
   }
 )
 
-const admin = (req: Request, res: Response, next: NextFunction) => {
+const admin = (req: Request, res: Response, next: NextFunction): void => {
   if (req.user != null) {
     next()
   } else {
@@ -45,5 +44,3 @@ const admin = (req: Request, res: Response, next: NextFunction) => {
 }
 
 export { protect, admin }
-
- */
