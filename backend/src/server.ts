@@ -5,9 +5,9 @@ import { connectDB } from './database/DatabaseConnector.js'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 import productRoutes from './routes/productRoutes.js'
 import userRoutes from './routes/userRoutes.js'
-import cartRoutes from './routes/cartRoutes'
 
 /*
+import cartRoutes from './routes/cartRoutes'
 import orderRoutes from "./routes/orderRoutes";
 */
 
@@ -27,9 +27,9 @@ server.use(express.json())
 // API routes
 server.use('/api/products/', productRoutes)
 server.use('/api/users/', userRoutes)
-server.use('/api/carts/', cartRoutes)
 
 /*
+server.use('/api/carts/', cartRoutes)
 server.use('/api/checkout/', orderRoutes);
 */
 

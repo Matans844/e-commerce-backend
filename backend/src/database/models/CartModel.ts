@@ -48,4 +48,4 @@ const cartModel = new Schema(
   }
 )
 
-export const Cart = model<CartDocument>('Cart', cartModel)
+export const CartModel = model<CartDocument>('Cart', cartModel)

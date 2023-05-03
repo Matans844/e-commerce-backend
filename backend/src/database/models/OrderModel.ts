@@ -96,4 +96,4 @@ const orderModel = new Schema(
   }
 )
 
-export const Order = model<OrderDocument>('Order', orderModel)
+export const OrderModel = model<OrderDocument>('Order', orderModel)
