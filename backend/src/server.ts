@@ -5,10 +5,10 @@ import { connectDB } from './database/DatabaseConnector.js'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js'
 import productRoutes from './routes/productRoutes.js'
 import userRoutes from './routes/userRoutes.js'
+import cartRoutes from './routes/cartRoutes'
 
 /*
 import orderRoutes from "./routes/orderRoutes";
-import cartRoutes from './backend/src/routes/cartRoutes';
 */
 
 dotenv.config()
@@ -24,12 +24,12 @@ if (process.env.NODE_ENV === 'development') {
 // Middleware
 server.use(express.json())
 
+// API routes
 server.use('/api/products/', productRoutes)
 server.use('/api/users/', userRoutes)
+server.use('/api/carts/', cartRoutes)
 
-// API routes
 /*
-server.use('/api/carts/', cartRoutes);
 server.use('/api/checkout/', orderRoutes);
 */
 
