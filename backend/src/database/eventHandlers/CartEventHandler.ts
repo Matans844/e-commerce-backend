@@ -16,7 +16,7 @@ class CartEventHandler extends EventEmitter {
 
   onProductDeleted = async (productId: string): Promise<void> => {
     try {
-      await this.cart.removeProductFromCartById(productId)
+      await this.cart.deleteProductFromCartById(productId)
     } catch (err) {
       if (err instanceof Error) {
         console.error(`Error removing product ${productId} from cart ${this.cart._id as string}: ${err.message}`)
@@ -28,7 +28,7 @@ class CartEventHandler extends EventEmitter {
 
   onProductQuantityChanged = async (productId: string, newQuantity: number): Promise<void> => {
     try {
-      await this.cart.changeQuantityProductInCartById(productId, newQuantity)
+      await this.cart.updateQuantityProductInCartById(productId, newQuantity)
     } catch (err) {
       if (err instanceof Error) {
         console.error(`Error updating quantity of product ${productId} in cart ${this.cart._id as string}: ${err.message}`)

@@ -4,7 +4,7 @@ import { UserModel } from '../database/models/index.js'
 import generateToken from '../utilities/generateAuthToken.js'
 
 /**
- * Authenticate user and get token
+ * @description Authenticate user and get token
  * @route POST /api/users/login
  * @access Public
  */
@@ -13,7 +13,7 @@ const authUser = asyncHandler(async (req: Request, res: Response) => {
 
   const user = await UserModel.findOne({ email })
 
-  if ((user != null) && (await user.doesPasswordMatch(password))) {
+  if ((user !== null) && (await user.doesPasswordMatch(password))) {
     res.json({
       _id: user._id,
       name: user.name,
@@ -27,7 +27,7 @@ const authUser = asyncHandler(async (req: Request, res: Response) => {
 })
 
 /**
- * Register a new user
+ * @description Register a new user
  * @route POST /api/users
  * @access Public
  */
@@ -42,7 +42,7 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
   const adminStatus = Boolean(isAdmin)
   const userExists = await UserModel.findOne({ email })
 
-  if (userExists != null) {
+  if (userExists !== null) {
     res.status(400)
     throw new Error('User already exists')
   }
@@ -69,7 +69,7 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
 })
 
 /**
- * Get all users
+ * @description Get all users
  * @route GET /api/users
  * @access Private/Admin
  */
@@ -85,7 +85,7 @@ const getUsers = asyncHandler(async (req: Request, res: Response) => {
 })
 
 /**
- * Delete a user by id
+ * @description Delete a user by id
  * @route DELETE /api/users/:id
  * @access Private/Admin
  */
@@ -93,7 +93,7 @@ const deleteUserById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params as { id: string }
 
   const user = await UserModel.findById(id)
-  if (user != null) {
+  if (user !== null) {
     await user.remove()
     res.json({ message: 'User removed' })
   } else {
@@ -103,7 +103,7 @@ const deleteUserById = asyncHandler(async (req: Request, res: Response) => {
 })
 
 /**
- * Get a user by id
+ * @description Get a user by id
  * @route GET /api/users/:id
  * @access Private/Admin
  */
@@ -111,7 +111,7 @@ const getUserById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params as { id: string }
   const user = await UserModel.findById(id).select('-password')
 
-  if (user != null) {
+  if (user !== null) {
     res.json(user)
   } else {
     res.status(404)
@@ -120,7 +120,7 @@ const getUserById = asyncHandler(async (req: Request, res: Response) => {
 })
 
 /**
- * Update user
+ * @description Update user
  * @route PUT /api/users/:id
  * @access Private/Admin
  */
@@ -128,7 +128,7 @@ const updateUser = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params as { id: string }
   const user = await UserModel.findById(id)
 
-  if (user != null) {
+  if (user !== null) {
     user.name = req.body?.name ?? user.name
     user.email = req.body?.email ?? user.email
     user.isAdmin = req.body.isAdmin

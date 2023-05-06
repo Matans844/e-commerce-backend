@@ -52,7 +52,7 @@ const cartModel = new Schema(
  */
 cartModel.virtual('cartItemPrice').get(async function (productItem) {
   const product = await ProductModel.findById(productItem.productID)
-  if (product == null) {
+  if (product === null) {
     return 0
   }
   return product.price * productItem.quantity
@@ -108,7 +108,7 @@ cartModel.pre('remove', async function (this: ICartDocument, next) {
  */
 cartModel.methods.addProductToCartById = async function (productId: string, quantity: number) {
   const productToAdd = await ProductModel.findById(productId)
-  if (productToAdd == null) {
+  if (productToAdd === null) {
     throw new Error('Product not found. It should first be added to store.')
   }
   if (quantity <= 0) {
@@ -122,6 +122,9 @@ cartModel.methods.addProductToCartById = async function (productId: string, quan
       // Keep in mind that mongoose uses Number and TypeScript uses number
       const oldQuantity = this.cartItems[existingItemIndex].quantity.valueOf() as number
       const newQuantity = oldQuantity + quantity
+      if (newQuantity > productToAdd.countInStock) {
+        throw new Error('Cannot add more quantity to cart than exists in stock')
+      }
       this.cartItems[existingItemIndex].quantity = Number(newQuantity)
     } else {
       // Add new cart item
@@ -143,7 +146,7 @@ cartModel.methods.addProductToCartById = async function (productId: string, quan
  * Removes product from cart by productId
  * @param productId
  */
-cartModel.methods.removeProductFromCartById = async function (productId: string) {
+cartModel.methods.deleteProductFromCartById = async function (productId: string) {
   const existingItemIndex = this.cartItems.findIndex((item: ICartItem) => item.productId === productId)
   if (existingItemIndex >= 0) {
     // Remove cart item
@@ -154,7 +157,7 @@ cartModel.methods.removeProductFromCartById = async function (productId: string)
   }
 }
 
-cartModel.methods.changeQuantityProductInCartById = async function (productId: string, newQuantity: number) {
+cartModel.methods.updateQuantityProductInCartById = async function (productId: string, newQuantity: number) {
   if (newQuantity === 0) {
     this.removeProductById(productId)
   } else if (newQuantity < 0) {

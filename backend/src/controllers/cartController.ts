@@ -1,10 +1,10 @@
 import asyncHandler from 'express-async-handler'
 
 import { type Request, type Response } from '../types/index.js'
-import { UserModel, ProductModel, CartModel } from '../database/models/index.js'
+import { CartModel } from '../database/models/index.js'
 
 /**
- * Get all carts
+ * @description Get all carts
  * @route GET /api/carts
  * @access Private/Admin
  */
@@ -20,7 +20,7 @@ const getAllCarts = asyncHandler(async (req: Request, res: Response) => {
 })
 
 /**
- * Get a cart by id
+ * @description Get a cart by id
  * @route GET /api/carts/:id
  * @access Private/Admin
  */
@@ -28,7 +28,7 @@ const getCartById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params as { id: string }
   const cart = await CartModel.findById(id)
 
-  if (cart != null) {
+  if (cart !== null) {
     res.json(cart)
   } else {
     res.status(404)
@@ -37,7 +37,7 @@ const getCartById = asyncHandler(async (req: Request, res: Response) => {
 })
 
 /**
- * Delete a cart by id
+ * @description Delete a cart by id
  * @route DELETE /api/carts/:id
  * @access Private/Admin
  */
@@ -45,9 +45,9 @@ const deleteCartById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params as { id: string }
 
   const cart = await CartModel.findById(id)
-  if (cart != null) {
+  if (cart !== null) {
     await cart.remove()
-    res.json({ message: 'Cart removed' })
+    res.json({ message: 'Success: Cart removed' })
   } else {
     res.status(404)
     throw new Error('Cart not found')
@@ -55,16 +55,18 @@ const deleteCartById = asyncHandler(async (req: Request, res: Response) => {
 })
 
 /**
- * Add product by product id
+ * @description Add product by id in cart by id
  * @route POST /api/carts/:id/:productId
- * @access Private
+ * @access Private/Admin
  */
-const addProductById = asyncHandler(async (req: Request, res: Response) => {
-  const { cartId, productId } = req.params as { cartId: string, productId: string }
+const addProductByIdInCartById = asyncHandler(async (req: Request, res: Response) => {
+  const { id, productId } = req.params as { id: string, productId: string }
   const { quantity } = req.body as { quantity: number }
-  const cartToAddTo = await CartModel.findById(cartId)
+  const cartToAddTo = await CartModel.findById(id)
+
   if (cartToAddTo !== null) {
     void cartToAddTo.addProductToCartById(productId, quantity)
+    res.json({ message: 'Success: Product added to cart' })
   } else {
     res.status(404)
     throw new Error('Cart not found')
@@ -72,95 +74,57 @@ const addProductById = asyncHandler(async (req: Request, res: Response) => {
 })
 
 /**
- * Delete product by product id
+ * @description Delete product by id in cart by id
  * @route DELETE /api/carts/:id/:productId
- * @access Private
+ * @access Private/Admin
  */
-const deleteProductById = asyncHandler(async (req: Request, res: Response) => {
-  const { id } = req.params as { id: string }
-  const user = await UserModel.findById(id)
+const deleteProductByIdInCartById = asyncHandler(async (req: Request, res: Response) => {
+  const { id, productId } = req.params as { id: string, productId: string }
+  const cartToAddTo = await CartModel.findById(id)
 
-  if (user != null) {
-    user.name = req.body?.name ?? user.name
-    user.email = req.body?.email ?? user.email
-    user.isAdmin = req.body.isAdmin
+  if (cartToAddTo !== null) {
+    void cartToAddTo.deleteProductFromCartById(productId)
 
-    const updatedUser = await user.save()
-
-    res.json({
-      _id: updatedUser._id,
-      name: updatedUser.name,
-      email: updatedUser.email,
-      address: updatedUser.address,
-      isAdmin: updatedUser.isAdmin
-    })
+    res.json({ message: 'Success: Product deleted from cart' })
   } else {
     res.status(404)
-    throw new Error('User not found')
+    throw new Error('Cart not found')
   }
 })
 
 /**
- * Update product quantity by product id
+ * @description Update product quantity by product id in cart by id
  * @route PUT /api/carts/:id/:productId
- * @access Private
+ * @access Private/Admin
  */
-const deleteProductById = asyncHandler(async (req: Request, res: Response) => {
-  const { id } = req.params as { id: string }
-  const user = await UserModel.findById(id)
+const updateProductByIdInCartById = asyncHandler(async (req: Request, res: Response) => {
+  const { id, productId } = req.params as { id: string, productId: string }
+  const { quantityToUpdate } = req.body as { quantityToUpdate: number }
+  const cartToAddTo = await CartModel.findById(id)
 
-  if (user != null) {
-    user.name = req.body?.name ?? user.name
-    user.email = req.body?.email ?? user.email
-    user.isAdmin = req.body.isAdmin
+  if (cartToAddTo !== null) {
+    void cartToAddTo.updateQuantityProductInCartById(productId, quantityToUpdate)
 
-    const updatedUser = await user.save()
-
-    res.json({
-      _id: updatedUser._id,
-      name: updatedUser.name,
-      email: updatedUser.email,
-      address: updatedUser.address,
-      isAdmin: updatedUser.isAdmin
-    })
+    res.json({ message: 'Success: Product quantity in cart updated' })
   } else {
     res.status(404)
-    throw new Error('User not found')
+    throw new Error('Cart not found')
   }
 })
 
 /**
  * @description Update a product quantity by id
- * @route PUT /api/carts/:id/:productId
+ * @route PUT /api/carts/mycart
  * @access Private
  */
-const updateQuantityOfProductById = asyncHandler(async (req: Request, res: Response) => {
-  const { id } = req.params as { id: string }
-  const {
-    name,
-    description,
-    price,
-    countInStock
-  } = req.body as {
-    name: string
-    description: string
-    price: number
-    countInStock: number
-  }
+const getCart = asyncHandler(async (req: Request, res: Response) => {
+  const cart = req.user?.cart
 
-  const product = await ProductModel.findById(id)
-
-  if (product != null) {
-    product.name = name
-    product.description = description
-    product.price = price
-    product.countInStock = countInStock
-
-    const updatedProduct = await product.save()
-    res.status(201).json(updatedProduct)
+  if (cart !== undefined) {
+    res.json(cart)
   } else {
     res.status(404)
-    throw new Error('Product not found.')
+    throw new Error('User has no cart')
   }
 })
 
@@ -168,7 +132,8 @@ export {
   getAllCarts,
   getCartById,
   deleteCartById,
-  addProductById,
-  deleteProductById,
-  updateQuantityOfProductById
+  addProductByIdInCartById,
+  deleteProductByIdInCartById,
+  updateProductByIdInCartById,
+  getCart
 }

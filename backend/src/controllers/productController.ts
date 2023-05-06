@@ -3,13 +3,13 @@ import { ProductModel } from '../database/models/index.js'
 import { type Request, type Response } from '../types/index.js'
 
 /**
- * Fetch all products
+ * @description Fetch all products
  * @route GET /api/products
  * @access Public
  */
 const getProducts = asyncHandler(async (req: Request, res: Response) => {
-  const { pageInput = 1 } = req.query
   const PAGE_SIZE = 10 // Number of products per page
+  const { pageInput = 1 } = req.query
 
   // Convert page to integer
   const page = parseInt(pageInput as string)
@@ -33,15 +33,14 @@ const getProducts = asyncHandler(async (req: Request, res: Response) => {
 })
 
 /**
- * Fetch single product
+ * @description Fetch single product
  * @route GET /api/products/:id
- * @param id ID of product to fetch
  * @access Public
  */
 const getProductById = asyncHandler(async (req: Request, res: Response) => {
   const product = await ProductModel.findById(req.params.id)
 
-  if (product != null) {
+  if (product !== null) {
     res.json(product)
   } else {
     res.status(404)
@@ -50,15 +49,14 @@ const getProductById = asyncHandler(async (req: Request, res: Response) => {
 })
 
 /**
- * Delete single product by id
+ * @description Delete single product by id
  * @route DELETE /api/products/:id
- * @param id ID of product to delete
  * @access Private
  */
 const deleteProductById = asyncHandler(async (req: Request, res: Response) => {
   const product = await ProductModel.findById(req.params.id)
 
-  if (product != null) {
+  if (product !== null) {
     await product.remove()
     res.json({ message: 'Product removed' })
   } else {
@@ -68,7 +66,7 @@ const deleteProductById = asyncHandler(async (req: Request, res: Response) => {
 })
 
 /**
- * Create a new product
+ * @description Create a new product
  * @route POST /api/products
  * @access Private
  */
@@ -122,7 +120,7 @@ const updateProduct = asyncHandler(async (req: Request, res: Response) => {
 
   const product = await ProductModel.findById(id)
 
-  if (product != null) {
+  if (product !== null) {
     product.name = name
     product.description = description
     product.price = price
