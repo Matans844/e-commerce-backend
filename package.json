@@ -15,8 +15,8 @@
     "start": "npm run prestart && npm run server",
     "dev": "npm run build && npx nodemon",
     "sample:seeder:destroy": "npm run build && npx ts-node build/backend/sample/seeder -d",
-    "sample:seeder:import": "npm run build && npx ts-node build/backend/sample/seeder -i",
-    "sample:seeder:createAndImport": "npm run build && npx ts-node build/backend/sample/seeder",
+    "sample:seeder:destroyAndImport": "npm run build && npx ts-node build/backend/sample/seeder -i",
+    "sample:seeder:destroyAndCreateAndImport": "npm run build && npx ts-node build/backend/sample/seeder",
     "test": "npm run build && jest"
   },
   "repository": {
