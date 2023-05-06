@@ -109,30 +109,4 @@ userModel.pre('remove', async function (this: IUserDocument, next) {
   next()
 })
 
-/*
-userModel.post('init', function (doc: IUserDocument) {
-  doc.cart.on('cartDeleted', async function (cartId) {
-    // Do something here when the cart is deleted
-  })
-})
-*/
-
-/**
- * User Deletion
- * Before deletion, we remove the user as a listener for the cart deletion event,
- * so this user's cart deletion event delegate does not create a new empty cart.
- * Then we delete the user's cart the and the user.
- */
-userModel.pre('remove', async function (this: IUserDocument, next) {
-  this.cart.eventHandler.off('cartDeleted', this.eventHandler.onCartDeleted)
-
-  // Delete the user's cart
-  await CartModel.findByIdAndDelete(this.cart._id)
-
-  // Notify listeners of self deletion event
-  this.eventHandler.emitUserDeleted()
-
-  next()
-})
-
 export const UserModel = model<IUserDocument>('User', userModel)
