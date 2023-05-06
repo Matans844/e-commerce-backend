@@ -7,7 +7,11 @@ class ProductEventHandler extends EventEmitter {
   }
 
   emitProductDeleted (): void {
-    this.emit('productDeleted', this.product)
+    this.emit('productDeleted', this.product._id)
+  }
+
+  emitProductQuantityInStockChanged (): void {
+    this.emit('productQuantityInStockChanged', this.product._id)
   }
 }
 

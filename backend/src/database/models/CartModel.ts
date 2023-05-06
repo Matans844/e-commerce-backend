@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import {type ICartDocument, IProductDocument, type IUserDocument} from '../documents/index.js'
+import { type ICartDocument, type IUserDocument, type ICartItem } from '../documents/index.js'
 import { CartEventHandler } from '../eventHandlers/CartEventHandler.js'
 import { ProductModel } from './ProductModel.js'
 
@@ -17,7 +17,7 @@ const cartModel = new Schema(
     cartItems: {
       type: [
         {
-          productID: {
+          productId: {
             type: Schema.Types.ObjectId,
             required: true,
             ref: 'Product'
@@ -84,7 +84,7 @@ cartModel.pre('save', function (this: ICartDocument, next) {
   if (this.isNew) {
     this.eventHandler = new CartEventHandler(this)
     this.user.eventHandler.on('userDeleted', (user: IUserDocument) => {
-      this.eventHandler.onUserDeleted(this.user)
+      this.eventHandler.onUserDeleted(this.user._id)
     })
   }
 
@@ -95,7 +95,7 @@ cartModel.pre('save', function (this: ICartDocument, next) {
  * Notify listeners of self deletion event
  */
 cartModel.pre('remove', async function (this: ICartDocument, next) {
-  this.eventHandler.emit('cartDeleted', this._id)
+  this.eventHandler.emitCartDeleted()
 
   next()
 })
@@ -103,60 +103,71 @@ cartModel.pre('remove', async function (this: ICartDocument, next) {
 /**
  * Adds product to cart.
  * Also, adds the cart as listener to the product if it is new in the cart
- * @param productID
+ * @param productId
  * @param quantity
  */
-cartModel.methods.addProductById = async function(productID, quantity) {
-  const productToAdd = await ProductModel.findById(productID)
+cartModel.methods.addProductToCartById = async function (productId: string, quantity: number) {
+  const productToAdd = await ProductModel.findById(productId)
   if (productToAdd == null) {
     throw new Error('Product not found. It should first be added to store.')
   }
-
-  const existingItemIndex = this.cartItems.findIndex(item => item.productID === productID)
-  if (existingItemIndex >= 0) {
-    // Update existing cart item quantity
-    this.cartItems[existingItemIndex].quantity += quantity
+  if (quantity <= 0) {
+    throw new Error('Cannot set non-positive quantity of product in cart')
+  } else if (quantity > productToAdd.countInStock) {
+    throw new Error('Cannot add more quantity to cart than exists in stock')
   } else {
-    // Add new cart item
-    this.cartItems.push({ productID, quantity })
-    // Add cart as listener
-    this.cart.
-    productToAdd.eventHandler.on('productDeleted', (product: IProductDocument) => {
-      this.eventHandler.onProductDeleted(product)
-    })
-    this.cart.productToAdd.eventHandler.on('productQuantityChanged', (product: IProductDocument, newQuantity: number) => {
-      this.eventHandler.onProductQuantityChanged(product, newQuantity)
-    })
+    const existingItemIndex = this.cartItems.findIndex((item: ICartItem) => item.productId === productId)
+    if (existingItemIndex >= 0) {
+      // Update existing cart item quantity
+      // Keep in mind that mongoose uses Number and TypeScript uses number
+      const oldQuantity = this.cartItems[existingItemIndex].quantity.valueOf() as number
+      const newQuantity = oldQuantity + quantity
+      this.cartItems[existingItemIndex].quantity = Number(newQuantity)
+    } else {
+      // Add new cart item
+      this.cartItems.push({ productId, quantity })
+      // Add cart as listener
+      this.cart
+        .productToAdd.eventHandler.on('productDeleted', (productId: string) => {
+          this.eventHandler.onProductDeleted(productId)
+        })
+      this.cart.productToAdd.eventHandler.on('emitProductQuantityInStockChanged', (productId: string, newQuantity: number) => {
+        this.eventHandler.onProductQuantityChanged(productId, newQuantity)
+      })
+    }
   }
   await this.save()
 }
 
 /**
  * Removes product from cart by productId
- * @param productID
+ * @param productId
  */
-cartModel.methods.removeProductById = async function(productID) {
-  const existingItemIndex = this.cartItems.findIndex(item => item.productID === productID)
+cartModel.methods.removeProductFromCartById = async function (productId: string) {
+  const existingItemIndex = this.cartItems.findIndex((item: ICartItem) => item.productId === productId)
   if (existingItemIndex >= 0) {
     // Remove cart item
     this.cartItems.splice(existingItemIndex, 1)
     await this.save()
-  }
-  else{
+  } else {
     throw new Error('Product does not exist in cart.')
   }
 }
 
-
-cartModel.methods.changeQuantityProductById = async function(productID, newQuantity){
-  const existingItemIndex = this.cartItems.findIndex(item => item.productID === productID)
-  if (existingItemIndex >= 0) {
-    // Update cart item
-    this.cartItems[existingItemIndex].quantity = newQuantity
-    await this.save()
-  }
-  else{
-    throw new Error('Product does not exist in cart.')
+cartModel.methods.changeQuantityProductInCartById = async function (productId: string, newQuantity: number) {
+  if (newQuantity === 0) {
+    this.removeProductById(productId)
+  } else if (newQuantity < 0) {
+    throw new Error('Product quantity cannot be negative.')
+  } else {
+    const existingItemIndex = this.cartItems.findIndex((item: ICartItem) => item.productId === productId)
+    if (existingItemIndex >= 0) {
+      // Update cart item
+      this.cartItems[existingItemIndex].quantity = Number(newQuantity)
+      await this.save()
+    } else {
+      throw new Error('Product does not exist in cart.')
+    }
   }
 }
 

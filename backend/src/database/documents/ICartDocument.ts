@@ -6,6 +6,9 @@ import { type IUserDocument } from './IUserDocument.js'
 export interface ICartDocument extends ICart, Document {
   eventHandler: CartEventHandler
   user: IUserDocument
+  addProductToCartById: (productId: string, quantity: number) => Promise<void>
+  removeProductFromCartById: (productId: string) => Promise<void>
+  changeQuantityProductInCartById: (productId: string, newQuantity: number) => Promise<void>
 }
 
 /**

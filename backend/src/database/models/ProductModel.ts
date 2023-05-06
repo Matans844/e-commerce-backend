@@ -47,7 +47,7 @@ productModel.pre('save', function (this: IProductDocument, next) {
  * Notify listeners of self deletion event
  */
 productModel.pre('remove', async function (this: IProductDocument, next) {
-  this.eventHandler.emit('productDeleted', this._id)
+  this.eventHandler.emitProductDeleted()
   next()
 })
 

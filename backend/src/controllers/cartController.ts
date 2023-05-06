@@ -60,26 +60,14 @@ const deleteCartById = asyncHandler(async (req: Request, res: Response) => {
  * @access Private
  */
 const addProductById = asyncHandler(async (req: Request, res: Response) => {
-  const { id } = req.params as { id: string }
-  const user = await UserModel.findById(id)
-
-  if (user != null) {
-    user.name = req.body?.name ?? user.name
-    user.email = req.body?.email ?? user.email
-    user.isAdmin = req.body.isAdmin
-
-    const updatedUser = await user.save()
-
-    res.json({
-      _id: updatedUser._id,
-      name: updatedUser.name,
-      email: updatedUser.email,
-      address: updatedUser.address,
-      isAdmin: updatedUser.isAdmin
-    })
+  const { cartId, productId } = req.params as { cartId: string, productId: string }
+  const { quantity } = req.body as { quantity: number }
+  const cartToAddTo = await CartModel.findById(cartId)
+  if (cartToAddTo !== null) {
+    void cartToAddTo.addProductToCartById(productId, quantity)
   } else {
     res.status(404)
-    throw new Error('User not found')
+    throw new Error('Cart not found')
   }
 })
 

@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events'
-import {type ICartDocument, type IProductDocument, type IUserDocument} from '../documents/index.js'
+import { type ICartDocument } from '../documents/index.js'
 
 class CartEventHandler extends EventEmitter {
   constructor (private readonly cart: ICartDocument) {
@@ -7,26 +7,34 @@ class CartEventHandler extends EventEmitter {
   }
 
   emitCartDeleted (): void {
-    this.emit('cartDeleted', this.cart)
+    this.emit('cartDeleted', this.cart._id)
   }
 
-  onUserDeleted (user: IUserDocument): void {
+  onUserDeleted (userId: string): void {
     void this.cart.delete()
   }
 
-  onProductDeleted = async function(product: IProductDocument) {
+  onProductDeleted = async (productId: string): Promise<void> => {
     try {
-      await this.removeProductById(product._id)
+      await this.cart.removeProductFromCartById(productId)
     } catch (err) {
-      console.error(`Error removing product ${product._id} from cart ${this._id}: ${err}`)
+      if (err instanceof Error) {
+        console.error(`Error removing product ${productId} from cart ${this.cart._id as string}: ${err.message}`)
+      } else {
+        console.error(`Error removing product ${productId} from cart ${this.cart._id as string}: Unknown error`)
+      }
     }
   }
 
-  onProductQuantityChanged = async function(product: IProductDocument, newQuantity: number){
+  onProductQuantityChanged = async (productId: string, newQuantity: number): Promise<void> => {
     try {
-      await this.changeQuantityProductById(product._id, newQuantity)
+      await this.cart.changeQuantityProductInCartById(productId, newQuantity)
     } catch (err) {
-      console.error(`Error removing product ${product._id} from cart ${this._id}: ${err}`)
+      if (err instanceof Error) {
+        console.error(`Error updating quantity of product ${productId} in cart ${this.cart._id as string}: ${err.message}`)
+      } else {
+        console.error(`Error updating quantity of product ${productId} in cart ${this.cart._id as string}: Unknown error`)
+      }
     }
   }
 }

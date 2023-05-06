@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
 import { model, Schema } from 'mongoose'
 import { CartModel } from './CartModel.js'
-import { type ICartDocument, type IUserDocument } from '../documents/index.js'
+import { type IUserDocument } from '../documents/index.js'
 import { UserEventHandler } from '../eventHandlers/UserEventHandler.js'
 
 const userModel = new Schema(
@@ -87,9 +87,9 @@ userModel.pre('save', async function (this: IUserDocument, next) {
     this.eventHandler = new UserEventHandler(this)
 
     // Set up a listener for the 'cartDeleted' event on the cart instance associated with this user
-    this.cart.eventHandler.on('cartDeleted', (cart: ICartDocument) => {
+    this.cart.eventHandler.on('cartDeleted', (cartId: string) => {
       // Call the delegate to handle the event
-      this.eventHandler.onCartDeleted(cart)
+      this.eventHandler.onCartDeleted(cartId)
     })
   }
   next()
@@ -99,7 +99,7 @@ userModel.pre('save', async function (this: IUserDocument, next) {
  * Notify listeners of self deletion event
  */
 userModel.pre('remove', async function (this: IUserDocument, next) {
-  this.eventHandler.emit('userDeleted', this._id)
+  this.eventHandler.emitUserDeleted()
 
   next()
 })
