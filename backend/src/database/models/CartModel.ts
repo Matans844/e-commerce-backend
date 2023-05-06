@@ -1,6 +1,7 @@
 import { model, Schema } from 'mongoose'
 import { type ICartDocument } from '../documents/index.js'
 import { ProductModel } from './ProductModel.js'
+import { CartEventEmitter } from '../events/CartEventEmitter.js'
 
 /**
  * Reference:
@@ -58,7 +59,7 @@ cartModel.virtual('cartItemPrice').get(async function (productItem) {
 })
 
 /**
- * computes and returns the priceItems field,
+ * Computes and returns the priceItems field,
  * based on the productItems field,
  * but it is not stored in the database.
  */
@@ -71,8 +72,21 @@ cartModel.virtual('priceItems').get(async function (this: ICartDocument) {
   return total
 })
 
+/**
+ * Make sure the cart document instance has an event emitter.
+ */
+cartModel.pre('save', function (this: ICartDocument, next) {
+  if (this.isNew) {
+    this.emitter = new CartEventEmitter(this)
+  }
+  next()
+})
+
+/**
+ * Notify listeners of self deletion event
+ */
 cartModel.pre('remove', async function (this: ICartDocument, next) {
-  this.emit('cartDeleted', this._id)
+  this.emitter.emit('cartDeleted', this._id)
   next()
 })
 

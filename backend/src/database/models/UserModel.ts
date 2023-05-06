@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs'
 import { model, Schema } from 'mongoose'
 import { CartModel } from './CartModel.js'
 import { type IUserDocument } from '../documents/index.js'
+import { UserEventEmitter } from '../events/UserEventEmitter.js'
 
 const userModel = new Schema(
   {
@@ -27,12 +28,16 @@ const userModel = new Schema(
       required: true,
       default: false
     },
-    cart: CartModel,
-    default: {
-      cartItems: [],
-      priceItems: 0.0,
-      active: true
+    cart: {
+      type: CartModel,
+      default: {
+        cartItems: [],
+        priceItems: 0.0,
+        active: true
+      },
+      ref: 'Cart'
     }
+
   },
   {
     timestamps: true // Automatically create createdAt timestamp
@@ -77,6 +82,24 @@ userModel.pre('save', async function (this: IUserDocument, next) {
       active: true
     })
   }
+  next()
+})
+
+/**
+ * Make sure the user document instance has an event emitter.
+ */
+userModel.pre('save', function (this: IUserDocument, next) {
+  if (this.isNew) {
+    this.emitter = new UserEventEmitter(this)
+  }
+  next()
+})
+
+/**
+ * Notify listeners of self deletion event
+ */
+userModel.pre('remove', async function (this: IUserDocument, next) {
+  this.emitter.emit('userDeleted', this._id)
   next()
 })
 
