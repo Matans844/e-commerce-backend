@@ -3,7 +3,6 @@ import users from './sampleData/sampleUsers.js'
 import products from './sampleData/sampleProducts.js'
 import { UserModel, ProductModel, OrderModel, CartModel } from '../src/database/models/index.js'
 import { connectDB } from '../src/database/DatabaseConnector.js'
-import { ProductEventHandler } from '../src/database/eventHandlers/ProductEventHandler.js'
 
 /**
  * Helper file that is used for adding and removing test data to the database.
@@ -104,7 +103,6 @@ async function destroyDataAndCreateAndImport (): Promise<void> {
 
     for (const productData of products) {
       const product = await ProductModel.create(productData)
-      product.eventHandler = new ProductEventHandler(product)
       await product.save()
     }
 
