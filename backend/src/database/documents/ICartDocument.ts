@@ -1,9 +1,9 @@
 import { type Document, type Model } from 'mongoose'
-import { type CartEventEmitter } from '../events/CartEventEmitter.js'
+import { type CartEventHandler } from '../eventHandlers/CartEventHandler.js'
 import { type ICart } from '../../types/index.js'
 
 export interface ICartDocument extends ICart, Document {
-  emitter: CartEventEmitter
+  eventHandler: CartEventHandler
 }
 
 /**

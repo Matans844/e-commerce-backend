@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose'
 import { type ICartDocument } from '../documents/index.js'
 import { ProductModel } from './ProductModel.js'
-import { CartEventEmitter } from '../events/CartEventEmitter.js'
+import { CartEventHandler } from '../eventHandlers/CartEventHandler.js'
 
 /**
  * Reference:
@@ -77,7 +77,7 @@ cartModel.virtual('priceItems').get(async function (this: ICartDocument) {
  */
 cartModel.pre('save', function (this: ICartDocument, next) {
   if (this.isNew) {
-    this.emitter = new CartEventEmitter(this)
+    this.eventHandler = new CartEventHandler(this)
   }
   next()
 })
@@ -86,7 +86,7 @@ cartModel.pre('save', function (this: ICartDocument, next) {
  * Notify listeners of self deletion event
  */
 cartModel.pre('remove', async function (this: ICartDocument, next) {
-  this.emitter.emit('cartDeleted', this._id)
+  this.eventHandler.emit('cartDeleted', this._id)
   next()
 })
 

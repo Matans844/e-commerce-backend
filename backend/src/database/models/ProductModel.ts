@@ -1,6 +1,6 @@
 import { model, Schema } from 'mongoose'
 import { type IProductDocument } from '../documents/index.js'
-import { ProductEventEmitter } from '../events/ProductEventEmitter.js'
+import { ProductEventHandler } from '../eventHandlers/ProductEventHandler.js'
 
 const productModel = new Schema(
   {
@@ -35,7 +35,7 @@ const productModel = new Schema(
  */
 productModel.pre('save', function (this: IProductDocument, next) {
   if (this.isNew) {
-    this.emitter = new ProductEventEmitter(this)
+    this.eventHandler = new ProductEventHandler(this)
   }
   next()
 })
@@ -44,7 +44,7 @@ productModel.pre('save', function (this: IProductDocument, next) {
  * Notify listeners of self deletion event
  */
 productModel.pre('remove', async function (this: IProductDocument, next) {
-  this.emitter.emit('productDeleted', this._id)
+  this.eventHandler.emit('productDeleted', this._id)
   next()
 })
 

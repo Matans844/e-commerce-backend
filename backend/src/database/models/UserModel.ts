@@ -1,8 +1,8 @@
 import bcrypt from 'bcryptjs'
 import { model, Schema } from 'mongoose'
 import { CartModel } from './CartModel.js'
-import { type IUserDocument } from '../documents/index.js'
-import { UserEventEmitter } from '../events/UserEventEmitter.js'
+import { type ICartDocument, type IUserDocument } from '../documents/index.js'
+import { UserEventHandler } from '../eventHandlers/UserEventHandler.js'
 
 const userModel = new Schema(
   {
@@ -76,21 +76,34 @@ userModel.pre('save', async function (this: IUserDocument, next) {
  */
 userModel.pre('save', async function (this: IUserDocument, next) {
   if (this.isNew || (this.cart == null)) {
-    this.cart = await CartModel.create({
+    const newCart = await CartModel.create({
       cartItems: [],
       priceItems: 0.0,
       active: true
     })
+
+    // Set up a listener for the 'cartDeleted' event on the cart instance associated with this user
+    newCart.eventHandler.on('cartDeleted', (cart: ICartDocument) => {
+      // Call the delegate to handle the event
+      void this.eventHandler.onCartDeleted(cart)
+    })
+
+    this.cart = newCart
   }
   next()
 })
+
+userModel.methods.onCartDeleted = function (cartId: string) {
+  console.log('User cart deleted', cartId)
+  // Do something here when the cart is deleted
+}
 
 /**
  * Make sure the user document instance has an event emitter.
  */
 userModel.pre('save', function (this: IUserDocument, next) {
   if (this.isNew) {
-    this.emitter = new UserEventEmitter(this)
+    this.eventHandler = new UserEventHandler(this)
   }
   next()
 })
@@ -99,14 +112,16 @@ userModel.pre('save', function (this: IUserDocument, next) {
  * Notify listeners of self deletion event
  */
 userModel.pre('remove', async function (this: IUserDocument, next) {
-  this.emitter.emit('userDeleted', this._id)
+  this.eventHandler.emit('userDeleted', this._id)
   next()
 })
 
+/*
 userModel.post('init', function (doc: IUserDocument) {
   doc.cart.on('cartDeleted', async function (cartId) {
     // Do something here when the cart is deleted
   })
 })
+*/
 
 export const UserModel = model<IUserDocument>('User', userModel)

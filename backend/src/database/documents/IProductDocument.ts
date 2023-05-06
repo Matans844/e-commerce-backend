@@ -1,9 +1,9 @@
 import { type Document, type Model } from 'mongoose'
 import { type IProduct } from '../../types/index.js'
-import { type ProductEventEmitter } from '../events/ProductEventEmitter.js'
+import { type ProductEventHandler } from '../eventHandlers/ProductEventHandler.js'
 
 export interface IProductDocument extends IProduct, Document {
-  emitter: ProductEventEmitter
+  eventHandler: ProductEventHandler
 }
 
 /**
