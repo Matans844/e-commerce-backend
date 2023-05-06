@@ -90,6 +90,7 @@ cartModel.pre('save', function (this: ICartDocument, next) {
  */
 cartModel.pre('remove', async function (this: ICartDocument, next) {
   this.eventHandler.emit('cartDeleted', this._id)
+
   next()
 })
 

@@ -106,6 +106,7 @@ userModel.pre('save', function (this: IUserDocument, next) {
  */
 userModel.pre('remove', async function (this: IUserDocument, next) {
   this.eventHandler.emit('userDeleted', this._id)
+
   next()
 })
 
