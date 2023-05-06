@@ -1,6 +1,5 @@
 import { model, Schema } from 'mongoose'
 import { type IProductDocument } from '../documents/index.js'
-import { ProductEventHandler } from '../eventHandlers/ProductEventHandler.js'
 
 const productModel = new Schema(
   {
@@ -35,13 +34,14 @@ const productModel = new Schema(
  * The product does not need to listen to users or carts.
  *
  * TODO: Listen to orders
- */
+
 productModel.pre('save', function (this: IProductDocument, next) {
   if (this.isNew) {
     this.eventHandler = new ProductEventHandler(this)
   }
   next()
 })
+ */
 
 /**
  * Notify listeners of self deletion event

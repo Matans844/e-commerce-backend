@@ -3,6 +3,7 @@ import { model, Schema } from 'mongoose'
 import { CartModel } from './CartModel.js'
 import { type IUserDocument } from '../documents/index.js'
 import { UserEventHandler } from '../eventHandlers/UserEventHandler.js'
+import { CartEventHandler } from '../eventHandlers/CartEventHandler.js'
 
 const userModel = new Schema(
   {
@@ -29,15 +30,9 @@ const userModel = new Schema(
       default: false
     },
     cart: {
-      type: CartModel,
-      default: {
-        cartItems: [],
-        priceItems: 0.0,
-        active: true
-      },
+      type: Schema.Types.ObjectId,
       ref: 'Cart'
     }
-
   },
   {
     timestamps: true // Automatically create createdAt timestamp
@@ -67,6 +62,8 @@ userModel.pre('save', async function (this: IUserDocument, next) {
 
   const salt = await bcrypt.genSalt(10)
   this.password = await bcrypt.hash(this.password, salt)
+
+  next()
 })
 
 /**
@@ -78,20 +75,24 @@ userModel.pre('save', async function (this: IUserDocument, next) {
  */
 userModel.pre('save', async function (this: IUserDocument, next) {
   if (this.isNew) {
-    this.cart = await CartModel.create({
-      cartItems: [],
-      priceItems: 0.0,
-      active: true
-    })
-
     this.eventHandler = new UserEventHandler(this)
 
-    // Set up a listener for the 'cartDeleted' event on the cart instance associated with this user
-    this.cart.eventHandler.on('cartDeleted', (cartId: string) => {
-      // Call the delegate to handle the event
-      this.eventHandler.onCartDeleted(cartId)
+    const newCart = await CartModel.create({
+      userId: this._id
     })
+    newCart.eventHandler = new CartEventHandler(newCart)
+    newCart.eventHandler.on('userDeleted', (userId: string) => {
+      newCart.eventHandler.onUserDeleted(userId)
+    })
+
+    // Set up a listener for the 'cartDeleted' event on the cart instance associated with this user
+    newCart.eventHandler.on('cartDeleted', (cartId: string) => {
+      // Call the delegate to handle the event
+      void this.eventHandler.onCartDeleted(cartId)
+    })
+    this.cart = newCart._id
   }
+
   next()
 })
 

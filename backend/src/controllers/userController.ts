@@ -56,6 +56,8 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
       adminStatus
     })
 
+    void user.save()
+
     res.status(201).json({
       _id: user._id,
       name: user.name,

@@ -9,7 +9,7 @@ import { type ICartDocument } from './ICartDocument.js'
 export interface IUserDocument extends IUser, Document {
   doesPasswordMatch: (password: string) => Promise<boolean>
   eventHandler: UserEventHandler
-  cart: ICartDocument
+  cart?: ICartDocument
 }
 
 /**

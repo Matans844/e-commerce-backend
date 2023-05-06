@@ -1,6 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { type ICartDocument, type IUserDocument, type ICartItem } from '../documents/index.js'
-import { CartEventHandler } from '../eventHandlers/CartEventHandler.js'
+import { type ICartDocument, type ICartItem } from '../documents/index.js'
 import { ProductModel } from './ProductModel.js'
 
 /**
@@ -78,18 +77,25 @@ cartModel.virtual('priceItems').get(async function (this: ICartDocument) {
  * 2. Cart is listening to user.
  *
  * TODO: Listen to products, orders
- */
 
-cartModel.pre('save', function (this: ICartDocument, next) {
+cartModel.pre('save', async function (this: ICartDocument, next) {
   if (this.isNew) {
     this.eventHandler = new CartEventHandler(this)
-    this.user.eventHandler.on('userDeleted', (user: IUserDocument) => {
-      this.eventHandler.onUserDeleted(this.user._id)
+
+    // Retrieve the User instance associated with this Cart instance
+    const user = await UserModel.findById(this.userId).populate('cart').exec()
+    if (user == null) {
+      throw new Error(`User with ID ${this.userId} not found`)
+    }
+
+    user.eventHandler.on('userDeleted', (userId: string) => {
+      this.eventHandler.onUserDeleted(userId)
     })
   }
 
   next()
 })
+ */
 
 /**
  * Notify listeners of self deletion event

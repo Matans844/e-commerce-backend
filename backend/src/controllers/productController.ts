@@ -87,6 +87,9 @@ const createProduct = asyncHandler(async (req: Request, res: Response) => {
       price,
       countInStock
     })
+
+    void createdProduct.save()
+
     res.status(201).json({
       name: createdProduct.name,
       description: createdProduct.description,
