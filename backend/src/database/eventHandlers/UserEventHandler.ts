@@ -10,7 +10,7 @@ class UserEventHandler extends EventEmitter {
     this.emit('userDeleted', this.user)
   }
 
-  async onCartDeleted (cart: ICartDocument): Promise<void> {
+  onCartDeleted (cart: ICartDocument): void {
     void this.user.save()
   }
 }

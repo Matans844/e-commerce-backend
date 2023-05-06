@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events'
-import { type ICartDocument } from '../documents/index.js'
+import { type ICartDocument, type IUserDocument } from '../documents/index.js'
 
 class CartEventHandler extends EventEmitter {
   constructor (private readonly cart: ICartDocument) {
@@ -8,6 +8,10 @@ class CartEventHandler extends EventEmitter {
 
   emitCartDeleted (): void {
     this.emit('cartDeleted', this.cart)
+  }
+
+  onUserDeleted (user: IUserDocument): void {
+    void this.cart.delete()
   }
 }
 

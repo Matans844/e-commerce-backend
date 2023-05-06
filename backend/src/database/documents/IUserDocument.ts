@@ -1,6 +1,7 @@
 import { type Document, type Model } from 'mongoose'
 import { type IUser } from '../../types/index.js'
 import { type UserEventHandler } from '../eventHandlers/UserEventHandler.js'
+import { type ICartDocument } from './ICartDocument.js'
 
 /**
  * Will be populated by the schema
@@ -8,6 +9,7 @@ import { type UserEventHandler } from '../eventHandlers/UserEventHandler.js'
 export interface IUserDocument extends IUser, Document {
   doesPasswordMatch: (password: string) => Promise<boolean>
   eventHandler: UserEventHandler
+  cart: ICartDocument
 }
 
 /**

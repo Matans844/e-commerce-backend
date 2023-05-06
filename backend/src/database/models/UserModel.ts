@@ -75,28 +75,21 @@ userModel.pre('save', async function (this: IUserDocument, next) {
  * If not, a new cart is created according to the cart model.
  */
 userModel.pre('save', async function (this: IUserDocument, next) {
-  if (this.isNew || (this.cart == null)) {
-    const newCart = await CartModel.create({
+  if (this.isNew) {
+    this.cart = await CartModel.create({
       cartItems: [],
       priceItems: 0.0,
       active: true
     })
 
     // Set up a listener for the 'cartDeleted' event on the cart instance associated with this user
-    newCart.eventHandler.on('cartDeleted', (cart: ICartDocument) => {
+    this.cart.eventHandler.on('cartDeleted', (cart: ICartDocument) => {
       // Call the delegate to handle the event
-      void this.eventHandler.onCartDeleted(cart)
+      this.eventHandler.onCartDeleted(cart)
     })
-
-    this.cart = newCart
   }
   next()
 })
-
-userModel.methods.onCartDeleted = function (cartId: string) {
-  console.log('User cart deleted', cartId)
-  // Do something here when the cart is deleted
-}
 
 /**
  * Make sure the user document instance has an event emitter.
@@ -123,5 +116,23 @@ userModel.post('init', function (doc: IUserDocument) {
   })
 })
 */
+
+/**
+ * User Deletion
+ * Before deletion, we remove the user as a listener for the cart deletion event,
+ * so this user's cart deletion event delegate does not create a new empty cart.
+ * Then we delete the user's cart the and the user.
+ */
+userModel.pre('remove', async function (this: IUserDocument, next) {
+  this.cart.eventHandler.off('cartDeleted', this.eventHandler.onCartDeleted)
+
+  // Delete the user's cart
+  await CartModel.findByIdAndDelete(this.cart._id)
+
+  // Notify listeners of self deletion event
+  this.eventHandler.emitUserDeleted()
+
+  next()
+})
 
 export const UserModel = model<IUserDocument>('User', userModel)

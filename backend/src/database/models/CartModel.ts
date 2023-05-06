@@ -1,7 +1,7 @@
 import { model, Schema } from 'mongoose'
-import { type ICartDocument } from '../documents/index.js'
-import { ProductModel } from './ProductModel.js'
+import { type ICartDocument, type IUserDocument } from '../documents/index.js'
 import { CartEventHandler } from '../eventHandlers/CartEventHandler.js'
+import { ProductModel } from './ProductModel.js'
 
 /**
  * Reference:
@@ -78,6 +78,9 @@ cartModel.virtual('priceItems').get(async function (this: ICartDocument) {
 cartModel.pre('save', function (this: ICartDocument, next) {
   if (this.isNew) {
     this.eventHandler = new CartEventHandler(this)
+    this.user.eventHandler.on('userDeleted', (user: IUserDocument) => {
+      this.eventHandler.onUserDeleted(this.user)
+    })
   }
   next()
 })
