@@ -25,7 +25,7 @@ const protect = asyncHandler(async (req: Request, res: Response, next: NextFunct
     try {
       const user = await UserModel.findById(decoded.id).select('-password')
 
-      if (user === null) {
+      if (user == null) {
         throw new Error('User not found')
       }
 

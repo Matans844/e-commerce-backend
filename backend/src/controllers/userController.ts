@@ -13,7 +13,7 @@ const authUser = asyncHandler(async (req: Request, res: Response) => {
 
   const user = await UserModel.findOne({ email })
 
-  if ((user !== null) && (await user.doesPasswordMatch(password))) {
+  if ((user != null) && (await user.doesPasswordMatch(password))) {
     res.json({
       _id: user._id,
       name: user.name,
@@ -42,7 +42,7 @@ const registerUser = asyncHandler(async (req: Request, res: Response) => {
   const adminStatus = Boolean(isAdmin)
   const userExists = await UserModel.findOne({ email })
 
-  if (userExists !== null) {
+  if (userExists != null) {
     res.status(400)
     throw new Error('User already exists')
   }
@@ -95,7 +95,7 @@ const deleteUserById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params as { id: string }
 
   const user = await UserModel.findById(id)
-  if (user !== null) {
+  if (user != null) {
     await user.remove()
     res.json({ message: 'User removed' })
   } else {
@@ -113,7 +113,7 @@ const getUserById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params as { id: string }
   const user = await UserModel.findById(id).select('-password')
 
-  if (user !== null) {
+  if (user != null) {
     res.json(user)
   } else {
     res.status(404)
@@ -130,7 +130,7 @@ const updateUser = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params as { id: string }
   const user = await UserModel.findById(id)
 
-  if (user !== null) {
+  if (user != null) {
     user.name = req.body?.name ?? user.name
     user.email = req.body?.email ?? user.email
     user.isAdmin = req.body.isAdmin

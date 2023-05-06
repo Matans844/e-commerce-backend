@@ -53,7 +53,7 @@ userModel.methods.doesPasswordMatch = async function (
  * Runs before the model saves.
  * Checks to see if the password has been modified.
  * Hashes the password before saving to the database.
- */
+
 userModel.pre('save', async function (this: IUserDocument, next) {
   if (!this.isModified('password')) {
     next()
@@ -61,9 +61,8 @@ userModel.pre('save', async function (this: IUserDocument, next) {
 
   const salt = await bcrypt.genSalt(10)
   this.password = await bcrypt.hash(this.password, salt)
-
-  next()
 })
+ */
 
 /**
  * If this is a new instance, make sure that:
@@ -71,7 +70,7 @@ userModel.pre('save', async function (this: IUserDocument, next) {
  * 2. The cart document instance has an event emitter.
  * 3. User is listening to cart.
  *
- */
+
 userModel.pre('save', async function (this: IUserDocument, next) {
   if (this.isNew) {
     this.eventHandler = new UserEventHandler(this)
@@ -87,8 +86,37 @@ userModel.pre('save', async function (this: IUserDocument, next) {
     })
     this.cart = newCart._id
   }
+})
+*/
 
-  next()
+async function checkPassword(this: IUserDocument){
+    if (this.isModified('password')) {
+        const salt = await bcrypt.genSalt(10)
+        this.password = await bcrypt.hash(this.password, salt)
+    }
+}
+
+async function initialSetup(this: IUserDocument){
+    if (this.isNew) {
+        this.eventHandler = new UserEventHandler(this)
+
+        const newCart = await CartModel.create({
+            userId: this._id
+        })
+
+        // Set up a listener for the 'cartDeleted' event on the cart instance associated with this user
+        newCart.eventHandler.on('cartDeleted', (cartId: string) => {
+            // Call the delegate to handle the event
+            void this.eventHandler.onCartDeleted(cartId)
+        })
+        this.cart = newCart._id
+    }
+}
+
+
+userModel.pre('save', async function(){
+    await initialSetup()
+    await checkPassword()
 })
 
 /**

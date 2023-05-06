@@ -28,7 +28,7 @@ const getCartById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params as { id: string }
   const cart = await CartModel.findById(id)
 
-  if (cart !== null) {
+  if (cart != null) {
     res.json(cart)
   } else {
     res.status(404)
@@ -45,7 +45,7 @@ const deleteCartById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params as { id: string }
 
   const cart = await CartModel.findById(id)
-  if (cart !== null) {
+  if (cart != null) {
     await cart.remove()
 
     res.json({ message: 'Success: Cart removed' })
@@ -65,7 +65,7 @@ const addProductByIdInCartById = asyncHandler(async (req: Request, res: Response
   const { quantity } = req.body as { quantity: number }
   const cartToAddTo = await CartModel.findById(id)
 
-  if (cartToAddTo !== null) {
+  if (cartToAddTo != null) {
     void cartToAddTo.addProductToCartById(productId, quantity)
 
     res.json({ message: 'Success: Product added to cart' })
@@ -84,7 +84,7 @@ const deleteProductByIdInCartById = asyncHandler(async (req: Request, res: Respo
   const { id, productId } = req.params as { id: string, productId: string }
   const cartToAddTo = await CartModel.findById(id)
 
-  if (cartToAddTo !== null) {
+  if (cartToAddTo != null) {
     void cartToAddTo.deleteProductFromCartById(productId)
 
     res.json({ message: 'Success: Product deleted from cart' })
@@ -104,7 +104,7 @@ const updateProductQuantityByIdInCartById = asyncHandler(async (req: Request, re
   const { quantity } = req.body as { quantity: number }
   const cartToAddTo = await CartModel.findById(id)
 
-  if (cartToAddTo !== null) {
+  if (cartToAddTo != null) {
     void cartToAddTo.updateQuantityProductInCartById(productId, quantity)
 
     res.json({ message: 'Success: Product quantity in cart updated' })

@@ -52,7 +52,7 @@ const cartModel = new Schema(
  */
 cartModel.virtual('cartItemPrice').get(async function (productItem) {
   const product = await ProductModel.findById(productItem.productID)
-  if (product === null) {
+  if (product == null) {
     return 0
   }
   return product.price * productItem.quantity
@@ -63,7 +63,7 @@ cartModel.virtual('cartItemPrice').get(async function (productItem) {
  * based on the productItems field,
  * but it is not stored in the database.
  */
-cartModel.virtual('priceItems').get(async function (this: ICartDocument) {
+cartModel.virtual('priceItems').get(function (this: ICartDocument) {
   let total = 0
   for (const item of this.cartItems) {
     const itemPrice = await this.cartItemPrice(item)
@@ -79,7 +79,7 @@ cartModel.virtual('priceItems').get(async function (this: ICartDocument) {
  *
  * TODO: Listen to products, orders
  */
-cartModel.pre('save', async function (this: ICartDocument, next) {
+cartModel.pre('save', function (this: ICartDocument, next) {
   if (this.isNew) {
     this.eventHandler = new CartEventHandler(this)
     this.eventHandler.on('userDeleted', (userId: string) => {
@@ -93,7 +93,7 @@ cartModel.pre('save', async function (this: ICartDocument, next) {
 /**
  * Notify listeners of self deletion event
  */
-cartModel.pre('remove', async function (this: ICartDocument, next) {
+cartModel.pre('remove',  function (this: ICartDocument, next) {
   this.eventHandler.emitCartDeleted()
 
   next()
@@ -107,7 +107,7 @@ cartModel.pre('remove', async function (this: ICartDocument, next) {
  */
 cartModel.methods.addProductToCartById = async function (productId: string, quantity: number) {
   const productToAdd = await ProductModel.findById(productId)
-  if (productToAdd === null) {
+  if (productToAdd == null) {
     throw new Error('Product not found. It should first be added to store.')
   }
   if (quantity <= 0) {

@@ -40,7 +40,7 @@ const getProducts = asyncHandler(async (req: Request, res: Response) => {
 const getProductById = asyncHandler(async (req: Request, res: Response) => {
   const product = await ProductModel.findById(req.params.id)
 
-  if (product !== null) {
+  if (product != null) {
     res.json(product)
   } else {
     res.status(404)
@@ -56,7 +56,7 @@ const getProductById = asyncHandler(async (req: Request, res: Response) => {
 const deleteProductById = asyncHandler(async (req: Request, res: Response) => {
   const product = await ProductModel.findById(req.params.id)
 
-  if (product !== null) {
+  if (product != null) {
     await product.remove()
     res.json({ message: 'Product removed' })
   } else {
@@ -123,7 +123,7 @@ const updateProduct = asyncHandler(async (req: Request, res: Response) => {
 
   const product = await ProductModel.findById(id)
 
-  if (product !== null) {
+  if (product != null) {
     product.name = name
     product.description = description
     product.price = price
