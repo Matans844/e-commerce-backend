@@ -1,16 +1,16 @@
 import { model, Schema } from 'mongoose'
-import { type OrderDocument } from '../documents/index.js'
+import { type IOrderDocument } from '../documents/index.js'
 
 const orderModel = new Schema(
   {
-    userID: {
+    userId: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: 'User'
     },
     productItems: [
       {
-        productID: {
+        productId: {
           type: Schema.Types.ObjectId,
           required: true,
           ref: 'Product'
@@ -96,4 +96,4 @@ const orderModel = new Schema(
   }
 )
 
-export const OrderModel = model<OrderDocument>('Order', orderModel)
+export const OrderModel = model<IOrderDocument>('Order', orderModel)

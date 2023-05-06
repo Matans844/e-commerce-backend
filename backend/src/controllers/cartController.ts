@@ -1,14 +1,13 @@
-/*
 import asyncHandler from 'express-async-handler'
 
 import { type Request, type Response } from '../types/index.js'
 import { UserModel, ProductModel, CartModel } from '../database/models/index.js'
 
-**
+/**
  * Get all carts
  * @route GET /api/carts
  * @access Private/Admin
- *
+ */
 const getAllCarts = asyncHandler(async (req: Request, res: Response) => {
   const carts = await CartModel.find({})
 
@@ -20,11 +19,11 @@ const getAllCarts = asyncHandler(async (req: Request, res: Response) => {
   }
 })
 
-**
+/**
  * Get a cart by id
  * @route GET /api/carts/:id
  * @access Private/Admin
- *
+ */
 const getCartById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params as { id: string }
   const cart = await CartModel.findById(id)
@@ -37,11 +36,11 @@ const getCartById = asyncHandler(async (req: Request, res: Response) => {
   }
 })
 
-**
+/**
  * Delete a cart by id
  * @route DELETE /api/carts/:id
  * @access Private/Admin
- *
+ */
 const deleteCartById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params as { id: string }
 
@@ -55,11 +54,11 @@ const deleteCartById = asyncHandler(async (req: Request, res: Response) => {
   }
 })
 
-**
+/**
  * Add product by product id
  * @route POST /api/carts/:id/:productId
  * @access Private
- *
+ */
 const addProductById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params as { id: string }
   const user = await UserModel.findById(id)
@@ -84,11 +83,11 @@ const addProductById = asyncHandler(async (req: Request, res: Response) => {
   }
 })
 
-**
+/**
  * Delete product by product id
  * @route DELETE /api/carts/:id/:productId
  * @access Private
- *
+ */
 const deleteProductById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params as { id: string }
   const user = await UserModel.findById(id)
@@ -113,11 +112,11 @@ const deleteProductById = asyncHandler(async (req: Request, res: Response) => {
   }
 })
 
-**
+/**
  * Update product quantity by product id
  * @route PUT /api/carts/:id/:productId
  * @access Private
- *
+ */
 const deleteProductById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params as { id: string }
   const user = await UserModel.findById(id)
@@ -142,11 +141,11 @@ const deleteProductById = asyncHandler(async (req: Request, res: Response) => {
   }
 })
 
-**
+/**
  * @description Update a product quantity by id
  * @route PUT /api/carts/:id/:productId
  * @access Private
- *
+ */
 const updateQuantityOfProductById = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params as { id: string }
   const {
@@ -185,5 +184,3 @@ export {
   deleteProductById,
   updateQuantityOfProductById
 }
-
-*/

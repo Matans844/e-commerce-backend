@@ -3,7 +3,7 @@
  * Then barrel exporting. This is used by the models.
  */
 export * from '../../types/index.js'
-export * from './OrderDocument.js'
-export * from './ProductDocument.js'
-export * from './UserDocument.js'
-export * from './CartDocument.js'
+export * from './IOrderDocument.js'
+export * from './IProductDocument.js'
+export * from './IUserDocument.js'
+export * from './ICartDocument.js'

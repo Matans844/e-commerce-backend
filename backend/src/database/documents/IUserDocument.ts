@@ -4,7 +4,7 @@ import { type IUser } from '../../types/index.js'
 /**
  * Will be populated by the schema
  */
-export interface UserDocument extends IUser, Document {
+export interface IUserDocument extends IUser, Document {
   doesPasswordMatch: (password: string) => Promise<boolean>
 }
 

@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { type ProductDocument } from '../documents/index.js'
+import { type IProductDocument } from '../documents/index.js'
 
 const productModel = new Schema(
   {
@@ -14,12 +14,14 @@ const productModel = new Schema(
     price: {
       type: Number,
       required: true,
-      default: 0.0
+      default: 0.0,
+      min: 0
     },
     countInStock: {
       type: Number,
       required: true,
-      default: 1
+      default: 1,
+      min: 0
     }
   },
   {
@@ -27,4 +29,4 @@ const productModel = new Schema(
   }
 )
 
-export const ProductModel = model<ProductDocument>('Product', productModel)
+export const ProductModel = model<IProductDocument>('Product', productModel)

@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { type CartDocument } from '../documents/index.js'
+import { type ICartDocument } from '../documents/index.js'
 
 /**
  * Reference:
@@ -7,28 +7,33 @@ import { type CartDocument } from '../documents/index.js'
  */
 const cartModel = new Schema(
   {
-    userID: {
+    userId: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: 'User'
     },
-    productItems: [
-      {
-        productID: {
-          type: Schema.Types.ObjectId,
-          required: true,
-          ref: 'Product'
-        },
-        quantity: {
-          type: Number,
-          required: true
-        },
-        price: {
-          type: Number,
-          required: true
+    productItems: {
+      type: [
+        {
+          productID: {
+            type: Schema.Types.ObjectId,
+            required: true,
+            ref: 'Product'
+          },
+          quantity: {
+            type: Number,
+            required: true,
+            min: 0
+          },
+          price: {
+            type: Number,
+            required: true,
+            min: 0
+          }
         }
-      }
-    ],
+      ],
+      default: []
+    },
     priceItems: {
       type: Number,
       required: true,
@@ -48,4 +53,4 @@ const cartModel = new Schema(
   }
 )
 
-export const CartModel = model<CartDocument>('Cart', cartModel)
+export const CartModel = model<ICartDocument>('Cart', cartModel)

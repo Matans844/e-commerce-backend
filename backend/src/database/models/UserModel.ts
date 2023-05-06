@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs'
 import { model, Schema } from 'mongoose'
-import { type UserDocument } from '../documents/index.js'
+import { type IUserDocument } from '../documents/index.js'
+import { CartModel } from './CartModel.js'
 
 const userModel = new Schema(
   {
@@ -25,6 +26,12 @@ const userModel = new Schema(
       type: Boolean,
       required: true,
       default: false
+    },
+    cart: CartModel,
+    default: {
+      productItems: [],
+      priceItems: 0.0,
+      active: true
     }
   },
   {
@@ -48,7 +55,7 @@ userModel.methods.doesPasswordMatch = async function (
  * Checks to see if the password has been modified.
  * Hashes the password before saving to the database.
  */
-userModel.pre('save', async function (this: UserDocument, next) {
+userModel.pre('save', async function (this: IUserDocument, next) {
   if (!this.isModified('password')) {
     next()
   }
@@ -57,4 +64,20 @@ userModel.pre('save', async function (this: UserDocument, next) {
   this.password = await bcrypt.hash(this.password, salt)
 })
 
-export const UserModel = model<UserDocument>('User', userModel)
+/**
+ * Runs before the model saves.
+ * Checks to see the user has a cart.
+ * If note, a new cart is created according to the cart model.
+ */
+userModel.pre('save', async function (this: IUserDocument, next) {
+  if (this.isNew || (this.cart == null)) {
+    this.cart = await CartModel.create({
+      productItems: [],
+      priceItems: 0.0,
+      active: true
+    })
+  }
+  next()
+})
+
+export const UserModel = model<IUserDocument>('User', userModel)

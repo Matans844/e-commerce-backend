@@ -1,3 +1,5 @@
+import { type ICart } from '../cart/ICart.js'
+
 /**
  * Represents a user
  */
@@ -7,4 +9,5 @@ export interface IUser {
   password: string
   address: string
   isAdmin?: boolean
+  cart?: ICart
 }

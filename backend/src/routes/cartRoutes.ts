@@ -4,12 +4,13 @@ import {
   getAllCarts,
   getCartById,
   deleteCartById,
-  addProductById,
-  deleteProductById,
-  updateQuantityOfProductById,
   addProductByIdInCartById,
   deleteProductByIdInCartById,
-  updateQuantityOfProductByIdInCartById
+  updateQuantityOfProductByIdInCartById,
+  getCart,
+  addProductById,
+  deleteProductById,
+  updateQuantityOfProductById
 } from '../controllers/cartController.js'
 import { protect, admin } from '../middleware/authorizationMiddleware.js'
 
@@ -18,6 +19,7 @@ const router = express.Router()
 router.route('/').get(protect, admin, getAllCarts)
 router
   .route('/:id')
+  .get(protect,admin, getAllCarts)
   .get(protect, admin, getCartById)
   .delete(protect, admin, deleteCartById)
 router
@@ -27,6 +29,7 @@ router
   .put(protect, admin, updateQuantityOfProductByIdInCartById)
 router
   .route('/mycart/:productId')
+  .get(protect, getCart)
   .post(protect, addProductById)
   .delete(protect, deleteProductById)
   .put(protect, updateQuantityOfProductById)
