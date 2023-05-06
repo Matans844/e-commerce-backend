@@ -27,9 +27,9 @@ router
   .post(protect, admin, addProductByIdInCartById)
   .delete(protect, admin, deleteProductByIdInCartById)
   .put(protect, admin, updateQuantityOfProductByIdInCartById)
+ router.route('/mycart').get(protect,getCart)
 router
   .route('/mycart/:productId')
-  .get(protect, getCart)
   .post(protect, addProductById)
   .delete(protect, deleteProductById)
   .put(protect, updateQuantityOfProductById)

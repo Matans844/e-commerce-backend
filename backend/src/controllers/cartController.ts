@@ -1,7 +1,7 @@
 import asyncHandler from 'express-async-handler'
-
 import { type Request, type Response } from '../types/index.js'
 import { CartModel } from '../database/models/index.js'
+import { type ICartDocument } from '../database/documents/index.js'
 
 /**
  * @description Get all carts
@@ -47,6 +47,7 @@ const deleteCartById = asyncHandler(async (req: Request, res: Response) => {
   const cart = await CartModel.findById(id)
   if (cart !== null) {
     await cart.remove()
+
     res.json({ message: 'Success: Cart removed' })
   } else {
     res.status(404)
@@ -66,6 +67,7 @@ const addProductByIdInCartById = asyncHandler(async (req: Request, res: Response
 
   if (cartToAddTo !== null) {
     void cartToAddTo.addProductToCartById(productId, quantity)
+
     res.json({ message: 'Success: Product added to cart' })
   } else {
     res.status(404)
@@ -99,11 +101,11 @@ const deleteProductByIdInCartById = asyncHandler(async (req: Request, res: Respo
  */
 const updateProductByIdInCartById = asyncHandler(async (req: Request, res: Response) => {
   const { id, productId } = req.params as { id: string, productId: string }
-  const { quantityToUpdate } = req.body as { quantityToUpdate: number }
+  const { quantity } = req.body as { quantity: number }
   const cartToAddTo = await CartModel.findById(id)
 
   if (cartToAddTo !== null) {
-    void cartToAddTo.updateQuantityProductInCartById(productId, quantityToUpdate)
+    void cartToAddTo.updateQuantityProductInCartById(productId, quantity)
 
     res.json({ message: 'Success: Product quantity in cart updated' })
   } else {
@@ -113,7 +115,7 @@ const updateProductByIdInCartById = asyncHandler(async (req: Request, res: Respo
 })
 
 /**
- * @description Update a product quantity by id
+ * @description Get self cart
  * @route PUT /api/carts/mycart
  * @access Private
  */
@@ -128,6 +130,68 @@ const getCart = asyncHandler(async (req: Request, res: Response) => {
   }
 })
 
+/**
+ * @description Add a product quantity by id in self cart
+ * @route PUT /api/carts/mycart/:productId
+ * @access Private
+ */
+const addProductById = asyncHandler(async (req: Request, res: Response) => {
+  const { productId } = req.params as { productId: string }
+  const { quantity } = req.body as { quantity: number }
+  const selfCart = req.user?.cart
+
+  if (selfCart !== undefined) {
+    const cartToAddTo = selfCart as ICartDocument
+    void cartToAddTo.addProductToCartById(productId, quantity)
+
+    res.json({ message: 'Success: Product added to cart' })
+  } else {
+    res.status(404)
+    throw new Error('Cart not found')
+  }
+})
+
+/**
+ * @description Delete product by id in self cart
+ * @route PUT /api/carts/mycart/:productId
+ * @access Private
+ */
+const deleteProductById = asyncHandler(async (req: Request, res: Response) => {
+  const { productId } = req.params as { productId: string }
+  const selfCart = req.user?.cart
+
+  if (selfCart !== undefined) {
+    const cartToAddTo = selfCart as ICartDocument
+    void cartToAddTo.deleteProductFromCartById(productId)
+
+    res.json({ message: 'Success: Product deleted from cart' })
+  } else {
+    res.status(404)
+    throw new Error('User has no cart')
+  }
+})
+
+/**
+ * @description Update a product quantity in self cart
+ * @route PUT /api/carts/mycart/:productId
+ * @access Private
+ */
+const updateQuantityOfProductById = asyncHandler(async (req: Request, res: Response) => {
+  const { productId } = req.params as { productId: string }
+  const { quantity } = req.body as { quantity: number }
+  const selfCart = req.user?.cart
+
+  if (selfCart !== undefined) {
+    const cartToAddTo = selfCart as ICartDocument
+    void cartToAddTo.updateQuantityProductInCartById(productId, quantity)
+
+    res.json({ message: 'Success: Product quantity in cart updated' })
+  } else {
+    res.status(404)
+    throw new Error('User has no cart')
+  }
+})
+
 export {
   getAllCarts,
   getCartById,
@@ -135,5 +199,8 @@ export {
   addProductByIdInCartById,
   deleteProductByIdInCartById,
   updateProductByIdInCartById,
-  getCart
+  getCart,
+  addProductById,
+  deleteProductById,
+  updateQuantityOfProductById
 }
