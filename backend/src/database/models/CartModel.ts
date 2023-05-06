@@ -1,5 +1,5 @@
 import { model, Schema } from 'mongoose'
-import { type ICartDocument, type IUserDocument } from '../documents/index.js'
+import {type ICartDocument, IProductDocument, type IUserDocument} from '../documents/index.js'
 import { CartEventHandler } from '../eventHandlers/CartEventHandler.js'
 import { ProductModel } from './ProductModel.js'
 
@@ -99,5 +99,65 @@ cartModel.pre('remove', async function (this: ICartDocument, next) {
 
   next()
 })
+
+/**
+ * Adds product to cart.
+ * Also, adds the cart as listener to the product if it is new in the cart
+ * @param productID
+ * @param quantity
+ */
+cartModel.methods.addProductById = async function(productID, quantity) {
+  const productToAdd = await ProductModel.findById(productID)
+  if (productToAdd == null) {
+    throw new Error('Product not found. It should first be added to store.')
+  }
+
+  const existingItemIndex = this.cartItems.findIndex(item => item.productID === productID)
+  if (existingItemIndex >= 0) {
+    // Update existing cart item quantity
+    this.cartItems[existingItemIndex].quantity += quantity
+  } else {
+    // Add new cart item
+    this.cartItems.push({ productID, quantity })
+    // Add cart as listener
+    this.cart.
+    productToAdd.eventHandler.on('productDeleted', (product: IProductDocument) => {
+      this.eventHandler.onProductDeleted(product)
+    })
+    this.cart.productToAdd.eventHandler.on('productQuantityChanged', (product: IProductDocument, newQuantity: number) => {
+      this.eventHandler.onProductQuantityChanged(product, newQuantity)
+    })
+  }
+  await this.save()
+}
+
+/**
+ * Removes product from cart by productId
+ * @param productID
+ */
+cartModel.methods.removeProductById = async function(productID) {
+  const existingItemIndex = this.cartItems.findIndex(item => item.productID === productID)
+  if (existingItemIndex >= 0) {
+    // Remove cart item
+    this.cartItems.splice(existingItemIndex, 1)
+    await this.save()
+  }
+  else{
+    throw new Error('Product does not exist in cart.')
+  }
+}
+
+
+cartModel.methods.changeQuantityProductById = async function(productID, newQuantity){
+  const existingItemIndex = this.cartItems.findIndex(item => item.productID === productID)
+  if (existingItemIndex >= 0) {
+    // Update cart item
+    this.cartItems[existingItemIndex].quantity = newQuantity
+    await this.save()
+  }
+  else{
+    throw new Error('Product does not exist in cart.')
+  }
+}
 
 export const CartModel = model<ICartDocument>('Cart', cartModel)
