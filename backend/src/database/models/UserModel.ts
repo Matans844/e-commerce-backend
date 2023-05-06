@@ -3,6 +3,7 @@ import { model, Schema } from 'mongoose'
 import { CartModel } from './CartModel.js'
 import { type IUserDocument } from '../documents/index.js'
 import { UserEventHandler } from '../eventHandlers/UserEventHandler.js'
+import { CartEventHandler } from '../eventHandlers/CartEventHandler.js'
 
 const userModel = new Schema(
   {
@@ -123,12 +124,17 @@ userModel.pre('save', async function (this: IUserDocument) {
     const newCart = await CartModel.create({
       userId: this._id
     })
+    newCart.eventHandler = new CartEventHandler(newCart)
+    newCart.eventHandler.on('userDeleted', (userId: string) => {
+      newCart.eventHandler.onUserDeleted(userId)
+    })
 
     // Set up a listener for the 'cartDeleted' event on the cart instance associated with this user
     newCart.eventHandler.on('cartDeleted', (cartId: string) => {
       // Call the delegate to handle the event
       void this.eventHandler.onCartDeleted(cartId)
     })
+
     this.cart = newCart._id
   }
   if (this.isModified('password')) {

@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv'
-import users from './sampleData/sampleUsers.js'
+import { usersDataWithHashedPassword, usersDataWithoutHashedPassword } from './sampleData/sampleUsers.js'
 import products from './sampleData/sampleProducts.js'
 import { UserModel, ProductModel, OrderModel, CartModel } from '../src/database/models/index.js'
 import { connectDB } from '../src/database/DatabaseConnector.js'
@@ -70,7 +70,7 @@ async function destroyAndImportData (): Promise<void> {
     console.log('Data Destroyed!')
 
     // Add data to DB
-    await UserModel.insertMany(users)
+    await UserModel.insertMany(usersDataWithHashedPassword)
     await ProductModel.insertMany(products)
 
     console.log('Data Imported!')
@@ -96,14 +96,14 @@ async function destroyDataAndCreateAndImport (): Promise<void> {
     console.log('Data Destroyed!')
 
     // Create data and add to DB
-    for (const userData of users) {
-      const user = await UserModel.create(userData)
-      await user.save()
+    for (const userData of usersDataWithoutHashedPassword) {
+      await UserModel.create(userData)
     }
 
     for (const productData of products) {
-      const product = await ProductModel.create(productData)
-      await product.save()
+      await ProductModel.create(productData)
+      // const product = await ProductModel.create(productData)
+      // await product.save()
     }
 
     console.log('Data Imported!')
