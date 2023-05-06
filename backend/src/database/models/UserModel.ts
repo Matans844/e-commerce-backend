@@ -70,9 +70,11 @@ userModel.pre('save', async function (this: IUserDocument, next) {
 })
 
 /**
- * Runs before the model saves.
- * Checks to see the user has a cart.
- * If not, a new cart is created according to the cart model.
+ * If this is a new instance, make sure that:
+ * 1. A cart exists.
+ * 2. The cart document instance has an event emitter.
+ * 3. User is listening to cart.
+ *
  */
 userModel.pre('save', async function (this: IUserDocument, next) {
   if (this.isNew) {
@@ -82,21 +84,13 @@ userModel.pre('save', async function (this: IUserDocument, next) {
       active: true
     })
 
+    this.eventHandler = new UserEventHandler(this)
+
     // Set up a listener for the 'cartDeleted' event on the cart instance associated with this user
     this.cart.eventHandler.on('cartDeleted', (cart: ICartDocument) => {
       // Call the delegate to handle the event
       this.eventHandler.onCartDeleted(cart)
     })
-  }
-  next()
-})
-
-/**
- * Make sure the user document instance has an event emitter.
- */
-userModel.pre('save', function (this: IUserDocument, next) {
-  if (this.isNew) {
-    this.eventHandler = new UserEventHandler(this)
   }
   next()
 })

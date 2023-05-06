@@ -73,8 +73,13 @@ cartModel.virtual('priceItems').get(async function (this: ICartDocument) {
 })
 
 /**
- * Make sure the cart document instance has an event emitter.
+ * If this is a new instance, make sure that:
+ * 1. The cart document instance has an event emitter.
+ * 2. Cart is listening to user.
+ *
+ * TODO: Listen to products, orders
  */
+
 cartModel.pre('save', function (this: ICartDocument, next) {
   if (this.isNew) {
     this.eventHandler = new CartEventHandler(this)
@@ -82,6 +87,7 @@ cartModel.pre('save', function (this: ICartDocument, next) {
       this.eventHandler.onUserDeleted(this.user)
     })
   }
+
   next()
 })
 

@@ -32,6 +32,9 @@ const productModel = new Schema(
 
 /**
  * Make sure the product document instance has an event emitter.
+ * The product does not need to listen to users or carts.
+ *
+ * TODO: Listen to orders
  */
 productModel.pre('save', function (this: IProductDocument, next) {
   if (this.isNew) {
