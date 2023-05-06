@@ -63,7 +63,7 @@ cartModel.virtual('cartItemPrice').get(async function (productItem) {
  * based on the productItems field,
  * but it is not stored in the database.
  */
-cartModel.virtual('priceItems').get(function (this: ICartDocument) {
+cartModel.virtual('priceItems').get(async function (this: ICartDocument) {
   let total = 0
   for (const item of this.cartItems) {
     const itemPrice = await this.cartItemPrice(item)
@@ -93,7 +93,7 @@ cartModel.pre('save', function (this: ICartDocument, next) {
 /**
  * Notify listeners of self deletion event
  */
-cartModel.pre('remove',  function (this: ICartDocument, next) {
+cartModel.pre('remove', function (this: ICartDocument, next) {
   this.eventHandler.emitCartDeleted()
 
   next()

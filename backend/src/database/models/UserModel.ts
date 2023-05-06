@@ -89,34 +89,52 @@ userModel.pre('save', async function (this: IUserDocument, next) {
 })
 */
 
-async function checkPassword(this: IUserDocument){
-    if (this.isModified('password')) {
-        const salt = await bcrypt.genSalt(10)
-        this.password = await bcrypt.hash(this.password, salt)
-    }
+/*
+async function checkPassword () {
+  if (this.isModified('password')) {
+    const salt = await bcrypt.genSalt(10)
+    this.password = await bcrypt.hash(this.password, salt)
+  }
 }
 
-async function initialSetup(this: IUserDocument){
-    if (this.isNew) {
-        this.eventHandler = new UserEventHandler(this)
+async function initialSetup () {
+  if (this.isNew) {
+    this.eventHandler = new UserEventHandler(this)
 
-        const newCart = await CartModel.create({
-            userId: this._id
-        })
+    const newCart = await CartModel.create({
+      userId: this._id
+    })
 
-        // Set up a listener for the 'cartDeleted' event on the cart instance associated with this user
-        newCart.eventHandler.on('cartDeleted', (cartId: string) => {
-            // Call the delegate to handle the event
-            void this.eventHandler.onCartDeleted(cartId)
-        })
-        this.cart = newCart._id
-    }
+    // Set up a listener for the 'cartDeleted' event on the cart instance associated with this user
+    newCart.eventHandler.on('cartDeleted', (cartId: string) => {
+      // Call the delegate to handle the event
+      void this.eventHandler.onCartDeleted(cartId)
+    })
+    this.cart = newCart._id
+  }
 }
 
+ */
 
-userModel.pre('save', async function(){
-    await initialSetup()
-    await checkPassword()
+userModel.pre('save', async function (this: IUserDocument) {
+  if (this.isNew) {
+    this.eventHandler = new UserEventHandler(this)
+
+    const newCart = await CartModel.create({
+      userId: this._id
+    })
+
+    // Set up a listener for the 'cartDeleted' event on the cart instance associated with this user
+    newCart.eventHandler.on('cartDeleted', (cartId: string) => {
+      // Call the delegate to handle the event
+      void this.eventHandler.onCartDeleted(cartId)
+    })
+    this.cart = newCart._id
+  }
+  if (this.isModified('password')) {
+    const salt = await bcrypt.genSalt(10)
+    this.password = await bcrypt.hash(this.password, salt)
+  }
 })
 
 /**
