@@ -1,7 +1,8 @@
-import { type IProductItem } from './IProductItem.js'
+import { type ICartItem } from './ICartItem.js'
 
 export interface ICart {
-  cartItems: IProductItem[]
+  cartItems: ICartItem[]
   quantity: number
-  price: number
+  cartItemPrice: (item: ICartItem) => Promise<number>
+  priceItems: Promise<number>
 }

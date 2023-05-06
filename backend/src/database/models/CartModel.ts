@@ -1,5 +1,6 @@
 import { model, Schema } from 'mongoose'
 import { type ICartDocument } from '../documents/index.js'
+import { ProductModel } from './ProductModel.js'
 
 /**
  * Reference:
@@ -12,7 +13,7 @@ const cartModel = new Schema(
       required: true,
       ref: 'User'
     },
-    productItems: {
+    cartItems: {
       type: [
         {
           productID: {
@@ -24,20 +25,10 @@ const cartModel = new Schema(
             type: Number,
             required: true,
             min: 0
-          },
-          price: {
-            type: Number,
-            required: true,
-            min: 0
           }
         }
       ],
       default: []
-    },
-    priceItems: {
-      type: Number,
-      required: true,
-      default: 0.0
     },
     active: {
       type: Boolean,
@@ -52,5 +43,37 @@ const cartModel = new Schema(
     timestamps: true
   }
 )
+
+/**
+ * Computes and returns the price field of a single cartItem,
+ * based on the productID and quantity fields,
+ * but it is not stored in the database
+ */
+cartModel.virtual('cartItemPrice').get(async function (productItem) {
+  const product = await ProductModel.findById(productItem.productID)
+  if (product == null) {
+    return 0
+  }
+  return product.price * productItem.quantity
+})
+
+/**
+ * computes and returns the priceItems field,
+ * based on the productItems field,
+ * but it is not stored in the database.
+ */
+cartModel.virtual('priceItems').get(async function (this: ICartDocument) {
+  let total = 0
+  for (const item of this.cartItems) {
+    const itemPrice = await this.cartItemPrice(item)
+    total += itemPrice
+  }
+  return total
+})
+
+cartModel.pre('remove', async function (this: ICartDocument, next) {
+  this.emit('cartDeleted', this._id)
+  next()
+})
 
 export const CartModel = model<ICartDocument>('Cart', cartModel)

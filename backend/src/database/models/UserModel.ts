@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs'
 import { model, Schema } from 'mongoose'
-import { type IUserDocument } from '../documents/index.js'
 import { CartModel } from './CartModel.js'
+import { type IUserDocument } from '../documents/index.js'
 
 const userModel = new Schema(
   {
@@ -29,7 +29,7 @@ const userModel = new Schema(
     },
     cart: CartModel,
     default: {
-      productItems: [],
+      cartItems: [],
       priceItems: 0.0,
       active: true
     }
@@ -67,17 +67,23 @@ userModel.pre('save', async function (this: IUserDocument, next) {
 /**
  * Runs before the model saves.
  * Checks to see the user has a cart.
- * If note, a new cart is created according to the cart model.
+ * If not, a new cart is created according to the cart model.
  */
 userModel.pre('save', async function (this: IUserDocument, next) {
   if (this.isNew || (this.cart == null)) {
     this.cart = await CartModel.create({
-      productItems: [],
+      cartItems: [],
       priceItems: 0.0,
       active: true
     })
   }
   next()
+})
+
+userModel.post('init', function (doc: IUserDocument) {
+  doc.cart.on('cartDeleted', async function (cartId) {
+    // Do something here when the cart is deleted
+  })
 })
 
 export const UserModel = model<IUserDocument>('User', userModel)

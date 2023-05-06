@@ -4,5 +4,6 @@
 export * from './user/IUser.js'
 export * from './order/IOrder.js'
 export * from './cart/ICart.js'
+export * from './cart/ICartItem.js'
 export * from './product/IProduct.js'
 export * from './express/express.js'
