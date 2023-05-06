@@ -14,7 +14,7 @@ const protect = asyncHandler(async (req: Request, res: Response, next: NextFunct
     token = req.headers.authorization.split(' ')[1]
   }
 
-  if (token === null) {
+  if (token == null) {
     res.status(401).json({ message: 'Not authorized, no token' })
     return
   }
