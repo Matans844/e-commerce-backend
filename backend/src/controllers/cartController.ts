@@ -99,7 +99,7 @@ const deleteProductByIdInCartById = asyncHandler(async (req: Request, res: Respo
  * @route PUT /api/carts/:id/:productId
  * @access Private/Admin
  */
-const updateProductByIdInCartById = asyncHandler(async (req: Request, res: Response) => {
+const updateProductQuantityByIdInCartById = asyncHandler(async (req: Request, res: Response) => {
   const { id, productId } = req.params as { id: string, productId: string }
   const { quantity } = req.body as { quantity: number }
   const cartToAddTo = await CartModel.findById(id)
@@ -198,7 +198,7 @@ export {
   deleteCartById,
   addProductByIdInCartById,
   deleteProductByIdInCartById,
-  updateProductByIdInCartById,
+  updateProductQuantityByIdInCartById,
   getCart,
   addProductById,
   deleteProductById,
