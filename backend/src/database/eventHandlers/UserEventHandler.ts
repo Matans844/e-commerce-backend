@@ -13,11 +13,16 @@ class UserEventHandler extends EventEmitter {
 
   async onCartDeleted (cartId: string): Promise<void> {
     const newCart = await CartModel.create({
-      userId: this.user._id,
-      user: this
+      userId: this.user._id
     })
 
-    void newCart.save()
+    // Set up a listener for the 'cartDeleted' event on the cart instance associated with this user
+    newCart.eventHandler.on('cartDeleted', (cartId: string) => {
+      // Call the delegate to handle the event
+      void this.onCartDeleted(cartId)
+    })
+
+    this.user.cart = newCart._id
   }
 }
 
