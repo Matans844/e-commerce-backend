@@ -1,7 +1,6 @@
 import asyncHandler from 'express-async-handler'
 import { type Request, type Response } from '../types/index.js'
 import { CartModel } from '../database/models/index.js'
-import { type ICartDocument } from '../database/documents/index.js'
 
 /**
  * @description Get all carts
@@ -145,13 +144,19 @@ const addProductById = asyncHandler(async (req: Request, res: Response) => {
     quantity: number
   }
 
-  const selfCart = req.user?.cart
+  if (req.user !== undefined) {
+    try {
+      const cartToAddTo = await CartModel.findById(req.user._id)
+      if (cartToAddTo == null) {
+        throw new Error('Could not get cart')
+      }
 
-  if (selfCart !== undefined) {
-    const cartToAddTo = selfCart as ICartDocument
-    void cartToAddTo.addProductToCartById(productId, quantity)
-
-    res.json({ message: 'Success: Product added to cart' })
+      await cartToAddTo.addProductToCartById(productId, quantity)
+      res.json({ message: 'Success: Product added to cart' })
+    } catch (error) {
+      res.status(500)
+      throw new Error('Server error: Could not add product to cart')
+    }
   } else {
     res.status(500)
     throw new Error('Server error: User cart not found')
@@ -165,13 +170,20 @@ const addProductById = asyncHandler(async (req: Request, res: Response) => {
  */
 const deleteProductById = asyncHandler(async (req: Request, res: Response) => {
   const { productId } = req.body as { productId: string }
-  const selfCart = req.user?.cart
 
-  if (selfCart !== undefined) {
-    const cartToAddTo = selfCart as ICartDocument
-    void cartToAddTo.deleteProductFromCartById(productId)
+  if (req.user !== undefined) {
+    try {
+      const cart = await CartModel.findById(req.user._id)
+      if (cart == null) {
+        throw new Error('Could not get cart')
+      }
 
-    res.json({ message: 'Success: Product deleted from cart' })
+      await cart.deleteProductFromCartById(productId)
+      res.json({ message: 'Success: Product deleted from cart' })
+    } catch (error) {
+      res.status(500)
+      throw new Error('Server error: Could not delete product from cart')
+    }
   } else {
     res.status(500)
     throw new Error('Server error: User cart not found')
@@ -190,13 +202,20 @@ const updateQuantityOfProductById = asyncHandler(async (req: Request, res: Respo
     productId: string
     quantity: number
   }
-  const selfCart = req.user?.cart
 
-  if (selfCart !== undefined) {
-    const cartToAddTo = selfCart as ICartDocument
-    void cartToAddTo.updateQuantityProductInCartById(productId, quantity)
+  if (req.user !== undefined) {
+    try {
+      const cart = await CartModel.findById(req.user._id)
+      if (cart == null) {
+        throw new Error('Could not get cart')
+      }
 
-    res.json({ message: 'Success: Product quantity in cart updated' })
+      await cart.updateQuantityProductInCartById(productId, quantity)
+      res.json({ message: 'Success: Product quantity updated' })
+    } catch (error) {
+      res.status(500)
+      throw new Error('Server error: Could not update product in cart')
+    }
   } else {
     res.status(500)
     throw new Error('Server error: User cart not found')
