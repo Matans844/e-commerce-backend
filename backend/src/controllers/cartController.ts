@@ -7,6 +7,8 @@ import { type ICartDocument } from '../database/documents/index.js'
  * @description Get all carts
  * @route GET /api/carts
  * @access Private/Admin
+ *
+ * TODO: Add pagination support (like for products), as list might be too long
  */
 const getAllCarts = asyncHandler(async (req: Request, res: Response) => {
   const carts = await CartModel.find({})
@@ -31,8 +33,8 @@ const getCartById = asyncHandler(async (req: Request, res: Response) => {
   if (cart != null) {
     res.json(cart)
   } else {
-    res.status(404)
-    throw new Error('Cart not found')
+    res.status(400)
+    throw new Error('Invalid cart id')
   }
 })
 
@@ -50,8 +52,8 @@ const deleteCartById = asyncHandler(async (req: Request, res: Response) => {
 
     res.json({ message: 'Success: Cart removed' })
   } else {
-    res.status(404)
-    throw new Error('Cart not found')
+    res.status(400)
+    throw new Error('Invalid cart id')
   }
 })
 
@@ -62,16 +64,16 @@ const deleteCartById = asyncHandler(async (req: Request, res: Response) => {
  */
 const addProductByIdInCartById = asyncHandler(async (req: Request, res: Response) => {
   const { id, productId } = req.params as { id: string, productId: string }
-  const { quantity } = req.body as { quantity: number }
+  const { quantity } = req.body as { quantity?: number }
   const cartToAddTo = await CartModel.findById(id)
 
   if (cartToAddTo != null) {
-    void cartToAddTo.addProductToCartById(productId, quantity)
+    void cartToAddTo.addProductToCartById(productId, quantity ?? 1)
 
     res.json({ message: 'Success: Product added to cart' })
   } else {
-    res.status(404)
-    throw new Error('Cart not found')
+    res.status(400)
+    throw new Error('Invalid cart id')
   }
 })
 
@@ -89,8 +91,8 @@ const deleteProductByIdInCartById = asyncHandler(async (req: Request, res: Respo
 
     res.json({ message: 'Success: Product deleted from cart' })
   } else {
-    res.status(404)
-    throw new Error('Cart not found')
+    res.status(400)
+    throw new Error('Invalid cart id')
   }
 })
 
@@ -101,16 +103,16 @@ const deleteProductByIdInCartById = asyncHandler(async (req: Request, res: Respo
  */
 const updateProductQuantityByIdInCartById = asyncHandler(async (req: Request, res: Response) => {
   const { id, productId } = req.params as { id: string, productId: string }
-  const { quantity } = req.body as { quantity: number }
+  const { quantity } = req.body as { quantity?: number }
   const cartToAddTo = await CartModel.findById(id)
 
   if (cartToAddTo != null) {
-    void cartToAddTo.updateQuantityProductInCartById(productId, quantity)
+    void cartToAddTo.updateQuantityProductInCartById(productId, quantity ?? 1)
 
     res.json({ message: 'Success: Product quantity in cart updated' })
   } else {
-    res.status(404)
-    throw new Error('Cart not found')
+    res.status(400)
+    throw new Error('Invalid cart id')
   }
 })
 
@@ -125,19 +127,24 @@ const getCart = asyncHandler(async (req: Request, res: Response) => {
   if (cart !== undefined) {
     res.json(cart)
   } else {
-    res.status(404)
-    throw new Error('User has no cart')
+    res.status(500)
+    throw new Error('Server error: User cart not found')
   }
 })
 
 /**
  * @description Add a product quantity by id in self cart
- * @route PUT /api/carts/mycart/:productId
+ * @route PUT /api/carts/mycart
  * @access Private
+ *
+ * TODO: Add validation for quantity (as a number)
  */
 const addProductById = asyncHandler(async (req: Request, res: Response) => {
-  const { productId } = req.params as { productId: string }
-  const { quantity } = req.body as { quantity: number }
+  const { productId, quantity } = req.body as {
+    productId: string
+    quantity: number
+  }
+
   const selfCart = req.user?.cart
 
   if (selfCart !== undefined) {
@@ -146,18 +153,18 @@ const addProductById = asyncHandler(async (req: Request, res: Response) => {
 
     res.json({ message: 'Success: Product added to cart' })
   } else {
-    res.status(404)
-    throw new Error('Cart not found')
+    res.status(500)
+    throw new Error('Server error: User cart not found')
   }
 })
 
 /**
  * @description Delete product by id in self cart
- * @route PUT /api/carts/mycart/:productId
+ * @route PUT /api/carts/mycart
  * @access Private
  */
 const deleteProductById = asyncHandler(async (req: Request, res: Response) => {
-  const { productId } = req.params as { productId: string }
+  const { productId } = req.body as { productId: string }
   const selfCart = req.user?.cart
 
   if (selfCart !== undefined) {
@@ -166,19 +173,23 @@ const deleteProductById = asyncHandler(async (req: Request, res: Response) => {
 
     res.json({ message: 'Success: Product deleted from cart' })
   } else {
-    res.status(404)
-    throw new Error('User has no cart')
+    res.status(500)
+    throw new Error('Server error: User cart not found')
   }
 })
 
 /**
  * @description Update a product quantity in self cart
- * @route PUT /api/carts/mycart/:productId
+ * @route PUT /api/carts/mycart
  * @access Private
+ *
+ * TODO: Add validation for quantity (as a number)
  */
 const updateQuantityOfProductById = asyncHandler(async (req: Request, res: Response) => {
-  const { productId } = req.params as { productId: string }
-  const { quantity } = req.body as { quantity: number }
+  const { productId, quantity } = req.body as {
+    productId: string
+    quantity: number
+  }
   const selfCart = req.user?.cart
 
   if (selfCart !== undefined) {
@@ -187,8 +198,8 @@ const updateQuantityOfProductById = asyncHandler(async (req: Request, res: Respo
 
     res.json({ message: 'Success: Product quantity in cart updated' })
   } else {
-    res.status(404)
-    throw new Error('User has no cart')
+    res.status(500)
+    throw new Error('Server error: User cart not found')
   }
 })
 

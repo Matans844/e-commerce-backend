@@ -19,7 +19,6 @@ router.route('/').get(protect, admin, getAllCarts)
 
 router
   .route('/:id')
-  .get(protect, admin, getAllCarts)
   .get(protect, admin, getCartById)
   .delete(protect, admin, deleteCartById)
 
@@ -29,10 +28,9 @@ router
   .delete(protect, admin, deleteProductByIdInCartById)
   .put(protect, admin, updateProductQuantityByIdInCartById)
 
-router.route('/mycart').get(protect, getCart)
-
 router
-  .route('/mycart/:productId')
+  .route('/mycart')
+  .get(protect, getCart)
   .post(protect, addProductById)
   .delete(protect, deleteProductById)
   .put(protect, updateQuantityOfProductById)
