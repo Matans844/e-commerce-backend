@@ -2,7 +2,7 @@
 
 ## Features
 * A Node.js application exposes a RESTful API for a hypothetical e-commerce website.
-* Technology stack: TypeScript, node, express, mongodb. Soon: Redux.
+* Technology stack: TypeScript, node, express, mongodb.
 * Different authorization levels: Admin, authenticated users, non-authenticated users. Each has a different set of privileges / permissions, enforced by authorization middleware.
 
 ## API
@@ -15,7 +15,7 @@ See this project's Postman collection [documentation](https://documenter.getpost
 * Create a product: An authenticated user provides a product name, description, price and an optional quantity, and it is inserted to a database.
 * List products: Any user can view a paginated list of products, sorted in descending order by price. The user should also supply pageInput.
 
-### Soon-to-be supported (Redux)
+### Soon-to-be supported
 * Add a product to a cart: An authenticated user can provide a product ID and quantity. The product should be added to the user's cart, which is stored in the database.
 * View a cart: Authenticated users can view the contents of their cart.
 * Checkout: An authenticated user provides payment information. The API then confirms the purchase. The user's cart is then emptied, and a confirmation email is sent to the user.
