@@ -1,7 +1,8 @@
 import { model, Schema } from 'mongoose'
-import { type ICartDocument, type ICartItem, type IProductDocument } from '../documents/index.js'
+import { type ICartDocument, type IProductDocument } from '../documents/index.js'
 import { ProductModel } from './ProductModel.js'
 import { type CartEventHandler } from '../eventHandlers/CartEventHandler.js'
+import { type ICartItem } from '../../types/index.js'
 
 /**
  * Reference:

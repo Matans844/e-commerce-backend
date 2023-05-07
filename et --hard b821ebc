@@ -1,0 +1,182 @@
+[33mb54e294[m[33m ([m[1;36mHEAD -> [m[1;32mdev[m[33m, [m[1;31morigin/master[m[33m)[m HEAD@{0}: reset: moving to origin/master
+[33mb821ebc[m[33m ([m[1;31morigin/dev[m[33m, [m[1;32mmaster[m[33m)[m HEAD@{1}: rebase: checkout dev
+[33mb821ebc[m[33m ([m[1;31morigin/dev[m[33m, [m[1;32mmaster[m[33m)[m HEAD@{2}: rebase: checkout master
+[33mb821ebc[m[33m ([m[1;31morigin/dev[m[33m, [m[1;32mmaster[m[33m)[m HEAD@{3}: checkout: moving from master to dev
+[33mb821ebc[m[33m ([m[1;31morigin/dev[m[33m, [m[1;32mmaster[m[33m)[m HEAD@{4}: commit: Messing around with documents and models
+[33m2880618[m HEAD@{5}: commit: Changing methods in CartModel
+[33m46bb835[m HEAD@{6}: commit: Adding try-catch blocks in cart controller to get the bloody cart.
+[33m33ab406[m HEAD@{7}: commit: Now debugging. Bah.
+[33m601c9a7[m HEAD@{8}: commit: Fixed the problem with the password... CreateMany() does not execute the pre 'save' hook and so users had their passwords hashed beforehand.
+[33m836b422[m HEAD@{9}: commit: For some insanely weird reason, the code in seeder.ts, where I save right after creating the model rehashes the password...
+[33m3ca7d1c[m HEAD@{10}: commit: Trying to fix the authentication function for users.
+[33m5549340[m HEAD@{11}: commit: Before testing API in Postman
+[33m270579f[m HEAD@{12}: commit: I needed to copy over changes from the way the cart is created in the user model.
+[33mb7962b0[m HEAD@{13}: commit: Checking is <model>.save() is needed after <model>.create()
+[33mb14938d[m HEAD@{14}: commit: Fixed previous error with cart error handler not being defined correctly by the cartModel.
+[33m81657bb[m HEAD@{15}: commit: Compilation works, seeder works.
+[33m1d87fa1[m HEAD@{16}: commit: Successful compilation
+[33ma941158[m HEAD@{17}: commit: Uncommented routes
+[33m2df7a87[m HEAD@{18}: commit: Supposedly finished cartController
+[33m636abb6[m HEAD@{19}: commit: Working on cartController
+[33mc919458[m HEAD@{20}: commit: Supposedly finished CartModel functions and event handling.
+[33mf08ef3d[m HEAD@{21}: commit: Added CartModel functions for product operation in cart by id
+[33m3e6308a[m HEAD@{22}: commit: I need cart to listen to products
+[33m6861178[m HEAD@{23}: commit: Notice that a user still needs to notify subscribers that it was deleted.
+[33maada8bb[m HEAD@{24}: commit: Old user deletion implementation deleted
+[33mf5b0945[m HEAD@{25}: commit (amend): At the beginning, before user deletion, I did the following:
+[33m0fe5223[m HEAD@{26}: commit: At the beginning, before user deletion, I did the following:
+[33m7f1fadd[m HEAD@{27}: commit: Instead of emitters, I have event handlers. They contain functions for emitting outgoing events and incoming event delegates.
+[33m9c2c506[m HEAD@{28}: commit: Moving events into specialized emitters; Adding specialized emitters to documents
+[33mb80f141[m HEAD@{29}: commit: There seems to be a difference between mongoose events and nodejs events. I want to use both
+[33mbfbcf4c[m HEAD@{30}: commit: Working on the cart models
+[33maa46971[m HEAD@{31}: reset: moving to aa469710d5809d0ae11db8c6944ecc8da4760436
+[33m99c6847[m[33m ([m[1;33mtag: ReduxPivoting[m[33m)[m HEAD@{32}: commit: I'm wandering what exactly my Redux state needs to include since:
+[33me3bddce[m HEAD@{33}: commit: Added action types for product.
+[33maa46971[m HEAD@{34}: commit: Removed unnecessary package `i`
+[33mb54e294[m[33m ([m[1;36mHEAD -> [m[1;32mdev[m[33m, [m[1;31morigin/master[m[33m)[m HEAD@{35}: commit: If a product is added to a cart, its quantity in stock should be updated. The same when it is removed.
+[33m4f2749f[m HEAD@{36}: commit: Finished blueprint of cart APIs
+[33m92ab5f9[m HEAD@{37}: commit: Improved readme and added API.
+[33m181265a[m HEAD@{38}: commit: Fixed package.json scripts:
+[33m1b35a21[m HEAD@{39}: commit: Added Admin and Admin API.
+[33m6b1fa90[m HEAD@{40}: commit: Fixed authorization token. Adding Admin.
+[33meac8263[m HEAD@{41}: commit: Small edits.
+[33me994dad[m HEAD@{42}: commit: Re-added image.
+[33m86890ec[m HEAD@{43}: commit: Problem with image
+[33mdd1cee3[m HEAD@{44}: commit: Changed image to fit inserting the validation middleware.
+[33m901f8d3[m HEAD@{45}: commit: Forgot validation middleware.
+[33m9408f98[m HEAD@{46}: commit: Touch-ups for GitHub upload
+[33mbc5e7bb[m HEAD@{47}: commit: Touch-ups for GitHub upload
+[33mc038397[m HEAD@{48}: commit: Touch-ups for GitHub upload
+[33m4e0af5e[m HEAD@{49}: merge origin/master: Fast-forward
+[33m23c8940[m HEAD@{50}: commit: Before publishing to GitHub
+[33m31a16f6[m HEAD@{51}: commit: Finished editing design docs.
+[33m7ea6fa6[m HEAD@{52}: commit: Testing postman.
+[33mbab563d[m HEAD@{53}: commit: Fixed environment variable for JWT_SECRET in the config file env.d.ts
+[33mce0aabd[m HEAD@{54}: commit: JWS tokens involve authorization, not authentication.
+[33m17d7408[m HEAD@{55}: commit: The getProducts() API should not be protected, but validated.
+[33m2dd86ae[m HEAD@{56}: commit: The getProducts() API should not be protected. Unauthenticated users can call it as well.
+[33mf3448c7[m HEAD@{57}: commit: Refactored names, added validation for getProducts API.
+[33m09ad09c[m HEAD@{58}: commit: Added validation middleware
+[33m6b373fd[m HEAD@{59}: commit: I need to add validation middleware! Bah!
+[33m660a4a8[m HEAD@{60}: commit: Added a dummy use for the `req` argument for when getting all users.
+[33m426bc68[m HEAD@{61}: commit: Finished refactoring products.
+[33m3c7f039[m HEAD@{62}: commit: Fixing error handler so it also includes the original url.
+[33m05c804f[m HEAD@{63}: commit: Removing unnecessary services from userController.
+[33m04319f1[m HEAD@{64}: commit: Working on userController and userRoutes
+[33mfb751c0[m HEAD@{65}: commit: Building server.ts with routes
+[33m62865ff[m HEAD@{66}: commit: Added error middleware
+[33m7cf33dc[m HEAD@{67}: commit: Added error middleware
+[33ma5c217f[m HEAD@{68}: commit: I can access environment variables that were set in .env without needing to specify that are set!
+[33meba4c68[m HEAD@{69}: commit: Successful connection to DB.
+[33m82ecdfd[m HEAD@{70}: commit: Fixing errors.
+[33ma7b2f5d[m HEAD@{71}: commit: Fixing errors.
+[33m77f1d32[m HEAD@{72}: commit: Preparing to test sample data again.
+[33me58b78e[m HEAD@{73}: commit: Preparing to test sample data again.
+[33m167407a[m HEAD@{74}: commit: Stopping with authentication. Going back to Database and Postman.
+[33m060f52f[m HEAD@{75}: commit: My models are the schemas!
+[33ma66a411[m HEAD@{76}: commit: JWT token generation file added.
+[33m6169ece[m HEAD@{77}: commit: Staying with just interfaces.
+[33mb351f4f[m[33m ([m[1;33mtag: option-for-classes[m[33m)[m HEAD@{78}: commit: Forgot exporting the new Cart Schema.
+[33mdf7c43c[m HEAD@{79}: commit: Decoupled models from mongoose documents. Then updated Schemas.
+[33m9d52daf[m HEAD@{80}: commit: Changed models and added Cart.
+[33m839d6cc[m HEAD@{81}: commit: Changing organization of folder structures, so that related types belong to a single folder
+[33m22ec045[m HEAD@{82}: commit: Now seeding works.
+[33mb9dfbb5[m HEAD@{83}: commit: Deleted users from product model.
+[33mab226ce[m HEAD@{84}: commit: Finally, got the seeder to run. However, I could not upload to date because product validation failed - I have no 'user'. I need to refactor the 'user' field out anyway because there's no admin here.
+[33mb26c527[m HEAD@{85}: commit: I had a problem with the node version. I needed to remind myself of what I did with nvm.
+[33m268b583[m HEAD@{86}: commit: Removed all test dependencies.
+[33m79c6512[m HEAD@{87}: commit: Removed all test dependencies.
+[33m3c037a6[m HEAD@{88}: commit: Can't get seeder.ts to run. Trying to clean package.json.
+[33mb774ef9[m HEAD@{89}: commit: Refactoring seeder.ts.
+[33m7127b8b[m HEAD@{90}: commit: Added sample data users.
+[33mfccc8a5[m HEAD@{91}: commit: Added sample data products.
+[33mce09175[m HEAD@{92}: commit: An unpaid order is basically a shopping cart. Someone must give payment details in order for a shopping cart to become an order. Then the `isPaid` flag determines if there was payment. And if there was payment, payment date is also set.
+[33mb9d754e[m HEAD@{93}: commit: Added sample date for orders; Notices I divided between paid and unpaid orders.
+[33m6da7b5c[m HEAD@{94}: commit: Connecting types to models and models to rest of app.
+[33mffdada5[m HEAD@{95}: commit: Removed irrelevant link from server.ts
+[33m100908d[m HEAD@{96}: commit: Refactoring project structure
+[33m7093056[m HEAD@{97}: commit: Finished formatting with eslint
+[33m384cbeb[m HEAD@{98}: commit: More code cleaning with ESLint
+[33me9913e4[m HEAD@{99}: commit: Fixing code according to ESLint suggestions
+[33m54d724b[m HEAD@{100}: commit: Added Prettier and ESLint support
+[33maf4b1e3[m HEAD@{101}: commit: Added TypeScript support for native ES6 promises
+[33m793ccfe[m HEAD@{102}: commit: Added eslint support for typescript.
+[33ma70ad72[m HEAD@{103}: commit: Node.js interpreter is now the Ubuntu-22 interpreter. I’ve also added Coding assistance for Node.js for this project.
+[33m3718069[m HEAD@{104}: commit: Changing settings in IntelliJ so that typescript compiles upon save, and run configuration support compiling before execution.
+[33m49d7864[m HEAD@{105}: commit: Added `countInStock` variable in Product Schema. This can help with the following scenario during order:
+[33m023bb47[m HEAD@{106}: commit: Finished UserModel.ts
+[33m5a24f22[m HEAD@{107}: commit: Finished Product Model for schema. This is used to query the database.
+[33m124f9f1[m HEAD@{108}: commit: I did not want to add the ".js" suffix for each import. I wanted the tsconfig to help me. Then I found this:
+[33m81b6a16[m HEAD@{109}: commit: Finished order model. Also did more refactoring for the types.
+[33m244ef6a[m HEAD@{110}: commit: Refactored types
+[33m6840967[m HEAD@{111}: commit: Added types
+[33m6c0f5f2[m HEAD@{112}: commit: Added synchronization so that DB connection is established before the server starts listening.
+[33m2f396e3[m HEAD@{113}: rebase (finish): returning to refs/heads/master
+[33m2f396e3[m HEAD@{114}: rebase (pick): Added files to the repository and added references to a file.
+[33mc18bf09[m HEAD@{115}: rebase (reword): Notice:
+[33mdce153e[m HEAD@{116}: rebase: fast-forward
+[33m0bb3166[m HEAD@{117}: rebase (start): checkout 0bb3166197f5421fb69e1c5359a14f7ac44f8ac0
+[33m989f782[m HEAD@{118}: commit: Added files to the repository and added references to a file.
+[33mdce153e[m HEAD@{119}: commit: Notice:
+[33m0bb3166[m HEAD@{120}: commit: This is literally the weirdest problem ever: Execution skips over dotenv.config and reaches connectDB() immediately. It also skips everything in between...
+[33m7622508[m HEAD@{121}: commit: Trying to fix the problem with dotenv not working properly
+[33mc97407d[m HEAD@{122}: commit: Simplified packages. Before testing.
+[33mf8ea60c[m HEAD@{123}: commit: Simplifying Design: Unifying between controllers and services.
+[33m0fa2d6c[m HEAD@{124}: commit: Removed validation middleware. Makes more sense for the Business Logic to handle this.
+[33m9200575[m HEAD@{125}: commit: Design changes:
+[33m9997d5e[m HEAD@{126}: commit: The server is the glue between infrastructure and business logic, or conductor of this whole process.
+[33m1e39889[m HEAD@{127}: commit: @ChatGPT3.5: Planning Before Coding: e-commerce backend:
+[33m0b9dc6c[m HEAD@{128}: commit: Added persistence layer in architecture design document.
+[33md0f68c6[m HEAD@{129}: commit: Added persistence layer in architecture design document.
+[33mef46f72[m HEAD@{130}: commit: Completed a more organized view of the system components, including their interaction.
+[33m2212eb1[m HEAD@{131}: commit: Removed redundant package for file upload.
+[33md6cce0b[m HEAD@{132}: commit: Organized the scripts so that I don't have to perform compilation separately from executing the server.
+[33m2d05a68[m HEAD@{133}: commit: Now it works... I just needed to recompile the typescript files.
+[33m8d5f34e[m HEAD@{134}: commit: I found the listening error... I used the .listen() function twice... bah.
+[33md36af41[m HEAD@{135}: commit: I want nodejs to be able to support modules. This is why I added "type":"module" in package.json.
+[33mb2f2533[m HEAD@{136}: commit: The use of "type":"module" in package.json caused problems.
+[33m5087413[m HEAD@{137}: commit: Deleted, alongside ignored folder node_modules.
+[33m60c2354[m HEAD@{138}: commit: Trying to get nodemon to work...
+[33md8804bd[m HEAD@{139}: reset: moving to HEAD
+[33md8804bd[m HEAD@{140}: commit: .gitignore fix
+[33m791230f[m HEAD@{141}: reset: moving to HEAD
+[33m791230f[m HEAD@{142}: commit: .gitignore problems again... terrible.
+[33m8d1ed02[m HEAD@{143}: reset: moving to HEAD
+[33m8d1ed02[m HEAD@{144}: reset: moving to HEAD
+[33m8d1ed02[m HEAD@{145}: reset: moving to HEAD
+[33m8d1ed02[m HEAD@{146}: reset: moving to HEAD
+[33m8d1ed02[m HEAD@{147}: commit: await can only be called from within an async function!
+[33m28abc10[m HEAD@{148}: commit: Changed module from es2022 to esnext.
+[33m6c5e605[m HEAD@{149}: commit: Added .gitignore in the root level, distinct from the .idea/.gitignore file.
+[33mda0af44[m HEAD@{150}: commit: Added .gitignore in the root level, distinct from the .idea/.gitignore file.
+[33medc3f77[m HEAD@{151}: commit: .gitignore nuisance again.
+[33mf02ff04[m HEAD@{152}: reset: moving to HEAD
+[33mf02ff04[m HEAD@{153}: reset: moving to HEAD
+[33mf02ff04[m HEAD@{154}: commit: Fixed .gitignore problem for /build folder using: git reset
+[33mb370513[m HEAD@{155}: commit: Fixed .gitignore problem for /build folder using: git reset
+[33m57e36a1[m HEAD@{156}: reset: moving to HEAD
+[33m57e36a1[m HEAD@{157}: commit: Restarting the IDE solved the problems in server.ts. Suddenly all modules were resolved. I managed to build the project. I still can't run it using nodemon.
+[33m14d7600[m HEAD@{158}: commit: Deleted the tsconfig in the backend folder. Having problems in server.ts again.
+[33m4897bba[m HEAD@{159}: commit: I cannot use tsc in a simple way because of the tsconfig separation (and the package.json scripts). Thus:
+[33m537b781[m HEAD@{160}: commit: Testing
+[33m7447ed8[m HEAD@{161}: commit: Testing
+[33m1cf5702[m HEAD@{162}: commit: Added the server entry point and connected with the mongoDB database.
+[33m31247c4[m HEAD@{163}: commit: Added link to explain dotenv.config() call.
+[33m4edaedc[m HEAD@{164}: commit: Setting up mongoDB.
+[33med43bd5[m HEAD@{165}: commit: Restored to position before package.json separation which was an overkill.
+[33mf737c77[m HEAD@{166}: reset: moving to f737c77bebf0ae65e16c4416d1fcfbd01ba2cb72
+[33mf737c77[m HEAD@{167}: reset: moving to f737c77bebf0ae65e16c4416d1fcfbd01ba2cb72
+[33m76ca2a0[m HEAD@{168}: commit: Tried to separate the package.json file, but this is an overkill. After commit, reverting to earlier state.
+[33me3821d8[m HEAD@{169}: commit: Refactoring package.json so that backend is isolated.
+[33mf737c77[m HEAD@{170}: commit: Changes to package.json to take into account having specified the outDir option in the backend tsconfig.json:
+[33m6e205f1[m HEAD@{171}: commit: Removed webpack:
+[33m0fe9535[m HEAD@{172}: commit: Separating tsconfig files.
+[33m803ebf4[m HEAD@{173}: commit (amend): The avn, nvm, avn-nvm should be installed globally and not in devDependencies: The nvm, npm, avn relationship is complicated.
+[33m5d9457f[m HEAD@{174}: commit: The avn, nvm, avn-nvm should be installed globally and not in devDependencies: The nvm, npm, avn relationship is complicated.
+[33m62647d3[m HEAD@{175}: commit: Formatting .gitignore and adding .env file;
+[33m426ba04[m HEAD@{176}: commit: Working on the tsconfig.json file and package.json.
+[33mbdd5d8f[m HEAD@{177}: commit: After `npm install`
+[33m029b933[m HEAD@{178}: commit: Before package installations
+[33m1d6517c[m HEAD@{179}: commit: Folder setup;
+[33m94a3b3f[m HEAD@{180}: commit: Current option for joint activity-component diagram (not strictly UML): top to down direction.
+[33m9311679[m HEAD@{181}: commit: Another option for joint activity-component diagram (not strictly UML): left to right direction.
