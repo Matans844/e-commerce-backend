@@ -59,32 +59,32 @@ function setupListenersForProduct (cart: ICartDocument, product: IProductDocumen
 /**
  * Add product to cart.
  * Also, add the cart as listener to the product if it is new in the cart
+ * @param cartDocument
  * @param productId
  * @param quantity
  *
  * TODO: Again, problems with model vs. document
  *
  */
-cartModel.methods.addProductToCartById = async function (cartId: string, productId: string, quantity: number) {
+cartModel.methods.addProductToCartById = async function (cartDocument: ICartDocument, productId: string, quantity: number) {
   const productDocument = await ProductModel.findById(productId)
 
   if (productDocument == null) {
-    throw new Error('Product not found. It should first be added to store.')
+    throw new Error('Product not found.')
   }
 
   if (quantity > productDocument.countInStock) {
     throw new Error('Cannot add more quantity to cart than exists in stock\'')
   }
 
-  const cartDocument = await CartModel.findById(this.id)
-
   const existingItemIndex: number = this.cartItems.findIndex((item: ICartItem) => item.productId === productId)
 
   if (existingItemIndex < 0) {
     // Add new cart item
     this.cartItems.push({ productId, quantity })
+
     // Add cart as listener
-    setupListenersForProduct(cat, productDocument)
+    setupListenersForProduct(cartDocument, productDocument)
   } else {
     // Update existing cart item quantity
     // Keep in mind that mongoose uses Number and TypeScript uses number
@@ -108,6 +108,7 @@ cartModel.methods.deleteProductFromCartById = async function (productId: string)
   if (existingItemIndex >= 0) {
     // Remove cart item
     this.cartItems.splice(existingItemIndex, 1)
+
     await this.save()
   } else {
     throw new Error('Product does not exist in cart.')
@@ -122,15 +123,18 @@ cartModel.methods.deleteProductFromCartById = async function (productId: string)
  * TODO: You should be able to add negative quantity here (negative update)
  */
 cartModel.methods.updateQuantityProductInCartById = async function (productId: string, newQuantity: number) {
+  if (newQuantity < 0) {
+    throw new Error('Product quantity cannot be negative.')
+  }
+
   if (newQuantity === 0) {
     this.removeProductById(productId)
-  } else if (newQuantity < 0) {
-    throw new Error('Product quantity cannot be negative.')
   } else {
     const existingItemIndex = this.cartItems.findIndex((item: ICartItem) => item.productId === productId)
     if (existingItemIndex >= 0) {
       // Update cart item
       this.cartItems[existingItemIndex].quantity = Number(newQuantity)
+
       await this.save()
     } else {
       throw new Error('Product does not exist in cart.')

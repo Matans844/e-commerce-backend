@@ -63,16 +63,32 @@ const deleteCartById = asyncHandler(async (req: Request, res: Response) => {
  */
 const addProductByIdInCartById = asyncHandler(async (req: Request, res: Response) => {
   const { id, productId } = req.params as { id: string, productId: string }
-  const { quantity } = req.body as { quantity?: number }
-  const cartToAddTo = await CartModel.findById(id)
+  const { quantity } = req.body as { quantity: string }
 
-  if (cartToAddTo != null) {
-    void cartToAddTo.addProductToCartById(productId, quantity ?? 1)
+  const validatedQuantity = parseInt(quantity) ?? 1
 
-    res.json({ message: 'Success: Product added to cart' })
+  if (validatedQuantity < 0) {
+    throw new Error('Cannot set non-positive quantity of product in cart')
+  }
+
+  const cartDocument = await CartModel.findById(id)
+
+  if (cartDocument == null) {
+    throw new Error('Cart not found.')
+  }
+
+  if (req.user !== undefined) {
+    try {
+      await req.user.cart.addProductToCartById(cartDocument, productId, validatedQuantity)
+
+      res.json({ message: 'Success: Product added to cart' })
+    } catch (error) {
+      res.status(500)
+      throw new Error('Server error: Could not add product to cart')
+    }
   } else {
-    res.status(400)
-    throw new Error('Invalid cart id')
+    res.status(500)
+    throw new Error('Server error: User not found')
   }
 })
 
@@ -106,7 +122,7 @@ const updateProductQuantityByIdInCartById = asyncHandler(async (req: Request, re
   const cartToAddTo = await CartModel.findById(id)
 
   if (cartToAddTo != null) {
-    void cartToAddTo.updateQuantityProductInCartById(productId, quantity ?? 1)
+    void cartToAddTo.updateQuantityProductInCartById(id, productId, quantity ?? 1)
 
     res.json({ message: 'Success: Product quantity in cart updated' })
   } else {
@@ -152,7 +168,7 @@ const addProductById = asyncHandler(async (req: Request, res: Response) => {
 
   if (req.user !== undefined) {
     try {
-      await req.user.cart.addProductToCartById(productId, validatedQuantity)
+      await req.user.cart.addProductToCartById(req.user.cart, productId, validatedQuantity)
 
       res.json({ message: 'Success: Product added to cart' })
     } catch (error) {
@@ -212,7 +228,7 @@ const updateQuantityOfProductById = asyncHandler(async (req: Request, res: Respo
         throw new Error('Could not get cart')
       }
 
-      await cart.updateQuantityProductInCartById(productId, quantity)
+      await cart.updateQuantityProductInCartById(cart._id as string, productId, quantity)
       res.json({ message: 'Success: Product quantity updated' })
     } catch (error) {
       res.status(500)

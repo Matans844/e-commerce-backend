@@ -8,12 +8,12 @@ class UserEventHandler extends EventEmitter {
   }
 
   emitUserDeleted (): void {
-    this.emit('userDeleted', this.user._id)
+    this.emit('userDeleted', this.user._id as string)
   }
 
   async onCartDeleted (cartId: string): Promise<void> {
     const newCart = await CartModel.create({
-      userId: this.user._id
+      userId: this.user._id as string
     })
 
     // Set up a listener for the 'cartDeleted' event on the cart instance associated with this user
@@ -22,7 +22,7 @@ class UserEventHandler extends EventEmitter {
       void this.onCartDeleted(cartId)
     })
 
-    this.user.cart = newCart._id
+    this.user.cart = newCart
   }
 }
 

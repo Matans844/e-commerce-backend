@@ -122,7 +122,7 @@ userModel.pre('save', async function (this: IUserDocument) {
     this.eventHandler = new UserEventHandler(this)
 
     const newCart = await CartModel.create({
-      userId: this._id
+      userId: this._id as string
     })
     newCart.eventHandler = new CartEventHandler(newCart)
     newCart.eventHandler.on('userDeleted', (userId: string) => {
@@ -135,7 +135,7 @@ userModel.pre('save', async function (this: IUserDocument) {
       void this.eventHandler.onCartDeleted(cartId)
     })
 
-    this.cart = newCart._id
+    this.cart = newCart
   }
   if (this.isModified('password')) {
     const salt = await bcrypt.genSalt(10)
