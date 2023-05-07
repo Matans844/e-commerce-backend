@@ -2,7 +2,7 @@ import * as jwt from 'jsonwebtoken'
 import { type Secret } from 'jsonwebtoken'
 import asyncHandler from 'express-async-handler'
 import { type NextFunction, type Request, type Response } from '../types/index.js'
-import { UserModel } from '../database/models/index.js'
+import { CartModel, UserModel } from '../database/models/index.js'
 import { type Decoded } from '../types/authorization/IjwtDecoded.js'
 
 const protect = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
@@ -29,7 +29,15 @@ const protect = asyncHandler(async (req: Request, res: Response, next: NextFunct
         throw new Error('User not found')
       }
 
+      const cart = await CartModel.findById(user.cart)
+
+      if (cart == null) {
+        throw new Error('User cat not found')
+      }
+
       req.user = user
+      req.user.cart = cart
+
       next()
     } catch (error) {
       console.error(error)

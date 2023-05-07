@@ -9,10 +9,10 @@ import { type Request, type Response } from '../types/index.js'
  */
 const getProducts = asyncHandler(async (req: Request, res: Response) => {
   const PAGE_SIZE = 10 // Number of products per page
-  const { pageInput = 1 } = req.query
+  const { pageInput } = req.query
 
   // Convert page to integer
-  const page = parseInt(pageInput as string)
+  const page = parseInt(pageInput as string) ?? 1
 
   const count = await ProductModel.countDocuments({})
   const products = await ProductModel.find({})

@@ -4,9 +4,9 @@ import { type ICart } from '../../types/index.js'
 
 export interface ICartDocument extends ICart, Document {
   eventHandler: CartEventHandler
-  addProductToCartById: (productId: string, quantity: number) => Promise<void>
-  deleteProductFromCartById: (productId: string) => Promise<void>
-  updateQuantityProductInCartById: (productId: string, newQuantity: number) => Promise<void>
+  addProductToCartById: (cartId: string, productId: string, quantity: number) => Promise<void>
+  deleteProductFromCartById: (cartId: string, productId: string) => Promise<void>
+  updateQuantityProductInCartById: (cartId: string, productId: string, newQuantity: number) => Promise<void>
 }
 
 /**

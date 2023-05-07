@@ -1,6 +1,7 @@
 import { model, Schema } from 'mongoose'
-import { type ICartDocument, type ICartItem } from '../documents/index.js'
+import { type ICartDocument, type ICartItem, type IProductDocument } from '../documents/index.js'
 import { ProductModel } from './ProductModel.js'
+import { type CartEventHandler } from '../eventHandlers/CartEventHandler.js'
 
 /**
  * Reference:
@@ -43,6 +44,99 @@ const cartModel = new Schema(
     timestamps: true
   }
 )
+
+function setupListenersForProduct (cart: ICartDocument, product: IProductDocument): void {
+  const cartEventHandler: CartEventHandler = cart.eventHandler
+
+  product.eventHandler.addListener('productDeleted', (productId: string) => {
+    void cartEventHandler.onProductDeleted(productId)
+  })
+  product.eventHandler.on('emitProductQuantityInStockChanged', (productId: string, newQuantity: number) => {
+    void cartEventHandler.onProductQuantityChanged(productId, newQuantity)
+  })
+}
+
+/**
+ * Add product to cart.
+ * Also, add the cart as listener to the product if it is new in the cart
+ * @param productId
+ * @param quantity
+ *
+ * TODO: Again, problems with model vs. document
+ *
+ */
+cartModel.methods.addProductToCartById = async function (cartId: string, productId: string, quantity: number) {
+  const productDocument = await ProductModel.findById(productId)
+
+  if (productDocument == null) {
+    throw new Error('Product not found. It should first be added to store.')
+  }
+
+  if (quantity > productDocument.countInStock) {
+    throw new Error('Cannot add more quantity to cart than exists in stock\'')
+  }
+
+  const cartDocument = await CartModel.findById(this.id)
+
+  const existingItemIndex: number = this.cartItems.findIndex((item: ICartItem) => item.productId === productId)
+
+  if (existingItemIndex < 0) {
+    // Add new cart item
+    this.cartItems.push({ productId, quantity })
+    // Add cart as listener
+    setupListenersForProduct(cat, productDocument)
+  } else {
+    // Update existing cart item quantity
+    // Keep in mind that mongoose uses Number and TypeScript uses number
+    const oldQuantity: number = this.cartItems[existingItemIndex].quantity
+    const newQuantity = oldQuantity + quantity
+    if (newQuantity > productDocument.countInStock) {
+      throw new Error('Cannot add more quantity to cart than exists in stock')
+    }
+    this.cartItems[existingItemIndex].quantity = Number(newQuantity)
+  }
+
+  await this.save()
+}
+
+/**
+ * Removes product from cart by productId
+ * @param productId
+ */
+cartModel.methods.deleteProductFromCartById = async function (productId: string) {
+  const existingItemIndex = this.cartItems.findIndex((item: ICartItem) => item.productId === productId)
+  if (existingItemIndex >= 0) {
+    // Remove cart item
+    this.cartItems.splice(existingItemIndex, 1)
+    await this.save()
+  } else {
+    throw new Error('Product does not exist in cart.')
+  }
+}
+
+/**
+ *
+ * @param productId
+ * @param newQuantity
+ *
+ * TODO: You should be able to add negative quantity here (negative update)
+ */
+cartModel.methods.updateQuantityProductInCartById = async function (productId: string, newQuantity: number) {
+  if (newQuantity === 0) {
+    this.removeProductById(productId)
+  } else if (newQuantity < 0) {
+    throw new Error('Product quantity cannot be negative.')
+  } else {
+    const existingItemIndex = this.cartItems.findIndex((item: ICartItem) => item.productId === productId)
+    if (existingItemIndex >= 0) {
+      // Update cart item
+      this.cartItems[existingItemIndex].quantity = Number(newQuantity)
+      await this.save()
+    } else {
+      throw new Error('Product does not exist in cart.')
+    }
+  }
+}
 
 /**
  * Computes and returns the price field of a single cartItem,
@@ -98,79 +192,5 @@ cartModel.pre('remove', function (this: ICartDocument, next) {
 
   next()
 })
-
-/**
- * Adds product to cart.
- * Also, adds the cart as listener to the product if it is new in the cart
- * @param productId
- * @param quantity
- */
-cartModel.methods.addProductToCartById = async function (productId: string, quantity: number) {
-  const productToAdd = await ProductModel.findById(productId)
-  if (productToAdd == null) {
-    throw new Error('Product not found. It should first be added to store.')
-  }
-  if (quantity <= 0) {
-    throw new Error('Cannot set non-positive quantity of product in cart')
-  } else if (quantity > productToAdd.countInStock) {
-    throw new Error('Cannot add more quantity to cart than exists in stock')
-  } else {
-    const existingItemIndex = this.cartItems.findIndex((item: ICartItem) => item.productId === productId)
-    if (existingItemIndex >= 0) {
-      // Update existing cart item quantity
-      // Keep in mind that mongoose uses Number and TypeScript uses number
-      const oldQuantity = this.cartItems[existingItemIndex].quantity.valueOf() as number
-      const newQuantity = oldQuantity + quantity
-      if (newQuantity > productToAdd.countInStock) {
-        throw new Error('Cannot add more quantity to cart than exists in stock')
-      }
-      this.cartItems[existingItemIndex].quantity = Number(newQuantity)
-    } else {
-      // Add new cart item
-      this.cartItems.push({ productId, quantity })
-      // Add cart as listener
-      this.cart
-        .productToAdd.eventHandler.on('productDeleted', (productId: string) => {
-          this.eventHandler.onProductDeleted(productId)
-        })
-      this.cart.productToAdd.eventHandler.on('emitProductQuantityInStockChanged', (productId: string, newQuantity: number) => {
-        this.eventHandler.onProductQuantityChanged(productId, newQuantity)
-      })
-    }
-  }
-  await this.save()
-}
-
-/**
- * Removes product from cart by productId
- * @param productId
- */
-cartModel.methods.deleteProductFromCartById = async function (productId: string) {
-  const existingItemIndex = this.cartItems.findIndex((item: ICartItem) => item.productId === productId)
-  if (existingItemIndex >= 0) {
-    // Remove cart item
-    this.cartItems.splice(existingItemIndex, 1)
-    await this.save()
-  } else {
-    throw new Error('Product does not exist in cart.')
-  }
-}
-
-cartModel.methods.updateQuantityProductInCartById = async function (productId: string, newQuantity: number) {
-  if (newQuantity === 0) {
-    this.removeProductById(productId)
-  } else if (newQuantity < 0) {
-    throw new Error('Product quantity cannot be negative.')
-  } else {
-    const existingItemIndex = this.cartItems.findIndex((item: ICartItem) => item.productId === productId)
-    if (existingItemIndex >= 0) {
-      // Update cart item
-      this.cartItems[existingItemIndex].quantity = Number(newQuantity)
-      await this.save()
-    } else {
-      throw new Error('Product does not exist in cart.')
-    }
-  }
-}
 
 export const CartModel = model<ICartDocument>('Cart', cartModel)

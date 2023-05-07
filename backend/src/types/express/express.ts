@@ -1,5 +1,5 @@
 import { type Request as Req, type Response as Res, type NextFunction as Next } from 'express'
-import { type ICart } from '../cart/ICart.js'
+import { type ICartDocument } from '../../database/documents/index.js'
 
 /**
  * Custom Interface used in combination with Express Request / Response types
@@ -10,7 +10,7 @@ interface User {
     name: string
     email: string
     isAdmin?: boolean
-    cart?: ICart
+    cart: ICartDocument
   }
 }
 

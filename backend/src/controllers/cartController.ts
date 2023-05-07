@@ -141,17 +141,19 @@ const getCart = asyncHandler(async (req: Request, res: Response) => {
 const addProductById = asyncHandler(async (req: Request, res: Response) => {
   const { productId, quantity } = req.body as {
     productId: string
-    quantity: number
+    quantity: string
+  }
+
+  const validatedQuantity = parseInt(quantity) ?? 1
+
+  if (validatedQuantity < 0) {
+    throw new Error('Cannot set non-positive quantity of product in cart')
   }
 
   if (req.user !== undefined) {
     try {
-      const cartToAddTo = await CartModel.findById(req.user._id)
-      if (cartToAddTo == null) {
-        throw new Error('Could not get cart')
-      }
+      await req.user.cart.addProductToCartById(productId, validatedQuantity)
 
-      await cartToAddTo.addProductToCartById(productId, quantity)
       res.json({ message: 'Success: Product added to cart' })
     } catch (error) {
       res.status(500)
@@ -159,7 +161,7 @@ const addProductById = asyncHandler(async (req: Request, res: Response) => {
     }
   } else {
     res.status(500)
-    throw new Error('Server error: User cart not found')
+    throw new Error('Server error: User not found')
   }
 })
 
